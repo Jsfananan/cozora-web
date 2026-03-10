@@ -64,3 +64,51 @@ export async function getUserPurchase(
 
   return data as Purchase | null;
 }
+
+/**
+ * Extracts the authenticated user from the current Supabase session.
+ *
+ * Checks the Authorization header first (Bearer token), then falls back to
+ * the server client's cookie-based session. Returns null if the user is not
+ * authenticated or the token is invalid.
+ */
+export async function getAuthenticatedUser(
+  request?: Request
+): Promise<{ user: { id: string; email: string }; email: string } | null> {
+  try {
+    // Prefer an explicit Bearer token from the Authorization header.
+    // This supports both server-side calls and clients that pass the session
+    // token explicitly (e.g. mobile or API consumers).
+    if (request) {
+      const authHeader = request.headers.get("authorization");
+      if (authHeader?.startsWith("Bearer ")) {
+        const token = authHeader.slice(7);
+        const supabase = createServiceClient();
+        const {
+          data: { user },
+          error,
+        } = await supabase.auth.getUser(token);
+
+        if (!error && user?.email) {
+          return { user: { id: user.id, email: user.email }, email: user.email };
+        }
+      }
+    }
+
+    // Fall back to the cookie-based session via the server (anon) client.
+    const supabase = createServerClient();
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.getUser();
+
+    if (error || !user?.email) {
+      return null;
+    }
+
+    return { user: { id: user.id, email: user.email }, email: user.email };
+  } catch (err) {
+    console.error("[getAuthenticatedUser] Unexpected error:", err);
+    return null;
+  }
+}
