@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { bundles } from '@/lib/bundles';
 import Navbar from '@/components/Navbar';
 
@@ -36,17 +35,15 @@ export default function BundlesPage() {
                 bundle.skillNum as keyof typeof skillColorMap
               ] || { text: 'text-cz-teal', bg: 'bg-cz-teal/10' };
               return (
-                <Link
+                <div
                   key={bundle.slug}
-                  href={`/bundles/${bundle.slug}`}
-                  className="group"
                 >
-                  <div className="h-full bg-cz-bg-card border border-cz-border hover:border-cz-border-strong rounded-xl p-6 transition-all hover:bg-cz-bg-card-hover">
+                  <div className="h-full bg-cz-bg-card border border-cz-border rounded-xl p-6">
                     <div className={`inline-block px-3 py-1 rounded-full text-xs font-mono ${colors.text} ${colors.bg} mb-4`}>
                       {bundle.skillNum}
                     </div>
 
-                    <h2 className="text-2xl font-display font-bold text-cz-text mb-2 group-hover:text-cz-accent transition-colors">
+                    <h2 className="text-2xl font-display font-bold text-cz-text mb-2">
                       {bundle.name}
                     </h2>
 
@@ -54,16 +51,11 @@ export default function BundlesPage() {
                       {bundle.tagline}
                     </p>
 
-                    <p className="text-cz-text-muted leading-relaxed mb-6">
+                    <p className="text-cz-text-muted leading-relaxed">
                       {bundle.description}
                     </p>
-
-                    <div className="flex items-center text-sm text-cz-teal font-mono">
-                      <span>{bundle.sessions.length} sessions</span>
-                      <span className="ml-auto">→</span>
-                    </div>
                   </div>
-                </Link>
+                </div>
               );
             })}
           </div>
