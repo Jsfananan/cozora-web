@@ -1,0 +1,82 @@
+@import "tailwindcss";
+
+/* ===== COZORA DESIGN SYSTEM ===== */
+
+@theme {
+  /* Backgrounds */
+  --color-cz-bg: #0e1a1b;
+  --color-cz-bg-card: #132224;
+  --color-cz-bg-card-hover: #1a2e30;
+
+  /* Surfaces */
+  --color-cz-surface: #1D5C5E;
+
+  /* Borders */
+  --color-cz-border: rgba(29, 92, 94, 0.27);
+  --color-cz-border-strong: rgba(29, 92, 94, 0.53);
+
+  /* Text */
+  --color-cz-text: #EDF2F0;
+  --color-cz-text-muted: #AEC4D6;
+  --color-cz-text-dim: #555555;
+
+  /* Accents */
+  --color-cz-accent: #C79219;
+  --color-cz-accent-hover: #daa52e;
+  --color-cz-coral: #D63BA3;
+  --color-cz-teal: #7ED3C0;
+  --color-cz-deep-teal: #1D5C5E;
+  --color-cz-deep-teal-hover: #247070;
+
+  /* Fonts */
+  --font-display: 'Sora', sans-serif;
+  --font-body: 'Outfit', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+/* ===== BASE STYLES ===== */
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--color-cz-bg);
+  color: var(--color-cz-text);
+  font-family: var(--font-body);
+}
+
+/* ===== ANIMATIONS ===== */
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-up {
+  opacity: 0;
+  animation: fade-up 0.7s ease forwards;
+}
+
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+.delay-400 { animation-delay: 0.4s; }
+
+/* ===== SCROLLBAR ===== */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-cz-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-cz-border-strong);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-cz-surface);
+}
