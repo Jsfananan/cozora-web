@@ -39,7 +39,7 @@ export default function Navbar() {
               Skill Sets
             </a>
             <a
-              href="https://leadershipinchange10.substack.com/t/cozora"
+              href="https://cozora.substack.com/subscribe"
               target="_blank"
               rel="noopener noreferrer"
               className="text-cz-text-muted hover:text-cz-text transition-colors"
@@ -90,7 +90,7 @@ export default function Navbar() {
               Skill Sets
             </a>
             <a
-              href="https://leadershipinchange10.substack.com/t/cozora"
+              href="https://cozora.substack.com/subscribe"
               target="_blank"
               rel="noopener noreferrer"
               className="block text-cz-text-muted hover:text-cz-text transition-colors"

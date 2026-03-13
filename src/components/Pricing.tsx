@@ -62,7 +62,9 @@ export default function Pricing() {
               </ul>
 
               <a
-                href="/bundles"
+                href="https://buy.stripe.com/5kQ6oHfxd1vG5YNgH04ko00"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-full px-6 py-3 border border-cz-border hover:border-cz-border-strong bg-transparent text-cz-text rounded-lg transition-colors text-center font-semibold"
               >
                 Get the Skill Sets
@@ -111,7 +113,7 @@ export default function Pricing() {
                 </ul>
 
                 <a
-                  href="https://leadershipinchange10.substack.com/t/cozora"
+                  href="https://cozora.substack.com/subscribe"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full px-6 py-3 bg-cz-accent hover:bg-cz-accent-hover text-cz-bg rounded-lg transition-colors text-center font-semibold"

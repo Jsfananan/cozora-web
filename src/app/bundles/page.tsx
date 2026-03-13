@@ -62,7 +62,9 @@ export default function BundlesPage() {
 
           <div className="text-center py-12 border-t border-cz-border">
             <a
-              href="/checkout"
+              href="https://buy.stripe.com/5kQ6oHfxd1vG5YNgH04ko00"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-block px-8 py-3 bg-cz-accent hover:bg-cz-accent-hover text-cz-bg font-semibold rounded-lg transition-colors"
             >
               Get All 4 Skill Sets — $99

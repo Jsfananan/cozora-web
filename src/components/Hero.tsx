@@ -33,7 +33,7 @@ export default function Hero() {
 
           <div className="flex flex-col sm:flex-row gap-4">
             <a
-              href="https://leadershipinchange10.substack.com/t/cozora"
+              href="https://cozora.substack.com/subscribe"
               target="_blank"
               rel="noopener noreferrer"
               className="px-8 py-3 bg-cz-accent hover:bg-cz-accent-hover text-cz-bg font-semibold rounded-lg transition-colors text-center"
