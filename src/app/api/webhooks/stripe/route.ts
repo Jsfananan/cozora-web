@@ -81,6 +81,8 @@ async function handleCheckoutCompleted(
     // Continue — we still want to persist the purchase record
   }
 
+  const accessToken = crypto.randomUUID();
+
   const { error: insertError } = await supabase.from("purchases").insert({
     email,
     profile_id: profile?.id ?? null,
@@ -89,6 +91,7 @@ async function handleCheckoutCompleted(
       typeof session.customer === "string" ? session.customer : null,
     amount_paid: session.amount_total ?? 9900,
     status: "completed",
+    access_token: accessToken,
   });
 
   if (insertError) {

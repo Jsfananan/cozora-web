@@ -58,14 +58,14 @@ export default function Hero() {
         <div className="animate-fade-up delay-200">
           <div className="relative">
             <div className="absolute -inset-1 bg-gradient-to-r from-cz-teal/20 to-cz-coral/20 rounded-2xl blur opacity-30" />
-            <div className="relative bg-cz-bg-card border border-cz-border rounded-2xl overflow-hidden aspect-video">
+            <div className="relative bg-cz-bg-card border border-cz-border rounded-2xl overflow-hidden" style={{ padding: '75% 0 0 0', position: 'relative' }}>
               <iframe
-                src="https://player.vimeo.com/video/1153686967"
-                className="w-full h-full"
+                src="https://player.vimeo.com/video/1173388069?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&controls=0&title=0&byline=0&portrait=0&sidedock=0&fun=0"
                 frameBorder="0"
-                allowFullScreen
-                allow="autoplay; fullscreen; picture-in-picture"
-                loading="lazy"
+                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                title="Cozora"
+                style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
               />
             </div>
           </div>
