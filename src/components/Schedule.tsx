@@ -312,7 +312,7 @@ export default function Schedule() {
   const displayedSessions = showAll ? sessions : sessions.slice(0, 8);
 
   return (
-    <section
+    <section id="cz-schedule"
       className="py-20 px-4 sm:px-6 lg:px-8 relative"
       style={{
         backgroundColor: 'rgba(29, 92, 94, 0.06)',

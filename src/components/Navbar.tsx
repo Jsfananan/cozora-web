@@ -39,9 +39,7 @@ export default function Navbar() {
               Skill Sets
             </a>
             <a
-              href="https://cozora.substack.com/subscribe"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="#cz-schedule"
               className="text-cz-text-muted hover:text-cz-text transition-colors"
             >
               Schedule
@@ -90,10 +88,9 @@ export default function Navbar() {
               Skill Sets
             </a>
             <a
-              href="https://cozora.substack.com/subscribe"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="#cz-schedule"
               className="block text-cz-text-muted hover:text-cz-text transition-colors"
+              onClick={() => setIsMobileMenuOpen(false)}
             >
               Schedule
             </a>
