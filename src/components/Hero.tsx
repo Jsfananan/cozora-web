@@ -27,7 +27,7 @@ export default function Hero() {
 
           <p className="text-lg text-cz-text-muted mb-8 leading-relaxed">
             Weekly live sessions with AI practitioners. Master content creation,
-            development, knowledge systems, and leadership — straight from the
+            development, knowledge systems, and leadership &mdash; straight from the
             experts building with AI every day.
           </p>
 
@@ -36,17 +36,23 @@ export default function Hero() {
               href="https://cozora.substack.com/subscribe"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-8 py-3 bg-cz-accent hover:bg-cz-accent-hover text-cz-bg font-semibold rounded-lg transition-colors text-center"
+              className="px-8 py-3.5 bg-cz-accent hover:bg-cz-accent-hover text-cz-bg font-semibold rounded-lg transition-colors text-center text-lg"
             >
-              Join on Substack
+              Subscribe on Substack
             </a>
             <a
-              href="/bundles"
-              className="px-8 py-3 border border-cz-border hover:border-cz-border-strong bg-transparent text-cz-text rounded-lg transition-colors text-center"
+              href="https://buy.stripe.com/5kQ6oHfxd1vG5YNgH04ko00"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-8 py-3.5 border border-cz-border hover:border-cz-accent bg-transparent text-cz-text hover:text-cz-accent rounded-lg transition-colors text-center text-lg"
             >
-              Get the Skill Sets — $99
+              Get Skill Sets &mdash; $99
             </a>
           </div>
+
+          <p className="mt-4 text-sm text-cz-text-dim font-mono">
+            Free to subscribe &middot; $75/mo for full access
+          </p>
         </div>
 
         <div className="animate-fade-up delay-200">
@@ -59,6 +65,7 @@ export default function Hero() {
                 frameBorder="0"
                 allowFullScreen
                 allow="autoplay; fullscreen; picture-in-picture"
+                loading="lazy"
               />
             </div>
           </div>

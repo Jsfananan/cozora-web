@@ -24,16 +24,16 @@ export default function Pricing() {
       <div className="max-w-7xl mx-auto">
         <div className="mb-16 text-center animate-fade-up">
           <h2 className="text-4xl sm:text-5xl font-display font-bold text-cz-text mb-4">
-            Simple Pricing
+            Two Ways to Learn
           </h2>
-          <p className="text-lg text-cz-text-muted">
-            Choose the plan that fits your learning journey.
+          <p className="text-lg text-cz-text-muted max-w-xl mx-auto">
+            Start with the bundles, or go all-in with live sessions and community access.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 items-center">
+        <div className="grid md:grid-cols-2 gap-8 items-stretch">
           <div className="animate-fade-up">
-            <div className="bg-cz-bg-card border border-cz-border rounded-2xl p-8 h-full">
+            <div className="bg-cz-bg-card border border-cz-border rounded-2xl p-8 h-full flex flex-col">
               <h3 className="text-2xl font-display font-bold text-cz-text mb-2">
                 The Skill Sets
               </h3>
@@ -41,12 +41,15 @@ export default function Pricing() {
                 <span className="text-5xl font-bold text-cz-accent">$99</span>
                 <span className="text-cz-text-muted ml-2">one-time</span>
               </div>
+              <p className="text-sm text-cz-text-muted mb-6">
+                Lifetime access to all 4 bundles &mdash; 16 sessions of expert content you can watch anytime.
+              </p>
 
-              <ul className="space-y-4 mb-8">
+              <ul className="space-y-3 mb-8 flex-1">
                 {features.map((feature) => (
                   <li key={feature} className="flex gap-3">
                     <svg
-                      className="w-6 h-6 text-cz-accent flex-shrink-0"
+                      className="w-5 h-5 text-cz-accent flex-shrink-0 mt-0.5"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
@@ -65,7 +68,7 @@ export default function Pricing() {
                 href="https://buy.stripe.com/5kQ6oHfxd1vG5YNgH04ko00"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full px-6 py-3 border border-cz-border hover:border-cz-border-strong bg-transparent text-cz-text rounded-lg transition-colors text-center font-semibold"
+                className="block w-full px-6 py-3.5 bg-cz-accent hover:bg-cz-accent-hover text-cz-bg rounded-lg transition-colors text-center font-semibold"
               >
                 Get the Skill Sets
               </a>
@@ -73,10 +76,10 @@ export default function Pricing() {
           </div>
 
           <div className="animate-fade-up delay-200">
-            <div className="relative">
+            <div className="relative h-full">
               <div className="absolute inset-0 bg-gradient-to-br from-cz-teal/20 to-cz-accent/20 rounded-2xl blur-xl opacity-50" />
-              <div className="relative bg-gradient-to-br from-cz-bg-card to-cz-bg-card-hover border border-cz-teal/50 rounded-2xl p-8 h-full">
-                <div className="inline-block mb-6 px-3 py-1 bg-cz-teal/20 border border-cz-teal rounded-full text-cz-teal text-sm font-mono font-semibold">
+              <div className="relative bg-gradient-to-br from-cz-bg-card to-cz-bg-card-hover border border-cz-teal/50 rounded-2xl p-8 h-full flex flex-col">
+                <div className="inline-block mb-6 px-3 py-1 bg-cz-teal/20 border border-cz-teal rounded-full text-cz-teal text-sm font-mono font-semibold w-fit">
                   MOST POPULAR
                 </div>
 
@@ -84,20 +87,23 @@ export default function Pricing() {
                   Skill Sets + Community
                 </h3>
                 <div className="mb-6">
-                  <div className="mb-2">
-                    <span className="text-5xl font-bold text-cz-accent">$720</span>
-                    <span className="text-cz-text-muted ml-2">/year</span>
+                  <div className="mb-1">
+                    <span className="text-5xl font-bold text-cz-accent">$75</span>
+                    <span className="text-cz-text-muted ml-2">/month</span>
                   </div>
                   <span className="text-sm text-cz-text-muted">
-                    or $75/month
+                    or $720/year (save $180)
                   </span>
                 </div>
+                <p className="text-sm text-cz-text-muted mb-6">
+                  Everything in the Skill Sets, plus live weekly sessions with expert creators and full community access.
+                </p>
 
-                <ul className="space-y-4 mb-8">
+                <ul className="space-y-3 mb-8 flex-1">
                   {communityFeatures.map((feature) => (
                     <li key={feature} className="flex gap-3">
                       <svg
-                        className="w-6 h-6 text-cz-teal flex-shrink-0"
+                        className="w-5 h-5 text-cz-teal flex-shrink-0 mt-0.5"
                         fill="currentColor"
                         viewBox="0 0 20 20"
                       >
@@ -116,9 +122,9 @@ export default function Pricing() {
                   href="https://cozora.substack.com/subscribe"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full px-6 py-3 bg-cz-accent hover:bg-cz-accent-hover text-cz-bg rounded-lg transition-colors text-center font-semibold"
+                  className="block w-full px-6 py-3.5 bg-cz-teal hover:bg-cz-teal/90 text-cz-bg rounded-lg transition-colors text-center font-semibold"
                 >
-                  Join on Substack
+                  Subscribe on Substack
                 </a>
               </div>
             </div>

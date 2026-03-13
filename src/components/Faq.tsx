@@ -57,7 +57,7 @@ export default function Faq() {
           Everything you need to know before joining.
         </p>
 
-        <ul className="divide-y divide-cz-border border-t border-cz-border">
+        <ul className="divide-y divide-cz-border border-t border-b border-cz-border">
           {faqs.map((faq, index) => {
             const isOpen = openIndex === index;
             return (
@@ -80,7 +80,7 @@ export default function Faq() {
                   </span>
                 </button>
                 <div
-                  className={`overflow-hidden transition-all duration-400 ${
+                  className={`overflow-hidden transition-all duration-300 ${
                     isOpen ? 'max-h-80' : 'max-h-0'
                   }`}
                 >
@@ -92,6 +92,34 @@ export default function Faq() {
             );
           })}
         </ul>
+
+        {/* Final CTA */}
+        <div className="mt-16 text-center">
+          <h3 className="text-2xl font-display font-bold text-cz-text mb-3">
+            Ready to start?
+          </h3>
+          <p className="text-cz-text-muted mb-8 max-w-md mx-auto">
+            Join 30+ expert creators and start building with AI this week.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a
+              href="https://cozora.substack.com/subscribe"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-8 py-3.5 bg-cz-accent hover:bg-cz-accent-hover text-cz-bg font-semibold rounded-lg transition-colors text-center"
+            >
+              Subscribe on Substack
+            </a>
+            <a
+              href="https://buy.stripe.com/5kQ6oHfxd1vG5YNgH04ko00"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-8 py-3.5 border border-cz-border hover:border-cz-accent text-cz-text hover:text-cz-accent rounded-lg transition-colors text-center"
+            >
+              Get Skill Sets &mdash; $99
+            </a>
+          </div>
+        </div>
       </div>
     </section>
   );

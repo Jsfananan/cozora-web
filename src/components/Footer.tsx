@@ -8,7 +8,7 @@ export default function Footer() {
               cozora
             </h3>
             <p className="text-cz-text-muted text-sm leading-relaxed">
-              Stay ahead in AI — learn from the experts who are building it
+              Stay ahead in AI &mdash; learn from the experts who are building it
             </p>
           </div>
 
@@ -18,27 +18,23 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2">
               <li>
-                <a
-                  href="#skill-sets"
-                  className="text-cz-text-muted hover:text-cz-text transition-colors text-sm"
-                >
+                <a href="#skill-sets" className="text-cz-text-muted hover:text-cz-text transition-colors text-sm">
                   Skill Sets
                 </a>
               </li>
               <li>
-                <a
-                  href="/bundles"
-                  className="text-cz-text-muted hover:text-cz-text transition-colors text-sm"
-                >
+                <a href="/bundles" className="text-cz-text-muted hover:text-cz-text transition-colors text-sm">
                   Bundles
                 </a>
               </li>
               <li>
-                <a
-                  href="#pricing"
-                  className="text-cz-text-muted hover:text-cz-text transition-colors text-sm"
-                >
+                <a href="#pricing" className="text-cz-text-muted hover:text-cz-text transition-colors text-sm">
                   Pricing
+                </a>
+              </li>
+              <li>
+                <a href="#cz-schedule" className="text-cz-text-muted hover:text-cz-text transition-colors text-sm">
+                  Schedule
                 </a>
               </li>
             </ul>
@@ -60,11 +56,13 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a
-                  href="#about"
-                  className="text-cz-text-muted hover:text-cz-text transition-colors text-sm"
-                >
+                <a href="#about" className="text-cz-text-muted hover:text-cz-text transition-colors text-sm">
                   About
+                </a>
+              </li>
+              <li>
+                <a href="#cz-faq" className="text-cz-text-muted hover:text-cz-text transition-colors text-sm">
+                  FAQ
                 </a>
               </li>
               <li>
@@ -84,18 +82,12 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2">
               <li>
-                <a
-                  href="/privacy"
-                  className="text-cz-text-muted hover:text-cz-text transition-colors text-sm"
-                >
+                <a href="/privacy" className="text-cz-text-muted hover:text-cz-text transition-colors text-sm">
                   Privacy
                 </a>
               </li>
               <li>
-                <a
-                  href="/terms"
-                  className="text-cz-text-muted hover:text-cz-text transition-colors text-sm"
-                >
+                <a href="/terms" className="text-cz-text-muted hover:text-cz-text transition-colors text-sm">
                   Terms
                 </a>
               </li>
@@ -105,7 +97,7 @@ export default function Footer() {
 
         <div className="border-t border-cz-border pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-cz-text-dim text-sm">
-            © {new Date().getFullYear()} Cozora. All rights reserved.
+            &copy; {new Date().getFullYear()} Cozora. All rights reserved.
           </p>
           <p className="text-cz-text-dim text-xs text-center">
             This platform is for educational purposes. Results are not
