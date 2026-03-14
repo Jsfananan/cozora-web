@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import BuyButton from './BuyButton';
 
 const faqs = [
   {
@@ -110,14 +111,9 @@ export default function Faq() {
             >
               Subscribe on Substack
             </a>
-            <a
-              href="https://buy.stripe.com/5kQ6oHfxd1vG5YNgH04ko00"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-8 py-3.5 border border-cz-border hover:border-cz-accent text-cz-text hover:text-cz-accent rounded-lg transition-colors text-center"
-            >
+            <BuyButton className="px-8 py-3.5 border border-cz-border hover:border-cz-accent text-cz-text hover:text-cz-accent rounded-lg transition-colors text-center">
               Get Skill Sets &mdash; $99
-            </a>
+            </BuyButton>
           </div>
         </div>
       </div>

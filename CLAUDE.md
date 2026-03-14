@@ -6,7 +6,7 @@ Self-hosted landing page + bundle store for Cozora. Replaces Kajabi entirely. Su
 ## Stack
 - **Framework:** Next.js 16, React 19, TypeScript
 - **Styling:** Tailwind CSS 4 with custom @theme design tokens
-- **Auth + DB:** Supabase (project: yyzvsdjwllgxjvybeijc, shared with Newsletter Compass)
+- **Auth + DB:** Supabase (project: aflddhsycgieyomqtgyp, dedicated Cozora project)
 - **Payments:** Stripe Checkout (one-time $99)
 - **Video hosting:** Bunny.net Stream (TBD — videos currently on Google Drive)
 - **Deploy:** Vercel (TBD)

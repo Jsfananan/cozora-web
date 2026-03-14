@@ -1,5 +1,6 @@
 import { bundles } from '@/lib/bundles';
 import Navbar from '@/components/Navbar';
+import BuyButton from '@/components/BuyButton';
 
 const skillColorMap = {
   Create: { text: 'text-cz-coral', bg: 'bg-cz-coral/10' },
@@ -61,14 +62,9 @@ export default function BundlesPage() {
           </div>
 
           <div className="text-center py-12 border-t border-cz-border">
-            <a
-              href="https://buy.stripe.com/5kQ6oHfxd1vG5YNgH04ko00"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block px-8 py-3 bg-cz-accent hover:bg-cz-accent-hover text-cz-bg font-semibold rounded-lg transition-colors"
-            >
+            <BuyButton className="inline-block px-8 py-3 bg-cz-accent hover:bg-cz-accent-hover text-cz-bg font-semibold rounded-lg transition-colors">
               Get All 4 Skill Sets — $99
-            </a>
+            </BuyButton>
             <p className="mt-4 text-cz-text-muted font-mono text-sm">
               One payment. Lifetime access.
             </p>

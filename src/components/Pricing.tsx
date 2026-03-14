@@ -1,3 +1,5 @@
+import BuyButton from './BuyButton';
+
 const features = [
   'Access to all skill set bundles',
   'Downloadable session guides',
@@ -64,14 +66,9 @@ export default function Pricing() {
                 ))}
               </ul>
 
-              <a
-                href="https://buy.stripe.com/5kQ6oHfxd1vG5YNgH04ko00"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block w-full px-6 py-3.5 bg-cz-accent hover:bg-cz-accent-hover text-cz-bg rounded-lg transition-colors text-center font-semibold"
-              >
+              <BuyButton className="block w-full px-6 py-3.5 bg-cz-accent hover:bg-cz-accent-hover text-cz-bg rounded-lg transition-colors text-center font-semibold">
                 Get the Skill Sets
-              </a>
+              </BuyButton>
             </div>
           </div>
 

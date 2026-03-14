@@ -5,6 +5,9 @@ import { createServiceClient } from "@/lib/supabase/server";
 
 export const runtime = "nodejs";
 
+// Only record purchases for the Cozora $99 bundle product
+const BUNDLE_PRODUCT_ID = "prod_U8qii5VYZlF3sN";
+
 // Next.js App Router streams the body — we must consume it as raw text so that
 // Stripe can verify the HMAC signature. Do NOT use request.json() here.
 export async function POST(request: NextRequest) {
@@ -54,6 +57,22 @@ export async function POST(request: NextRequest) {
 async function handleCheckoutCompleted(
   session: Stripe.Checkout.Session
 ): Promise<void> {
+  // Only process purchases for the Cozora bundle product
+  const lineItems = await stripe!.checkout.sessions.listLineItems(session.id, {
+    expand: ["data.price.product"],
+  });
+  const hasBundle = lineItems.data.some((item) => {
+    const product = item.price?.product;
+    const productId = typeof product === "string" ? product : product?.id;
+    return productId === BUNDLE_PRODUCT_ID;
+  });
+  if (!hasBundle) {
+    console.info(
+      `[stripe-webhook] Session ${session.id} does not contain bundle product, skipping`
+    );
+    return;
+  }
+
   const email = session.customer_details?.email ?? session.customer_email;
 
   if (!email) {

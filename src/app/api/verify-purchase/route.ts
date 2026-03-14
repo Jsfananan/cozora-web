@@ -4,6 +4,9 @@ import { createServiceClient } from "@/lib/supabase/server";
 
 export const runtime = "nodejs";
 
+// Only record purchases for the Cozora $99 bundle product
+const BUNDLE_PRODUCT_ID = "prod_U8qii5VYZlF3sN";
+
 /**
  * POST /api/verify-purchase
  * Takes a Stripe Checkout session_id, verifies payment, creates or finds the
@@ -44,6 +47,22 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       { error: "Payment not completed" },
       { status: 402 }
+    );
+  }
+
+  // Verify this is a bundle purchase, not some other product
+  const lineItems = await stripe.checkout.sessions.listLineItems(session_id, {
+    expand: ["data.price.product"],
+  });
+  const hasBundle = lineItems.data.some((item) => {
+    const product = item.price?.product;
+    const productId = typeof product === "string" ? product : product?.id;
+    return productId === BUNDLE_PRODUCT_ID;
+  });
+  if (!hasBundle) {
+    return NextResponse.json(
+      { error: "This purchase is not for the Cozora bundle" },
+      { status: 400 }
     );
   }
 

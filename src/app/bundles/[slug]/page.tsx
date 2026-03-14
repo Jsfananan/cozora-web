@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { bundles, Bundle } from '@/lib/bundles';
 import Navbar from '@/components/Navbar';
+import BuyButton from '@/components/BuyButton';
 
 const skillColorMap = {
   Create: { text: 'text-cz-coral', bg: 'bg-cz-coral/10' },
@@ -118,12 +119,9 @@ export default function BundleDetailPage({
               <p className="text-cz-text-muted mb-4">
                 This skill set is part of the complete collection.
               </p>
-              <a
-                href="/checkout"
-                className="inline-block px-8 py-3 bg-cz-accent hover:bg-cz-accent-hover text-cz-bg font-semibold rounded-lg transition-colors"
-              >
+              <BuyButton className="inline-block px-8 py-3 bg-cz-accent hover:bg-cz-accent-hover text-cz-bg font-semibold rounded-lg transition-colors">
                 Get All 4 Skill Sets — $99
-              </a>
+              </BuyButton>
             </div>
             <p className="text-cz-text-muted font-mono text-sm">
               One payment. Lifetime access to all 16 sessions.

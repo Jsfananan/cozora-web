@@ -1,3 +1,5 @@
+import BuyButton from './BuyButton';
+
 export default function Hero() {
   return (
     <section className="min-h-screen flex items-center pt-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
@@ -40,14 +42,9 @@ export default function Hero() {
             >
               Subscribe on Substack
             </a>
-            <a
-              href="https://buy.stripe.com/5kQ6oHfxd1vG5YNgH04ko00"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-8 py-3.5 border border-cz-border hover:border-cz-accent bg-transparent text-cz-text hover:text-cz-accent rounded-lg transition-colors text-center text-lg"
-            >
+            <BuyButton className="px-8 py-3.5 border border-cz-border hover:border-cz-accent bg-transparent text-cz-text hover:text-cz-accent rounded-lg transition-colors text-center text-lg">
               Get Skill Sets &mdash; $99
-            </a>
+            </BuyButton>
           </div>
 
           <p className="mt-4 text-sm text-cz-text-dim font-mono">
