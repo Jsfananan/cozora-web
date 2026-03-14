@@ -28,6 +28,7 @@ create table if not exists public.purchases (
   stripe_customer_id  text,
   amount_paid         integer     not null default 9900, -- stored in cents
   status              text        not null default 'completed',
+  access_token        text        unique,               -- UUID for tokenized access links
   created_at          timestamptz default now() not null
 );
 
