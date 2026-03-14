@@ -1,4 +1,7 @@
 import BuyButton from './BuyButton';
+import { getBundleStats } from '@/lib/bundles';
+
+const { totalBundles, totalSessions } = getBundleStats();
 
 const features = [
   'Access to all skill set bundles',
@@ -44,7 +47,7 @@ export default function Pricing() {
                 <span className="text-cz-text-muted ml-2">one-time</span>
               </div>
               <p className="text-sm text-cz-text-muted mb-6">
-                Lifetime access to all 4 bundles &mdash; 16 sessions of expert content you can watch anytime.
+                Lifetime access to all {totalBundles} bundles &mdash; {totalSessions} sessions of expert content you can watch anytime.
               </p>
 
               <ul className="space-y-3 mb-8 flex-1">

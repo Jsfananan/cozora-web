@@ -1,17 +1,19 @@
-import { bundles } from '@/lib/bundles';
+import { bundles, getBundleStats } from '@/lib/bundles';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import BuyButton from '@/components/BuyButton';
 import type { Metadata } from 'next';
 
+const { totalBundles, totalSessions } = getBundleStats();
+
 export const metadata: Metadata = {
-  title: 'AI Skill Set Bundles — 16 Expert Sessions for $99 | Cozora',
+  title: `AI Skill Set Bundles — ${totalSessions} Expert Sessions for $99 | Cozora`,
   description:
-    'Get lifetime access to 16 expert-led AI sessions across content creation, development, knowledge systems, and leadership. One payment, no subscription.',
+    `Get lifetime access to ${totalSessions} expert-led AI sessions across content creation, development, knowledge systems, and leadership. One payment, no subscription.`,
   openGraph: {
-    title: 'AI Skill Set Bundles — 16 Expert Sessions for $99 | Cozora',
+    title: `AI Skill Set Bundles — ${totalSessions} Expert Sessions for $99 | Cozora`,
     description:
-      'Get lifetime access to 16 expert-led AI sessions across content creation, development, knowledge systems, and leadership.',
+      `Get lifetime access to ${totalSessions} expert-led AI sessions across content creation, development, knowledge systems, and leadership.`,
     url: 'https://cozora.org/ai-bundles',
     siteName: 'Cozora',
     type: 'website',
@@ -26,8 +28,8 @@ const skillColorMap = {
 };
 
 const highlights = [
-  { num: '16', label: 'Expert Sessions' },
-  { num: '4', label: 'Skill Sets' },
+  { num: String(totalSessions), label: 'Expert Sessions' },
+  { num: String(totalBundles), label: 'Skill Sets' },
   { num: '$99', label: 'One-Time Payment' },
   { num: '∞', label: 'Lifetime Access' },
 ];
@@ -35,7 +37,7 @@ const highlights = [
 const bundleFaqs = [
   {
     q: 'What do I get for $99?',
-    a: 'Lifetime access to all 4 skill set bundles — 16 recorded sessions covering AI content creation, development, knowledge systems, and leadership. Each session includes video recordings and downloadable guides.',
+    a: `Lifetime access to all ${totalBundles} skill set bundles — ${totalSessions} recorded sessions covering AI content creation, development, knowledge systems, and leadership. Each session includes video recordings and downloadable guides.`,
   },
   {
     q: 'Is this a subscription?',
@@ -78,15 +80,15 @@ export default function AIBundlesPage() {
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold leading-tight mb-6 text-cz-text">
               Master AI with{' '}
-              <span className="text-cz-teal italic">16 expert-led sessions</span>
+              <span className="text-cz-teal italic">{totalSessions} expert-led sessions</span>
             </h1>
 
             <p className="text-lg sm:text-xl text-cz-text-muted mb-10 max-w-2xl mx-auto leading-relaxed">
-              Four skill set bundles covering content creation, development, knowledge systems, and leadership — taught by the practitioners building with AI every day.
+              {totalBundles} skill set bundles covering content creation, development, knowledge systems, and leadership — taught by the practitioners building with AI every day.
             </p>
 
             <BuyButton className="px-10 py-4 bg-cz-accent hover:bg-cz-accent-hover text-cz-bg font-semibold rounded-lg transition-colors text-lg">
-              Get All 4 Skill Sets &mdash; $99
+              Get All Skill Sets &mdash; $99
             </BuyButton>
 
             <p className="mt-4 text-sm text-cz-text-dim font-mono">
@@ -115,7 +117,7 @@ export default function AIBundlesPage() {
             <div className="text-center mb-16">
               <p className="text-sm font-mono text-cz-coral mb-4">WHAT&apos;S INCLUDED</p>
               <h2 className="text-3xl sm:text-4xl font-display font-bold text-cz-text mb-4">
-                Four Skill Sets. One Purchase.
+                All Skill Sets. One Purchase.
               </h2>
               <p className="text-lg text-cz-text-muted max-w-xl mx-auto">
                 Each bundle contains 4 sessions with video recordings and downloadable guides from expert AI practitioners.
@@ -175,10 +177,10 @@ export default function AIBundlesPage() {
         <section className="py-16 px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center bg-gradient-to-br from-cz-bg-card to-cz-bg-card-hover border border-cz-teal/30 rounded-2xl p-10">
             <h2 className="text-2xl sm:text-3xl font-display font-bold text-cz-text mb-4">
-              All 16 sessions. One payment. Yours forever.
+              All {totalSessions} sessions. One payment. Yours forever.
             </h2>
             <p className="text-cz-text-muted mb-8 max-w-lg mx-auto">
-              No subscriptions, no upsells, no expiration. Pay once and get lifetime access to every session across all four skill sets.
+              No subscriptions, no upsells, no expiration. Pay once and get lifetime access to every session across all skill sets.
             </p>
             <BuyButton className="px-10 py-4 bg-cz-accent hover:bg-cz-accent-hover text-cz-bg font-semibold rounded-lg transition-colors text-lg">
               Get the Skill Sets &mdash; $99
@@ -223,10 +225,10 @@ export default function AIBundlesPage() {
               Start learning from the experts today
             </h2>
             <p className="text-lg text-cz-text-muted mb-10 max-w-xl mx-auto">
-              16 sessions. 4 skill sets. Practitioners who build with AI every day. All yours for a single payment.
+              {totalSessions} sessions. {totalBundles} skill sets. Practitioners who build with AI every day. All yours for a single payment.
             </p>
             <BuyButton className="px-10 py-4 bg-cz-accent hover:bg-cz-accent-hover text-cz-bg font-semibold rounded-lg transition-colors text-lg">
-              Get All 4 Skill Sets &mdash; $99
+              Get All Skill Sets &mdash; $99
             </BuyButton>
             <p className="mt-6 text-sm text-cz-text-dim">
               Secure checkout powered by Stripe

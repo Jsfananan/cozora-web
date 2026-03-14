@@ -1,6 +1,8 @@
-import { bundles } from '@/lib/bundles';
+import { bundles, getBundleStats } from '@/lib/bundles';
 import Navbar from '@/components/Navbar';
 import BuyButton from '@/components/BuyButton';
+
+const { totalBundles, totalSessions } = getBundleStats();
 
 const skillColorMap = {
   Create: { text: 'text-cz-coral', bg: 'bg-cz-coral/10' },
@@ -23,9 +25,9 @@ export default function BundlesPage() {
               Master AI in 4 Practical Skill Sets
             </h1>
             <p className="text-lg text-cz-text-muted max-w-2xl leading-relaxed">
-              Get all four skill bundles — content creation, development,
+              Get all {totalBundles} skill bundles — content creation, development,
               knowledge systems, and leadership — with one purchase. Lifetime
-              access to 16 sessions with the creators building with AI every
+              access to {totalSessions} sessions with the creators building with AI every
               day.
             </p>
           </div>
@@ -63,7 +65,7 @@ export default function BundlesPage() {
 
           <div className="text-center py-12 border-t border-cz-border">
             <BuyButton className="inline-block px-8 py-3 bg-cz-accent hover:bg-cz-accent-hover text-cz-bg font-semibold rounded-lg transition-colors">
-              Get All 4 Skill Sets — $99
+              Get All Skill Sets — $99
             </BuyButton>
             <p className="mt-4 text-cz-text-muted font-mono text-sm">
               One payment. Lifetime access.

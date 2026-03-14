@@ -4,7 +4,9 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
-import { bundles } from '@/lib/bundles';
+import { bundles, getBundleStats } from '@/lib/bundles';
+
+const { totalBundles } = getBundleStats();
 
 const skillColorMap: Record<string, { text: string; bg: string; border: string }> = {
   Create: { text: 'text-cz-coral', bg: 'bg-cz-coral/10', border: 'border-cz-coral/30' },
@@ -129,7 +131,7 @@ export default function AccessPage() {
                 Your Skill Sets
               </h1>
               <div className="inline-flex items-center px-4 py-2 bg-cz-teal/10 border border-cz-teal/30 rounded-full">
-                <span className="text-sm font-mono text-cz-teal">All 4 bundles unlocked</span>
+                <span className="text-sm font-mono text-cz-teal">All {totalBundles} bundles unlocked</span>
               </div>
             </div>
             <p className="text-cz-text-muted">
@@ -184,8 +186,8 @@ export default function AccessPage() {
                           <div className="mb-4 aspect-video bg-cz-bg rounded-lg border border-cz-border flex items-center justify-center relative overflow-hidden">
                             {session.videoId ? (
                               <iframe
-                                src={`https://iframe.mediadelivery.net/embed/${session.videoId}`}
-                                allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
+                                src={`https://iframe.mediadelivery.net/embed/${session.videoId}?autoplay=false&preload=false`}
+                                allow="accelerometer; gyroscope; encrypted-media; picture-in-picture"
                                 allowFullScreen
                                 className="w-full h-full"
                               />

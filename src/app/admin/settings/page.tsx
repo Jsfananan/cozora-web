@@ -2,142 +2,513 @@
 
 import { useState } from 'react';
 
+interface ExpandedSection {
+  [key: string]: boolean;
+}
+
 export default function SettingsPage() {
-  const [emailNotifications, setEmailNotifications] = useState(true);
-  const [apiKey, setApiKey] = useState('***-***-***-****');
-  const [showApiKey, setShowApiKey] = useState(false);
+  const [expanded, setExpanded] = useState<ExpandedSection>({
+    videos: false,
+    pdfs: false,
+    sessions: false,
+    bundles: false,
+  });
 
-  const handleSaveSettings = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Saving settings:', {
-      emailNotifications,
-    });
-  };
-
-  const handleRegenerateApiKey = () => {
-    console.log('Regenerating API key');
-    setShowApiKey(false);
+  const toggleSection = (section: string) => {
+    setExpanded((prev) => ({
+      ...prev,
+      [section]: !prev[section],
+    }));
   };
 
   return (
-    <div className="max-w-3xl mx-auto">
+    <div className="max-w-4xl mx-auto">
       <div className="mb-8">
         <h1 className="text-4xl font-display font-bold text-cz-text mb-2">
-          Settings
+          Bundle & Content Management
         </h1>
         <p className="text-cz-text-muted">
-          Manage admin panel configuration and API keys
+          Comprehensive guide to adding videos, PDFs, sessions, and bundles. The single source of truth for all content is <code className="text-cz-teal font-mono text-sm">src/lib/bundles.ts</code>.
         </p>
       </div>
 
-      <form onSubmit={handleSaveSettings} className="space-y-6">
-        <div className="bg-cz-bg-card border border-cz-border rounded-lg p-6 space-y-6">
-          <div>
-            <h2 className="text-lg font-display font-bold text-cz-text mb-4">
-              Notifications
-            </h2>
-
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <label className="block text-sm font-body text-cz-text">
-                    Email Notifications
-                  </label>
-                  <p className="text-sm text-cz-text-muted mt-1">
-                    Receive alerts on new purchases and system updates
-                  </p>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setEmailNotifications(!emailNotifications)}
-                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                    emailNotifications ? 'bg-cz-teal' : 'bg-cz-text-dim'
-                  }`}
-                >
-                  <span
-                    className={`inline-block h-4 w-4 transform rounded-full bg-cz-bg transition-transform ${
-                      emailNotifications ? 'translate-x-6' : 'translate-x-1'
-                    }`}
-                  />
-                </button>
-              </div>
+      <div className="space-y-4">
+        {/* VIDEOS SECTION */}
+        <div className="bg-cz-bg-card border border-cz-border rounded-lg overflow-hidden">
+          <button
+            onClick={() => toggleSection('videos')}
+            className="w-full px-6 py-4 flex items-center justify-between hover:bg-cz-bg/50 transition-colors"
+          >
+            <div className="flex items-center gap-3">
+              <span className="inline-block px-2.5 py-1 bg-cz-teal/20 text-cz-teal text-xs font-mono rounded">
+                VIDEOS
+              </span>
+              <h2 className="text-lg font-display font-bold text-cz-text">
+                How to Add Videos
+              </h2>
             </div>
-          </div>
+            <span className={`text-cz-text-muted transition-transform inline-block ${expanded.videos ? 'rotate-180' : ''}`}>&#x25BC;</span>
+          </button>
 
-          <div className="border-t border-cz-border pt-6">
-            <h2 className="text-lg font-display font-bold text-cz-text mb-4">
-              API
-            </h2>
-
-            <div className="space-y-4">
+          {expanded.videos && (
+            <div className="border-t border-cz-border px-6 py-6 space-y-6 bg-cz-bg/30">
               <div>
-                <label className="block text-sm font-mono text-cz-text-muted mb-2">
-                  API Key
-                </label>
-                <div className="flex gap-2">
-                  <div className="flex-1 bg-cz-bg border border-cz-border rounded-lg px-4 py-2 flex items-center">
-                    <code className="text-sm text-cz-text font-mono">
-                      {showApiKey ? apiKey : '***-***-***-****'}
-                    </code>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setShowApiKey(!showApiKey)}
-                    className="px-4 py-2 rounded-lg border border-cz-border hover:border-cz-teal text-cz-text-muted hover:text-cz-teal transition-colors text-sm"
-                  >
-                    {showApiKey ? 'Hide' : 'Show'}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleRegenerateApiKey}
-                    className="px-4 py-2 rounded-lg border border-cz-border hover:border-cz-coral text-cz-text-muted hover:text-cz-coral transition-colors text-sm"
-                  >
-                    Regenerate
-                  </button>
-                </div>
-                <p className="text-xs text-cz-text-muted mt-2">
-                  Use this key to authenticate API requests. Keep it secret.
+                <h3 className="font-display font-semibold text-cz-text mb-3">
+                  Step-by-Step Instructions
+                </h3>
+                <ol className="space-y-3 text-sm text-cz-text">
+                  <li className="flex gap-3">
+                    <span className="flex-shrink-0 inline-flex items-center justify-center w-6 h-6 bg-cz-teal/20 text-cz-teal rounded-full font-mono text-xs font-bold">
+                      1
+                    </span>
+                    <span>
+                      Log in to <strong>Bunny.net Stream</strong> dashboard
+                    </span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="flex-shrink-0 inline-flex items-center justify-center w-6 h-6 bg-cz-teal/20 text-cz-teal rounded-full font-mono text-xs font-bold">
+                      2
+                    </span>
+                    <span>
+                      Navigate to your video library and upload the video file
+                    </span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="flex-shrink-0 inline-flex items-center justify-center w-6 h-6 bg-cz-teal/20 text-cz-teal rounded-full font-mono text-xs font-bold">
+                      3
+                    </span>
+                    <span>
+                      After processing completes, copy the <strong>Video ID</strong> from the video details page
+                    </span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="flex-shrink-0 inline-flex items-center justify-center w-6 h-6 bg-cz-teal/20 text-cz-teal rounded-full font-mono text-xs font-bold">
+                      4
+                    </span>
+                    <span>
+                      Open <code className="text-cz-teal font-mono bg-cz-bg px-2 py-1 rounded text-xs">src/lib/bundles.ts</code> in your code editor
+                    </span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="flex-shrink-0 inline-flex items-center justify-center w-6 h-6 bg-cz-teal/20 text-cz-teal rounded-full font-mono text-xs font-bold">
+                      5
+                    </span>
+                    <span>
+                      Find the bundle and session where you want to add the video
+                    </span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="flex-shrink-0 inline-flex items-center justify-center w-6 h-6 bg-cz-teal/20 text-cz-teal rounded-full font-mono text-xs font-bold">
+                      6
+                    </span>
+                    <span>
+                      Add <code className="text-cz-teal font-mono bg-cz-bg px-2 py-1 rounded text-xs">videoId</code> property to the session object
+                    </span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="flex-shrink-0 inline-flex items-center justify-center w-6 h-6 bg-cz-teal/20 text-cz-teal rounded-full font-mono text-xs font-bold">
+                      7
+                    </span>
+                    <span>
+                      Optionally add <code className="text-cz-teal font-mono bg-cz-bg px-2 py-1 rounded text-xs">duration</code> (e.g., "45 min") for display
+                    </span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="flex-shrink-0 inline-flex items-center justify-center w-6 h-6 bg-cz-teal/20 text-cz-teal rounded-full font-mono text-xs font-bold">
+                      8
+                    </span>
+                    <span>
+                      Commit and push to deploy the changes
+                    </span>
+                  </li>
+                </ol>
+              </div>
+
+              <div className="bg-cz-bg border border-cz-border rounded-lg p-4">
+                <p className="text-xs font-mono text-cz-text-muted mb-3 uppercase tracking-wide">
+                  Example Code
+                </p>
+                <pre className="text-xs text-cz-text overflow-x-auto font-mono space-y-2">
+                  <code>{`{
+  number: 1,
+  creator: "Joel",
+  date: "Nov 3 2025",
+  title: "Session Title",
+  description: "Session description",
+  videoId: "abc123def456",  // Bunny.net video ID
+  duration: "45 min"         // Optional
+}`}</code>
+                </pre>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* PDFs SECTION */}
+        <div className="bg-cz-bg-card border border-cz-border rounded-lg overflow-hidden">
+          <button
+            onClick={() => toggleSection('pdfs')}
+            className="w-full px-6 py-4 flex items-center justify-between hover:bg-cz-bg/50 transition-colors"
+          >
+            <div className="flex items-center gap-3">
+              <span className="inline-block px-2.5 py-1 bg-cz-coral/20 text-cz-coral text-xs font-mono rounded">
+                PDFs
+              </span>
+              <h2 className="text-lg font-display font-bold text-cz-text">
+                How to Add PDFs
+              </h2>
+            </div>
+            <span className={`text-cz-text-muted transition-transform inline-block ${expanded.pdfs ? 'rotate-180' : ''}`}>&#x25BC;</span>
+          </button>
+
+          {expanded.pdfs && (
+            <div className="border-t border-cz-border px-6 py-6 space-y-6 bg-cz-bg/30">
+              <div>
+                <h3 className="font-display font-semibold text-cz-text mb-3">
+                  Step-by-Step Instructions
+                </h3>
+                <ol className="space-y-3 text-sm text-cz-text">
+                  <li className="flex gap-3">
+                    <span className="flex-shrink-0 inline-flex items-center justify-center w-6 h-6 bg-cz-coral/20 text-cz-coral rounded-full font-mono text-xs font-bold">
+                      1
+                    </span>
+                    <span>
+                      Log in to the <strong>Supabase dashboard</strong> for the Cozora project
+                    </span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="flex-shrink-0 inline-flex items-center justify-center w-6 h-6 bg-cz-coral/20 text-cz-coral rounded-full font-mono text-xs font-bold">
+                      2
+                    </span>
+                    <span>
+                      Navigate to <strong>Storage</strong> in the left sidebar
+                    </span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="flex-shrink-0 inline-flex items-center justify-center w-6 h-6 bg-cz-coral/20 text-cz-coral rounded-full font-mono text-xs font-bold">
+                      3
+                    </span>
+                    <span>
+                      Create a bucket called <code className="text-cz-coral font-mono bg-cz-bg px-2 py-1 rounded text-xs">pdfs</code> if it doesn't already exist
+                    </span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="flex-shrink-0 inline-flex items-center justify-center w-6 h-6 bg-cz-coral/20 text-cz-coral rounded-full font-mono text-xs font-bold">
+                      4
+                    </span>
+                    <span>
+                      Click into the bucket and upload your PDF file
+                    </span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="flex-shrink-0 inline-flex items-center justify-center w-6 h-6 bg-cz-coral/20 text-cz-coral rounded-full font-mono text-xs font-bold">
+                      5
+                    </span>
+                    <span>
+                      Right-click the file and select <strong>"Copy URL"</strong> to get the public URL
+                    </span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="flex-shrink-0 inline-flex items-center justify-center w-6 h-6 bg-cz-coral/20 text-cz-coral rounded-full font-mono text-xs font-bold">
+                      6
+                    </span>
+                    <span>
+                      Open <code className="text-cz-coral font-mono bg-cz-bg px-2 py-1 rounded text-xs">src/lib/bundles.ts</code> in your code editor
+                    </span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="flex-shrink-0 inline-flex items-center justify-center w-6 h-6 bg-cz-coral/20 text-cz-coral rounded-full font-mono text-xs font-bold">
+                      7
+                    </span>
+                    <span>
+                      Find the bundle you want to add the PDF to
+                    </span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="flex-shrink-0 inline-flex items-center justify-center w-6 h-6 bg-cz-coral/20 text-cz-coral rounded-full font-mono text-xs font-bold">
+                      8
+                    </span>
+                    <span>
+                      Set the <code className="text-cz-coral font-mono bg-cz-bg px-2 py-1 rounded text-xs">pdfUrl</code> property to the Supabase Storage URL you copied
+                    </span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="flex-shrink-0 inline-flex items-center justify-center w-6 h-6 bg-cz-coral/20 text-cz-coral rounded-full font-mono text-xs font-bold">
+                      9
+                    </span>
+                    <span>
+                      Commit and push to deploy the changes
+                    </span>
+                  </li>
+                </ol>
+              </div>
+
+              <div className="bg-cz-bg border border-cz-border rounded-lg p-4">
+                <p className="text-xs font-mono text-cz-text-muted mb-3 uppercase tracking-wide">
+                  Example Code
+                </p>
+                <pre className="text-xs text-cz-text overflow-x-auto font-mono">
+                  <code>{`{
+  slug: "ai-content-growth",
+  skillNum: "Create",
+  name: "AI Content & Growth Machine",
+  tagline: "...",
+  description: "...",
+  sessions: [...],
+  pdfUrl: "https://supabase.../storage/v1/object/public/pdfs/bundle-name.pdf"
+}`}</code>
+                </pre>
+              </div>
+
+              <div className="p-4 rounded-lg border border-cz-teal/30 bg-cz-teal/5">
+                <p className="text-sm text-cz-text">
+                  <strong className="text-cz-teal">Tip:</strong> PDF URLs must be public for the dashboard to access them. Make sure the Supabase Storage bucket has public access enabled.
                 </p>
               </div>
             </div>
-          </div>
+          )}
+        </div>
 
-          <div className="border-t border-cz-border pt-6">
-            <h2 className="text-lg font-display font-bold text-cz-text mb-4">
-              Danger Zone
-            </h2>
+        {/* SESSIONS SECTION */}
+        <div className="bg-cz-bg-card border border-cz-border rounded-lg overflow-hidden">
+          <button
+            onClick={() => toggleSection('sessions')}
+            className="w-full px-6 py-4 flex items-center justify-between hover:bg-cz-bg/50 transition-colors"
+          >
+            <div className="flex items-center gap-3">
+              <span className="inline-block px-2.5 py-1 bg-cz-deep-teal/40 text-cz-teal text-xs font-mono rounded">
+                SESSIONS
+              </span>
+              <h2 className="text-lg font-display font-bold text-cz-text">
+                How to Add New Sessions to a Bundle
+              </h2>
+            </div>
+            <span className={`text-cz-text-muted transition-transform inline-block ${expanded.sessions ? 'rotate-180' : ''}`}>&#x25BC;</span>
+          </button>
 
-            <div className="space-y-4">
-              <div className="p-4 rounded-lg border border-cz-coral/30 bg-cz-coral/5">
-                <button
-                  type="button"
-                  className="text-sm px-4 py-2 rounded-lg border border-cz-coral text-cz-coral hover:bg-cz-coral/10 transition-colors"
-                >
-                  Clear All Cache
-                </button>
-                <p className="text-xs text-cz-text-muted mt-2">
-                  Remove all cached bundle and session data. This action cannot be undone.
+          {expanded.sessions && (
+            <div className="border-t border-cz-border px-6 py-6 space-y-6 bg-cz-bg/30">
+              <div>
+                <h3 className="font-display font-semibold text-cz-text mb-3">
+                  Step-by-Step Instructions
+                </h3>
+                <ol className="space-y-3 text-sm text-cz-text">
+                  <li className="flex gap-3">
+                    <span className="flex-shrink-0 inline-flex items-center justify-center w-6 h-6 bg-cz-teal/20 text-cz-teal rounded-full font-mono text-xs font-bold">
+                      1
+                    </span>
+                    <span>
+                      Open <code className="text-cz-teal font-mono bg-cz-bg px-2 py-1 rounded text-xs">src/lib/bundles.ts</code>
+                    </span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="flex-shrink-0 inline-flex items-center justify-center w-6 h-6 bg-cz-teal/20 text-cz-teal rounded-full font-mono text-xs font-bold">
+                      2
+                    </span>
+                    <span>
+                      Find the bundle where you want to add a new session (Create, Build, Think, or Lead)
+                    </span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="flex-shrink-0 inline-flex items-center justify-center w-6 h-6 bg-cz-teal/20 text-cz-teal rounded-full font-mono text-xs font-bold">
+                      3
+                    </span>
+                    <span>
+                      Locate the <code className="text-cz-teal font-mono bg-cz-bg px-2 py-1 rounded text-xs">sessions</code> array within that bundle
+                    </span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="flex-shrink-0 inline-flex items-center justify-center w-6 h-6 bg-cz-teal/20 text-cz-teal rounded-full font-mono text-xs font-bold">
+                      4
+                    </span>
+                    <span>
+                      Add a new session object with all required properties (see example below)
+                    </span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="flex-shrink-0 inline-flex items-center justify-center w-6 h-6 bg-cz-teal/20 text-cz-teal rounded-full font-mono text-xs font-bold">
+                      5
+                    </span>
+                    <span>
+                      Optionally include <code className="text-cz-teal font-mono bg-cz-bg px-2 py-1 rounded text-xs">videoId</code> and <code className="text-cz-teal font-mono bg-cz-bg px-2 py-1 rounded text-xs">duration</code> if the video is already uploaded
+                    </span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="flex-shrink-0 inline-flex items-center justify-center w-6 h-6 bg-cz-teal/20 text-cz-teal rounded-full font-mono text-xs font-bold">
+                      6
+                    </span>
+                    <span>
+                      All pages automatically update — session counts and bundle cards refresh instantly, no additional changes needed
+                    </span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="flex-shrink-0 inline-flex items-center justify-center w-6 h-6 bg-cz-teal/20 text-cz-teal rounded-full font-mono text-xs font-bold">
+                      7
+                    </span>
+                    <span>
+                      Commit and push to deploy
+                    </span>
+                  </li>
+                </ol>
+              </div>
+
+              <div className="bg-cz-bg border border-cz-border rounded-lg p-4">
+                <p className="text-xs font-mono text-cz-text-muted mb-3 uppercase tracking-wide">
+                  Example Code
+                </p>
+                <pre className="text-xs text-cz-text overflow-x-auto font-mono">
+                  <code>{`{
+  number: 5,
+  creator: "Jane Smith",
+  date: "Mar 15 2026",
+  title: "Session Title Goes Here",
+  description: "Description of what this session covers",
+  videoId: "bunny-video-id-here",  // Optional
+  duration: "50 min"                // Optional
+}`}</code>
+                </pre>
+              </div>
+
+              <div className="p-4 rounded-lg border border-cz-teal/30 bg-cz-teal/5">
+                <p className="text-sm text-cz-text">
+                  <strong className="text-cz-teal">Important:</strong> The session count automatically updates across the entire site whenever you add a new session. No hardcoded counts or text changes are necessary.
                 </p>
               </div>
             </div>
-          </div>
+          )}
         </div>
 
-        <div className="flex gap-4">
+        {/* BUNDLES SECTION */}
+        <div className="bg-cz-bg-card border border-cz-border rounded-lg overflow-hidden">
           <button
-            type="submit"
-            className="px-6 py-3 bg-cz-accent hover:bg-cz-accent-hover text-cz-bg font-display font-semibold rounded-lg transition-colors"
+            onClick={() => toggleSection('bundles')}
+            className="w-full px-6 py-4 flex items-center justify-between hover:bg-cz-bg/50 transition-colors"
           >
-            Save Settings
+            <div className="flex items-center gap-3">
+              <span className="inline-block px-2.5 py-1 bg-cz-accent/20 text-cz-accent text-xs font-mono rounded">
+                BUNDLES
+              </span>
+              <h2 className="text-lg font-display font-bold text-cz-text">
+                How to Add a New Bundle
+              </h2>
+            </div>
+            <span className={`text-cz-text-muted transition-transform inline-block ${expanded.bundles ? 'rotate-180' : ''}`}>&#x25BC;</span>
           </button>
-          <button
-            type="button"
-            className="px-6 py-3 border border-cz-border rounded-lg text-cz-text hover:border-cz-teal transition-colors"
-          >
-            Cancel
-          </button>
+
+          {expanded.bundles && (
+            <div className="border-t border-cz-border px-6 py-6 space-y-6 bg-cz-bg/30">
+              <div>
+                <h3 className="font-display font-semibold text-cz-text mb-3">
+                  Step-by-Step Instructions
+                </h3>
+                <ol className="space-y-3 text-sm text-cz-text">
+                  <li className="flex gap-3">
+                    <span className="flex-shrink-0 inline-flex items-center justify-center w-6 h-6 bg-cz-accent/20 text-cz-accent rounded-full font-mono text-xs font-bold">
+                      1
+                    </span>
+                    <span>
+                      Open <code className="text-cz-accent font-mono bg-cz-bg px-2 py-1 rounded text-xs">src/lib/bundles.ts</code>
+                    </span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="flex-shrink-0 inline-flex items-center justify-center w-6 h-6 bg-cz-accent/20 text-cz-accent rounded-full font-mono text-xs font-bold">
+                      2
+                    </span>
+                    <span>
+                      Find the <code className="text-cz-accent font-mono bg-cz-bg px-2 py-1 rounded text-xs">bundles</code> array (around line 27)
+                    </span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="flex-shrink-0 inline-flex items-center justify-center w-6 h-6 bg-cz-accent/20 text-cz-accent rounded-full font-mono text-xs font-bold">
+                      3
+                    </span>
+                    <span>
+                      Add a new bundle object with all required properties (see example below)
+                    </span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="flex-shrink-0 inline-flex items-center justify-center w-6 h-6 bg-cz-accent/20 text-cz-accent rounded-full font-mono text-xs font-bold">
+                      4
+                    </span>
+                    <span>
+                      Include an array of sessions within the bundle (each session follows the Session structure)
+                    </span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="flex-shrink-0 inline-flex items-center justify-center w-6 h-6 bg-cz-accent/20 text-cz-accent rounded-full font-mono text-xs font-bold">
+                      5
+                    </span>
+                    <span>
+                      All pages automatically pick up the new bundle — bundle cards, counts, everything updates instantly
+                    </span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="flex-shrink-0 inline-flex items-center justify-center w-6 h-6 bg-cz-accent/20 text-cz-accent rounded-full font-mono text-xs font-bold">
+                      6
+                    </span>
+                    <span>
+                      Commit and push to deploy
+                    </span>
+                  </li>
+                </ol>
+              </div>
+
+              <div className="bg-cz-bg border border-cz-border rounded-lg p-4">
+                <p className="text-xs font-mono text-cz-text-muted mb-3 uppercase tracking-wide">
+                  Example Code
+                </p>
+                <pre className="text-xs text-cz-text overflow-x-auto font-mono">
+                  <code>{`{
+  slug: "new-bundle-slug",
+  skillNum: "Skill",
+  name: "New Bundle Name",
+  tagline: "Short tagline for the bundle",
+  description: "Longer description explaining what this bundle teaches",
+  sessions: [
+    {
+      number: 1,
+      creator: "Creator Name",
+      date: "Month DD YYYY",
+      title: "Session Title",
+      description: "What this session covers",
+      videoId: "optional-bunny-id",
+      duration: "45 min"
+    }
+  ],
+  pdfUrl: "optional-supabase-storage-url"
+}`}</code>
+                </pre>
+              </div>
+
+              <div className="p-4 rounded-lg border border-cz-accent/30 bg-cz-accent/5">
+                <p className="text-sm text-cz-text">
+                  <strong className="text-cz-accent">Power Feature:</strong> The entire site dynamically renders all bundles. Create a new bundle in this file and it instantly appears on the bundles page, pricing, and all associated pages. No UI changes required.
+                </p>
+              </div>
+            </div>
+          )}
         </div>
-      </form>
+
+        {/* INFO SECTION */}
+        <div className="bg-cz-bg-card border border-cz-deep-teal/40 rounded-lg p-6">
+          <h2 className="text-lg font-display font-bold text-cz-text mb-4">
+            Important File Reference
+          </h2>
+          <div className="space-y-4">
+            <div>
+              <p className="text-sm text-cz-text-muted mb-2">
+                All bundle and session data lives in one place:
+              </p>
+              <code className="block bg-cz-bg border border-cz-border rounded px-4 py-3 text-sm text-cz-teal font-mono">
+                src/lib/bundles.ts
+              </code>
+            </div>
+            <p className="text-sm text-cz-text">
+              This is the <strong>single source of truth</strong> for all Cozora content. Every change to bundles, sessions, videos, or PDFs happens here. The rest of the application automatically reads from this file and updates every page in real-time.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

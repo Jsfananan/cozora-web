@@ -2,7 +2,11 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import Navbar from '@/components/Navbar';
+import { getBundleStats } from '@/lib/bundles';
+
+const { totalBundles } = getBundleStats();
 
 export default function RecoverAccessPage() {
   const router = useRouter();
@@ -83,12 +87,12 @@ export default function RecoverAccessPage() {
 
           <p className="mt-6 text-center text-sm text-cz-text-dim">
             Haven&apos;t purchased yet?{' '}
-            <a
-              href="https://buy.stripe.com/5kQ6oHfxd1vG5YNgH04ko00"
+            <Link
+              href="/bundles"
               className="text-cz-accent hover:underline"
             >
-              Get All 4 Skill Sets &mdash; $99
-            </a>
+              Get All Skill Sets &mdash; $99
+            </Link>
           </p>
         </div>
       </main>

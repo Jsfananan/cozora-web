@@ -1,3 +1,7 @@
+import { getBundleStats } from '@/lib/bundles';
+
+const { totalBundles } = getBundleStats();
+
 const skillSets = [
   {
     label: 'Create',
@@ -41,7 +45,7 @@ export default function SkillSets() {
             The Skill Sets
           </h2>
           <p className="text-lg text-cz-text-muted">
-            Master four essential skills. Updated every week with fresh
+            Master {totalBundles} essential skills. Updated every week with fresh
             expert-led sessions.
           </p>
         </div>

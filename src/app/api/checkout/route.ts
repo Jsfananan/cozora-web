@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { stripe } from "@/lib/stripe";
 import { createServerClient } from "@/lib/supabase/server";
+import { getBundleStats } from "@/lib/bundles";
+
+const { totalBundles, totalSessions } = getBundleStats();
 
 export const runtime = "nodejs";
 
@@ -32,9 +35,9 @@ export async function POST(request: NextRequest) {
           price_data: {
             currency: "usd",
             product_data: {
-              name: "Cozora Skill Sets — All 4 Bundles",
+              name: `Cozora Skill Sets — All ${totalBundles} Bundles`,
               description:
-                "Lifetime access to 16 sessions across 4 skill sets: AI Content & Growth, AI-Powered Development, AI Knowledge System, and AI for Business & Leadership.",
+                `Lifetime access to ${totalSessions} sessions across ${totalBundles} skill sets: AI Content & Growth, AI-Powered Development, AI Knowledge System, and AI for Business & Leadership.`,
             },
             unit_amount: 9900,
           },

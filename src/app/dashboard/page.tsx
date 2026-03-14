@@ -2,8 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { bundles } from '@/lib/bundles';
+import { bundles, getBundleStats } from '@/lib/bundles';
 import Navbar from '@/components/Navbar';
+
+const { totalBundles } = getBundleStats();
 
 type AuthState = 'loading' | 'unauthenticated' | 'no-purchase' | 'purchased';
 
@@ -110,7 +112,7 @@ export default function DashboardPage() {
             <div className="mb-8 bg-gradient-to-r from-cz-accent/20 to-cz-coral/20 border border-cz-accent/40 rounded-xl p-6 sm:p-8">
               <div className="text-center">
                 <h2 className="text-2xl sm:text-3xl font-display font-bold text-cz-text mb-2">
-                  Unlock All 4 Skill Sets
+                  Unlock All Skill Sets
                 </h2>
                 <p className="text-cz-text-muted mb-6">
                   Get complete access to Create, Build, Think, and Lead bundles
@@ -119,7 +121,7 @@ export default function DashboardPage() {
                   href="/bundles"
                   className="inline-block px-8 py-3 bg-cz-accent hover:opacity-90 text-cz-bg font-semibold rounded-lg transition-opacity"
                 >
-                  Get All 4 Skill Sets — $99
+                  Get All Skill Sets — $99
                 </Link>
               </div>
             </div>
@@ -215,7 +217,7 @@ export default function DashboardPage() {
                 href="/bundles"
                 className="inline-block px-8 py-3 bg-cz-accent hover:opacity-90 text-cz-bg font-semibold rounded-lg transition-opacity"
               >
-                Get All 4 Skill Sets — $99
+                Get All Skill Sets — $99
               </Link>
             </div>
           </div>
@@ -288,8 +290,8 @@ export default function DashboardPage() {
                           <div className="mb-4 aspect-video bg-cz-bg rounded-lg border border-cz-border flex items-center justify-center relative overflow-hidden">
                             {session.videoId ? (
                               <iframe
-                                src={`https://iframe.mediadelivery.net/embed/bundly/${session.videoId}`}
-                                allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
+                                src={`https://iframe.mediadelivery.net/embed/bundly/${session.videoId}?autoplay=false&preload=false`}
+                                allow="accelerometer; gyroscope; encrypted-media; picture-in-picture"
                                 allowFullScreen
                                 className="w-full h-full"
                               />

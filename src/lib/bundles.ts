@@ -18,6 +18,12 @@ export interface Bundle {
   pdfUrl?: string; // Supabase Storage path (added when PDFs are uploaded)
 }
 
+export function getBundleStats() {
+  const totalBundles = bundles.length;
+  const totalSessions = bundles.reduce((sum, b) => sum + b.sessions.length, 0);
+  return { totalBundles, totalSessions };
+}
+
 export const bundles: Bundle[] = [
   {
     slug: "ai-content-growth",
