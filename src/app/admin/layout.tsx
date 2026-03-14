@@ -1,21 +1,123 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-const skillColorMap = {
-  Create: 'text-cz-coral',
-  Build: 'text-cz-teal',
-  Think: 'text-cz-teal',
-  Lead: 'text-cz-accent',
-};
+function LoginForm({ onLogin }: { onLogin: () => void }) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+
+    try {
+      const res = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (res.ok) {
+        sessionStorage.setItem('cz-admin-auth', '1');
+        onLogin();
+      } else {
+        setError('Invalid credentials');
+      }
+    } catch {
+      setError('Login failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-cz-bg flex items-center justify-center px-4">
+      <div className="w-full max-w-sm">
+        <div className="text-center mb-8">
+          <div className="text-xs font-mono text-cz-coral bg-cz-coral/10 px-2 py-1 rounded inline-block mb-4">
+            ADMIN
+          </div>
+          <h1 className="text-2xl font-display font-bold text-cz-text">
+            Cozora Admin
+          </h1>
+        </div>
+
+        <form onSubmit={handleSubmit} className="bg-cz-bg-card border border-cz-border rounded-xl p-6 space-y-4">
+          <div>
+            <label htmlFor="admin-email" className="block text-sm font-semibold text-cz-text mb-2">
+              Email
+            </label>
+            <input
+              id="admin-email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-4 py-3 bg-cz-bg border border-cz-border rounded-lg text-cz-text placeholder-cz-text-dim focus:outline-none focus:border-cz-teal transition-colors"
+              required
+            />
+          </div>
+
+          <div>
+            <label htmlFor="admin-password" className="block text-sm font-semibold text-cz-text mb-2">
+              Password
+            </label>
+            <input
+              id="admin-password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-4 py-3 bg-cz-bg border border-cz-border rounded-lg text-cz-text placeholder-cz-text-dim focus:outline-none focus:border-cz-teal transition-colors"
+              required
+            />
+          </div>
+
+          {error && (
+            <p className="text-sm text-cz-coral">{error}</p>
+          )}
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full px-6 py-3 bg-cz-accent hover:bg-cz-accent-hover disabled:opacity-70 text-cz-bg font-semibold rounded-lg transition-colors"
+          >
+            {loading ? 'Signing in...' : 'Sign In'}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}
 
 export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [authenticated, setAuthenticated] = useState(false);
+  const [checking, setChecking] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  useEffect(() => {
+    const auth = sessionStorage.getItem('cz-admin-auth');
+    setAuthenticated(auth === '1');
+    setChecking(false);
+  }, []);
+
+  if (checking) {
+    return (
+      <div className="min-h-screen bg-cz-bg flex items-center justify-center">
+        <p className="text-cz-text-muted font-mono">Loading...</p>
+      </div>
+    );
+  }
+
+  if (!authenticated) {
+    return <LoginForm onLogin={() => setAuthenticated(true)} />;
+  }
 
   return (
     <div className="min-h-screen bg-cz-bg text-cz-text">
@@ -58,10 +160,19 @@ export default function AdminLayout({
               </Link>
             </nav>
 
-            <div className="p-6 border-t border-cz-border">
+            <div className="p-6 border-t border-cz-border space-y-3">
+              <button
+                onClick={() => {
+                  sessionStorage.removeItem('cz-admin-auth');
+                  setAuthenticated(false);
+                }}
+                className="block text-xs text-cz-coral hover:text-cz-coral/80 transition-colors"
+              >
+                Sign Out
+              </button>
               <a
                 href="/"
-                className="text-xs text-cz-text-muted hover:text-cz-text transition-colors"
+                className="block text-xs text-cz-text-muted hover:text-cz-text transition-colors"
               >
                 ← Back to site
               </a>
