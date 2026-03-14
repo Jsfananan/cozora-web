@@ -5,7 +5,7 @@ import { createServerClient } from "@/lib/supabase/server";
 
 export const runtime = "nodejs";
 
-export async function POST(_request: NextRequest) {
+export async function POST(request: NextRequest) {
   if (!stripe) {
     return NextResponse.json(
       { error: "Stripe is not configured." },
@@ -20,8 +20,10 @@ export async function POST(_request: NextRequest) {
       data: { user },
     } = await supabase.auth.getUser();
 
-    const siteUrl =
-      process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+    const origin = request.headers.get("origin") || request.headers.get("x-forwarded-host");
+    const protocol = request.headers.get("x-forwarded-proto") || "https";
+    const host = request.headers.get("host") || "localhost:3000";
+    const siteUrl = origin || `${protocol}://${host}`;
 
     const sessionParams: Stripe.Checkout.SessionCreateParams = {
       mode: "payment",
