@@ -11,10 +11,12 @@ function CheckoutSuccessContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [state, setState] = useState<PageState>('verifying');
+  const [errorDetail, setErrorDetail] = useState('');
   const sessionId = searchParams.get('session_id');
 
   useEffect(() => {
     if (!sessionId) {
+      setErrorDetail('No session_id in URL');
       setState('error');
       return;
     }
@@ -31,9 +33,12 @@ function CheckoutSuccessContent() {
           const data = await res.json();
           router.replace(`/access/${data.access_token}`);
         } else {
+          const data = await res.json().catch(() => ({}));
+          setErrorDetail(JSON.stringify(data, null, 2));
           setState('error');
         }
-      } catch {
+      } catch (err) {
+        setErrorDetail(String(err));
         setState('error');
       }
     };
@@ -50,6 +55,11 @@ function CheckoutSuccessContent() {
         <p className="text-cz-text-muted mb-8">
           We couldn&apos;t verify your purchase. If you completed payment, your access is still safe &mdash; try recovering it with your email.
         </p>
+        {errorDetail && (
+          <pre className="text-left text-xs text-cz-text-dim bg-cz-bg-card border border-cz-border rounded-lg p-4 mb-8 overflow-auto max-h-40">
+            {errorDetail}
+          </pre>
+        )}
         <Link
           href="/access"
           className="inline-block px-8 py-3 bg-cz-accent hover:bg-cz-accent-hover text-cz-bg font-semibold rounded-lg transition-colors"
