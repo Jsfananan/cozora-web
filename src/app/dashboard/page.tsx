@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { bundles, getBundleStats } from '@/lib/bundles';
 import Navbar from '@/components/Navbar';
@@ -17,11 +18,36 @@ const skillColorMap = {
 };
 
 export default function DashboardPage() {
+  return (
+    <Suspense fallback={
+      <>
+        <Navbar />
+        <main className="min-h-screen pt-32 px-4 sm:px-6 lg:px-8 flex items-center">
+          <div className="max-w-2xl mx-auto text-center w-full">
+            <p className="text-cz-text-muted">Loading...</p>
+          </div>
+        </main>
+      </>
+    }>
+      <DashboardContent />
+    </Suspense>
+  );
+}
+
+function DashboardContent() {
+  const searchParams = useSearchParams();
+  const isAdminPreview = searchParams.get('preview') === 'admin';
   const [authState, setAuthState] = useState<AuthState>('loading');
   const [expandedBundles, setExpandedBundles] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     const checkAuth = async () => {
+      // Admin preview mode — skip auth, show purchased view
+      if (isAdminPreview) {
+        setAuthState('purchased');
+        return;
+      }
+
       // TODO: Wire to Supabase auth
       // For development: default to 'purchased' so we can see the full UI
       // Replace this with real auth check:
@@ -41,7 +67,7 @@ export default function DashboardPage() {
     };
 
     checkAuth();
-  }, []);
+  }, [isAdminPreview]);
 
   const toggleBundleExpanded = (slug: string) => {
     const newExpanded = new Set(expandedBundles);
@@ -246,6 +272,19 @@ export default function DashboardPage() {
       <Navbar />
       <main className="min-h-screen pt-16 px-4 sm:px-6 lg:px-8 pb-16">
         <div className="max-w-7xl mx-auto">
+          {isAdminPreview && (
+            <div className="mb-6 bg-cz-coral/10 border border-cz-coral/30 rounded-lg px-4 py-3 flex items-center justify-between">
+              <span className="text-sm font-mono text-cz-coral">
+                Admin Preview — This is how paid customers see the dashboard
+              </span>
+              <Link
+                href="/admin/bundles"
+                className="text-sm font-semibold text-cz-coral hover:text-cz-coral/80 transition-colors"
+              >
+                Back to Admin
+              </Link>
+            </div>
+          )}
           <div className="mb-12">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
               <h1 className="text-4xl sm:text-5xl font-display font-bold text-cz-text">
@@ -345,9 +384,10 @@ export default function DashboardPage() {
                                 </h4>
                               )}
                               {session.notesContent && (
-                                <div className="text-cz-text-muted text-sm leading-relaxed whitespace-pre-line">
-                                  {session.notesContent}
-                                </div>
+                                <div
+                                  className="text-cz-text-muted text-sm leading-relaxed prose prose-invert prose-sm max-w-none [&_h2]:text-xl [&_h2]:font-display [&_h2]:font-bold [&_h2]:text-cz-text [&_h2]:mt-4 [&_h2]:mb-2 [&_h3]:text-lg [&_h3]:font-display [&_h3]:font-bold [&_h3]:text-cz-text [&_h3]:mt-3 [&_h3]:mb-2 [&_p]:mb-3 [&_b]:text-cz-text [&_strong]:text-cz-text"
+                                  dangerouslySetInnerHTML={{ __html: session.notesContent }}
+                                />
                               )}
                             </div>
                           )}

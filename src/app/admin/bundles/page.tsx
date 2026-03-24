@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { bundles } from '@/lib/bundles';
 import type { Bundle, Session } from '@/lib/bundles';
@@ -23,6 +23,13 @@ function SessionRow({
   const [notesTitle, setNotesTitle] = useState(session.notesTitle || '');
   const [notesContent, setNotesContent] = useState(session.notesContent || '');
   const [isSaving, setIsSaving] = useState(false);
+  const editorRef = useRef<HTMLDivElement>(null);
+
+  const handleEditorInput = useCallback(() => {
+    if (editorRef.current) {
+      setNotesContent(editorRef.current.innerHTML);
+    }
+  }, []);
 
   const handleSave = () => {
     setIsSaving(true);
@@ -96,12 +103,48 @@ function SessionRow({
           <label className="block text-xs font-mono text-cz-text-muted mb-1">
             Notes Content
           </label>
-          <textarea
-            value={notesContent}
-            onChange={(e) => setNotesContent(e.target.value)}
-            placeholder="Session description, key takeaways, links, etc."
-            rows={5}
-            className="w-full bg-cz-bg-card border border-cz-border text-cz-text rounded-lg px-3 py-2 text-sm focus:border-cz-teal focus:outline-none resize-y"
+          <div className="flex gap-1 mb-2 flex-wrap">
+            {[
+              { cmd: 'bold', label: 'B', style: 'font-bold' },
+              { cmd: 'italic', label: 'I', style: 'italic' },
+            ].map(({ cmd, label, style }) => (
+              <button
+                key={cmd}
+                type="button"
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  document.execCommand(cmd, false);
+                }}
+                className={`px-2 py-1 text-xs ${style} bg-cz-bg-card border border-cz-border text-cz-text-muted hover:text-cz-text hover:border-cz-teal rounded transition-colors`}
+              >
+                {label}
+              </button>
+            ))}
+            {[
+              { cmd: 'formatBlock', arg: 'h2', label: 'H2' },
+              { cmd: 'formatBlock', arg: 'h3', label: 'H3' },
+              { cmd: 'formatBlock', arg: 'p', label: 'P' },
+            ].map(({ cmd, arg, label }) => (
+              <button
+                key={label}
+                type="button"
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  document.execCommand(cmd, false, arg);
+                }}
+                className="px-2 py-1 text-xs font-mono bg-cz-bg-card border border-cz-border text-cz-text-muted hover:text-cz-text hover:border-cz-teal rounded transition-colors"
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+          <div
+            ref={editorRef}
+            contentEditable
+            onInput={handleEditorInput}
+            className="w-full bg-cz-bg-card border border-cz-border text-cz-text rounded-lg px-3 py-2 text-sm focus:border-cz-teal focus:outline-none min-h-[120px] max-h-[400px] overflow-y-auto prose prose-invert prose-sm max-w-none [&_h2]:text-lg [&_h2]:font-display [&_h2]:font-bold [&_h2]:text-cz-text [&_h2]:mt-3 [&_h2]:mb-1 [&_h3]:text-base [&_h3]:font-display [&_h3]:font-bold [&_h3]:text-cz-text [&_h3]:mt-2 [&_h3]:mb-1 [&_p]:text-cz-text [&_p]:mb-2 [&_b]:text-cz-text [&_strong]:text-cz-text"
+            dangerouslySetInnerHTML={{ __html: notesContent }}
+            suppressContentEditableWarning
           />
         </div>
         <div className="flex items-center gap-2 text-xs text-cz-text-dim">
@@ -337,12 +380,20 @@ export default function BundlesPage() {
             Edit sessions, upload videos, and manage PDFs
           </p>
         </div>
-        <Link
-          href="/admin/bundles/new"
-          className="px-6 py-3 bg-cz-accent hover:bg-cz-accent-hover text-cz-bg font-display font-semibold rounded-lg transition-colors"
-        >
-          Add New Bundle
-        </Link>
+        <div className="flex items-center gap-3">
+          <Link
+            href="/dashboard?preview=admin"
+            className="px-5 py-3 border border-cz-teal text-cz-teal hover:bg-cz-teal/10 font-body font-semibold rounded-lg transition-colors text-sm"
+          >
+            Preview as Customer
+          </Link>
+          <Link
+            href="/admin/bundles/new"
+            className="px-6 py-3 bg-cz-accent hover:bg-cz-accent-hover text-cz-bg font-display font-semibold rounded-lg transition-colors"
+          >
+            Add New Bundle
+          </Link>
+        </div>
       </div>
 
       <div className="space-y-4">
