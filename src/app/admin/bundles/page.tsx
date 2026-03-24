@@ -20,12 +20,16 @@ function SessionRow({
   session: Session;
 }) {
   const [videoUrl, setVideoUrl] = useState(session.videoId || '');
+  const [notesTitle, setNotesTitle] = useState(session.notesTitle || '');
+  const [notesContent, setNotesContent] = useState(session.notesContent || '');
   const [isSaving, setIsSaving] = useState(false);
 
-  const handleSaveVideo = () => {
+  const handleSave = () => {
     setIsSaving(true);
-    console.log(`Saving video for ${bundle.name} - Session ${session.number}:`, {
+    console.log(`Saving session ${bundle.name} - Session ${session.number}:`, {
       videoUrl,
+      notesTitle,
+      notesContent,
       bundleSlug: bundle.slug,
       sessionNumber: session.number,
     });
@@ -62,13 +66,47 @@ function SessionRow({
 
         <div className="flex items-end gap-2">
           <button
-            onClick={handleSaveVideo}
+            onClick={handleSave}
             disabled={isSaving}
             className="flex-1 px-3 py-2 bg-cz-accent hover:bg-cz-accent-hover text-cz-bg font-body font-semibold rounded-lg transition-colors disabled:opacity-50 text-sm"
           >
             {isSaving ? 'Saving...' : 'Save'}
           </button>
           <div className={`w-3 h-3 rounded-full ${videoUrl ? 'bg-cz-teal' : 'bg-cz-text-dim'}`} />
+        </div>
+      </div>
+
+      <div className="border-t border-cz-border/30 pt-4 space-y-3">
+        <h5 className="text-xs font-mono text-cz-accent uppercase tracking-wider">
+          Session Notes
+        </h5>
+        <div>
+          <label className="block text-xs font-mono text-cz-text-muted mb-1">
+            Notes Title
+          </label>
+          <input
+            type="text"
+            value={notesTitle}
+            onChange={(e) => setNotesTitle(e.target.value)}
+            placeholder="e.g. Turning Your Writing Into Film: A Practical Guide"
+            className="w-full bg-cz-bg-card border border-cz-border text-cz-text rounded-lg px-3 py-2 text-sm focus:border-cz-teal focus:outline-none"
+          />
+        </div>
+        <div>
+          <label className="block text-xs font-mono text-cz-text-muted mb-1">
+            Notes Content
+          </label>
+          <textarea
+            value={notesContent}
+            onChange={(e) => setNotesContent(e.target.value)}
+            placeholder="Session description, key takeaways, links, etc."
+            rows={5}
+            className="w-full bg-cz-bg-card border border-cz-border text-cz-text rounded-lg px-3 py-2 text-sm focus:border-cz-teal focus:outline-none resize-y"
+          />
+        </div>
+        <div className="flex items-center gap-2 text-xs text-cz-text-dim">
+          <div className={`w-2 h-2 rounded-full ${notesTitle || notesContent ? 'bg-cz-teal' : 'bg-cz-text-dim'}`} />
+          {notesTitle || notesContent ? 'Notes added' : 'No notes yet'}
         </div>
       </div>
     </div>

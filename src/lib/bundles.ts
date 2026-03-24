@@ -6,6 +6,8 @@ export interface Session {
   description: string;
   videoId?: string; // Bunny.net video ID (added when videos are uploaded)
   duration?: string;
+  notesTitle?: string; // Title for the content notes displayed below the video
+  notesContent?: string; // Rich text content displayed below the video
 }
 
 export interface Bundle {

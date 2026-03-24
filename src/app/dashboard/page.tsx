@@ -200,6 +200,21 @@ export default function DashboardPage() {
                               </div>
                             </div>
 
+                            {(session.notesTitle || session.notesContent) && (
+                              <div className="mb-4 bg-cz-bg rounded-lg border border-cz-border p-5">
+                                {session.notesTitle && (
+                                  <h4 className="text-lg font-display font-bold text-cz-text mb-3">
+                                    {session.notesTitle}
+                                  </h4>
+                                )}
+                                {session.notesContent && (
+                                  <div className="text-cz-text-muted text-sm leading-relaxed whitespace-pre-line">
+                                    {session.notesContent}
+                                  </div>
+                                )}
+                              </div>
+                            )}
+
                             <button disabled className="px-4 py-2 bg-cz-text-dim/20 text-cz-text-dim rounded-lg cursor-not-allowed text-sm font-semibold">
                               ↓ Download PDF — Purchase required
                             </button>
@@ -321,6 +336,21 @@ export default function DashboardPage() {
                               {session.duration && <span>{session.duration}</span>}
                             </div>
                           </div>
+
+                          {(session.notesTitle || session.notesContent) && (
+                            <div className="mb-4 bg-cz-bg rounded-lg border border-cz-border p-5">
+                              {session.notesTitle && (
+                                <h4 className="text-lg font-display font-bold text-cz-text mb-3">
+                                  {session.notesTitle}
+                                </h4>
+                              )}
+                              {session.notesContent && (
+                                <div className="text-cz-text-muted text-sm leading-relaxed whitespace-pre-line">
+                                  {session.notesContent}
+                                </div>
+                              )}
+                            </div>
+                          )}
 
                           <button
                             onClick={() => handleDownloadPDF(bundle.slug)}
