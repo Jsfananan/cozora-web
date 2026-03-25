@@ -199,8 +199,110 @@ function SessionRow({
   );
 }
 
+function AddSessionForm({ bundle, onSaved }: { bundle: DbBundle; onSaved: () => void }) {
+  const [title, setTitle] = useState('');
+  const [creator, setCreator] = useState('');
+  const [date, setDate] = useState('');
+  const [description, setDescription] = useState('');
+  const [isSaving, setIsSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const nextNumber = bundle.sessions.length + 1;
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!title.trim() || !creator.trim()) return;
+    setIsSaving(true);
+    setError(null);
+    try {
+      const res = await fetch('/api/admin/sessions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          bundle_id: bundle.id,
+          number: nextNumber,
+          title: title.trim(),
+          creator: creator.trim(),
+          date: date.trim() || null,
+          description: description.trim() || null,
+        }),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Failed to create session');
+      }
+      onSaved();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to create session');
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="bg-cz-bg border border-cz-teal/30 rounded-lg p-4 space-y-3">
+      <h5 className="text-xs font-mono text-cz-teal uppercase tracking-wider">
+        New Session #{nextNumber}
+      </h5>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div>
+          <label className="block text-xs font-mono text-cz-text-muted mb-1">Title *</label>
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Session title"
+            required
+            className="w-full bg-cz-bg-card border border-cz-border text-cz-text rounded-lg px-3 py-2 text-sm focus:border-cz-teal focus:outline-none"
+          />
+        </div>
+        <div>
+          <label className="block text-xs font-mono text-cz-text-muted mb-1">Creator *</label>
+          <input
+            type="text"
+            value={creator}
+            onChange={(e) => setCreator(e.target.value)}
+            placeholder="Speaker name"
+            required
+            className="w-full bg-cz-bg-card border border-cz-border text-cz-text rounded-lg px-3 py-2 text-sm focus:border-cz-teal focus:outline-none"
+          />
+        </div>
+        <div>
+          <label className="block text-xs font-mono text-cz-text-muted mb-1">Date</label>
+          <input
+            type="text"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            placeholder="e.g. March 5, 2026"
+            className="w-full bg-cz-bg-card border border-cz-border text-cz-text rounded-lg px-3 py-2 text-sm focus:border-cz-teal focus:outline-none"
+          />
+        </div>
+        <div>
+          <label className="block text-xs font-mono text-cz-text-muted mb-1">Description</label>
+          <input
+            type="text"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Short session description"
+            className="w-full bg-cz-bg-card border border-cz-border text-cz-text rounded-lg px-3 py-2 text-sm focus:border-cz-teal focus:outline-none"
+          />
+        </div>
+      </div>
+      {error && <p className="text-xs text-cz-coral">{error}</p>}
+      <button
+        type="submit"
+        disabled={isSaving || !title.trim() || !creator.trim()}
+        className="px-4 py-2 bg-cz-teal hover:bg-cz-teal/80 text-cz-bg font-semibold rounded-lg text-sm transition-colors disabled:opacity-50"
+      >
+        {isSaving ? 'Adding...' : 'Add Session'}
+      </button>
+    </form>
+  );
+}
+
 function BundleCard({ bundle, onRefresh }: { bundle: DbBundle; onRefresh: () => void }) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [showAddForm, setShowAddForm] = useState(false);
 
   const colors = skillColorMap[bundle.skill_num] || { text: 'text-cz-teal', bg: 'bg-cz-teal/10' };
 
@@ -255,6 +357,23 @@ function BundleCard({ bundle, onRefresh }: { bundle: DbBundle; onRefresh: () => 
                 <SessionRow key={session.id} session={session} onSaved={onRefresh} />
               ))}
             </div>
+
+            {showAddForm ? (
+              <AddSessionForm
+                bundle={bundle}
+                onSaved={() => {
+                  setShowAddForm(false);
+                  onRefresh();
+                }}
+              />
+            ) : (
+              <button
+                onClick={() => setShowAddForm(true)}
+                className="w-full py-2 border border-dashed border-cz-border hover:border-cz-teal text-cz-text-muted hover:text-cz-teal rounded-lg text-sm font-mono transition-colors"
+              >
+                + Add Session
+              </button>
+            )}
           </div>
         </div>
       )}
