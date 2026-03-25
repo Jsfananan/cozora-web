@@ -50,6 +50,12 @@ function SessionRow({
   const [notesContent, setNotesContent] = useState(session.notes_content || '');
   const [isSaving, setIsSaving] = useState(false);
   const [saveStatus, setSaveStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [isEditing, setIsEditing] = useState(false);
+  const [editTitle, setEditTitle] = useState(session.title);
+  const [editCreator, setEditCreator] = useState(session.creator);
+  const [editDate, setEditDate] = useState(session.date || '');
+  const [editDescription, setEditDescription] = useState(session.description || '');
+  const [isSavingDetails, setIsSavingDetails] = useState(false);
   const editorRef = useRef<HTMLDivElement>(null);
 
   const handleEditorInput = useCallback(() => {
@@ -86,6 +92,30 @@ function SessionRow({
     }
   };
 
+  const handleSaveDetails = async () => {
+    if (!editTitle.trim() || !editCreator.trim()) return;
+    setIsSavingDetails(true);
+    try {
+      const res = await fetch(`/api/admin/sessions/${session.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: editTitle.trim(),
+          creator: editCreator.trim(),
+          date: editDate.trim() || null,
+          description: editDescription.trim() || null,
+        }),
+      });
+      if (!res.ok) throw new Error('Failed to save');
+      setIsEditing(false);
+      onSaved();
+    } catch (err) {
+      console.error('Save details failed:', err);
+    } finally {
+      setIsSavingDetails(false);
+    }
+  };
+
   return (
     <div className="bg-cz-bg p-4 rounded-lg border border-cz-border/50 space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -93,12 +123,68 @@ function SessionRow({
           <div className="text-xs font-mono text-cz-text-muted mb-1">
             Session {session.number}
           </div>
-          <h4 className="font-body font-semibold text-cz-text">
-            {session.title}
-          </h4>
-          <p className="text-sm text-cz-text-muted mt-1">
-            {session.creator} {session.date ? `• ${session.date}` : ''}
-          </p>
+          {isEditing ? (
+            <div className="space-y-2">
+              <input
+                type="text"
+                value={editTitle}
+                onChange={(e) => setEditTitle(e.target.value)}
+                placeholder="Session title"
+                className="w-full bg-cz-bg-card border border-cz-teal text-cz-text rounded-lg px-2 py-1 text-sm focus:outline-none"
+              />
+              <input
+                type="text"
+                value={editCreator}
+                onChange={(e) => setEditCreator(e.target.value)}
+                placeholder="Creator"
+                className="w-full bg-cz-bg-card border border-cz-border text-cz-text rounded-lg px-2 py-1 text-sm focus:outline-none"
+              />
+              <input
+                type="text"
+                value={editDate}
+                onChange={(e) => setEditDate(e.target.value)}
+                placeholder="Date"
+                className="w-full bg-cz-bg-card border border-cz-border text-cz-text rounded-lg px-2 py-1 text-sm focus:outline-none"
+              />
+              <input
+                type="text"
+                value={editDescription}
+                onChange={(e) => setEditDescription(e.target.value)}
+                placeholder="Short description"
+                className="w-full bg-cz-bg-card border border-cz-border text-cz-text rounded-lg px-2 py-1 text-sm focus:outline-none"
+              />
+              <div className="flex gap-2">
+                <button
+                  onClick={handleSaveDetails}
+                  disabled={isSavingDetails}
+                  className="px-3 py-1 bg-cz-teal text-cz-bg text-xs font-semibold rounded-lg disabled:opacity-50"
+                >
+                  {isSavingDetails ? 'Saving...' : 'Save'}
+                </button>
+                <button
+                  onClick={() => setIsEditing(false)}
+                  className="px-3 py-1 border border-cz-border text-cz-text-muted text-xs rounded-lg hover:text-cz-text"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          ) : (
+            <>
+              <h4 className="font-body font-semibold text-cz-text">
+                {session.title}
+              </h4>
+              <p className="text-sm text-cz-text-muted mt-1">
+                {session.creator} {session.date ? `• ${session.date}` : ''}
+              </p>
+              <button
+                onClick={() => setIsEditing(true)}
+                className="mt-2 text-xs text-cz-teal hover:text-cz-teal/80 font-mono underline"
+              >
+                Edit details
+              </button>
+            </>
+          )}
         </div>
 
         <div>

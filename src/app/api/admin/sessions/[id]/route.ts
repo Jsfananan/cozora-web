@@ -8,18 +8,22 @@ export async function PUT(
   try {
     const { id } = await params;
     const body = await request.json();
-    const { video_url, notes_title, notes_content } = body;
+    const { video_url, notes_title, notes_content, title, creator, date, description } = body;
 
     const supabase = createServiceClient();
 
+    const updates: Record<string, unknown> = { updated_at: new Date().toISOString() };
+    if ('video_url' in body) updates.video_url = video_url || null;
+    if ('notes_title' in body) updates.notes_title = notes_title || null;
+    if ('notes_content' in body) updates.notes_content = notes_content || null;
+    if ('title' in body) updates.title = title;
+    if ('creator' in body) updates.creator = creator;
+    if ('date' in body) updates.date = date || null;
+    if ('description' in body) updates.description = description || null;
+
     const { error } = await supabase
       .from('sessions')
-      .update({
-        video_url: video_url || null,
-        notes_title: notes_title || null,
-        notes_content: notes_content || null,
-        updated_at: new Date().toISOString(),
-      })
+      .update(updates)
       .eq('id', id);
 
     if (error) {
