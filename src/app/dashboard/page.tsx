@@ -1,16 +1,40 @@
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect, Suspense, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { bundles, getBundleStats } from '@/lib/bundles';
 import Navbar from '@/components/Navbar';
-
-const { totalBundles } = getBundleStats();
 
 type AuthState = 'loading' | 'unauthenticated' | 'no-purchase' | 'purchased';
 
-const skillColorMap = {
+interface DbSession {
+  id: string;
+  number: number;
+  creator: string;
+  date: string | null;
+  title: string;
+  description: string | null;
+  video_url: string | null;
+  duration: string | null;
+  notes_title: string | null;
+  notes_content: string | null;
+  sort_order: number;
+  is_active: boolean;
+}
+
+interface DbBundle {
+  id: string;
+  slug: string;
+  skill_num: string;
+  name: string;
+  tagline: string | null;
+  description: string | null;
+  sort_order: number;
+  is_active: boolean;
+  sessions: DbSession[];
+}
+
+const skillColorMap: Record<string, { text: string; bg: string }> = {
   Create: { text: 'text-cz-coral', bg: 'bg-cz-coral/10' },
   Build: { text: 'text-cz-teal', bg: 'bg-cz-teal/10' },
   Think: { text: 'text-cz-teal', bg: 'bg-cz-teal/10' },
@@ -39,30 +63,35 @@ function DashboardContent() {
   const isAdminPreview = searchParams.get('preview') === 'admin';
   const [authState, setAuthState] = useState<AuthState>('loading');
   const [expandedBundles, setExpandedBundles] = useState<Set<string>>(new Set());
+  const [bundles, setBundles] = useState<DbBundle[]>([]);
+  const [bundlesLoading, setBundlesLoading] = useState(true);
+
+  const fetchBundles = useCallback(async () => {
+    try {
+      const res = await fetch('/api/admin/bundles');
+      if (res.ok) {
+        const data = await res.json();
+        setBundles(data);
+      }
+    } catch (err) {
+      console.error('Failed to fetch bundles:', err);
+    } finally {
+      setBundlesLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchBundles();
+  }, [fetchBundles]);
 
   useEffect(() => {
     const checkAuth = async () => {
-      // Admin preview mode — skip auth, show purchased view
       if (isAdminPreview) {
         setAuthState('purchased');
         return;
       }
 
       // TODO: Wire to Supabase auth
-      // For development: default to 'purchased' so we can see the full UI
-      // Replace this with real auth check:
-      // const { data: { user } } = await supabase.auth.getUser();
-      // if (!user) {
-      //   setAuthState('unauthenticated');
-      //   return;
-      // }
-      // const { data: purchase } = await supabase
-      //   .from('purchases')
-      //   .select('id')
-      //   .eq('email', user.email)
-      //   .single();
-      // setAuthState(purchase ? 'purchased' : 'no-purchase');
-
       setAuthState('purchased');
     };
 
@@ -84,7 +113,7 @@ function DashboardContent() {
     console.log(`Download PDF for bundle: ${bundleId}`);
   };
 
-  if (authState === 'loading') {
+  if (authState === 'loading' || bundlesLoading) {
     return (
       <>
         <Navbar />
@@ -157,15 +186,13 @@ function DashboardContent() {
                 Preview Available
               </h1>
               <p className="text-cz-text-muted">
-                See what's included in each bundle. Purchase to unlock all videos and downloads.
+                See what&apos;s included in each bundle. Purchase to unlock all videos and downloads.
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {bundles.map((bundle) => {
-                const colors =
-                  skillColorMap[bundle.skillNum as keyof typeof skillColorMap] ||
-                  { text: 'text-cz-teal', bg: 'bg-cz-teal/10' };
+                const colors = skillColorMap[bundle.skill_num] || { text: 'text-cz-teal', bg: 'bg-cz-teal/10' };
                 const isExpanded = expandedBundles.has(bundle.slug);
 
                 return (
@@ -177,7 +204,7 @@ function DashboardContent() {
                       <div className="h-full bg-cz-bg-card border border-cz-border hover:border-cz-text-muted rounded-xl p-6 transition-all hover:bg-cz-bg-card-hover">
                         <div className="flex items-start justify-between mb-4">
                           <div className={`px-3 py-1 rounded-full text-xs font-mono ${colors.text} ${colors.bg}`}>
-                            {bundle.skillNum}
+                            {bundle.skill_num}
                           </div>
                           <span className="text-cz-text-muted transition-transform" style={{
                             transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
@@ -185,16 +212,11 @@ function DashboardContent() {
                             ↓
                           </span>
                         </div>
-
                         <h2 className="text-xl font-display font-bold text-cz-text mb-2">
                           {bundle.name}
                         </h2>
-
                         <div className="flex items-center gap-4 text-sm text-cz-text-muted">
                           <span>{bundle.sessions.length} sessions</span>
-                          <div className="flex-1 h-2 bg-cz-border rounded-full overflow-hidden">
-                            <div className="h-full bg-cz-accent w-1/4"></div>
-                          </div>
                         </div>
                       </div>
                     </button>
@@ -202,7 +224,7 @@ function DashboardContent() {
                     {isExpanded && (
                       <div className="mt-4 bg-cz-bg-card border border-cz-border rounded-xl p-6 space-y-6">
                         {bundle.sessions.map((session) => (
-                          <div key={session.number} className="border-b border-cz-border pb-6 last:border-b-0 last:pb-0">
+                          <div key={session.id} className="border-b border-cz-border pb-6 last:border-b-0 last:pb-0">
                             <div className="mb-4 aspect-video bg-cz-bg rounded-lg border border-cz-border flex items-center justify-center relative overflow-hidden">
                               <div className="absolute inset-0 bg-gradient-to-br from-cz-accent/10 to-cz-teal/10" />
                               <div className="relative z-10 text-center">
@@ -212,35 +234,14 @@ function DashboardContent() {
                                 </p>
                               </div>
                             </div>
-
                             <div className="mb-4">
-                              <h3 className="text-lg font-semibold text-cz-text mb-2">
-                                {session.title}
-                              </h3>
-                              <p className="text-cz-text-muted mb-3">
-                                {session.description}
-                              </p>
+                              <h3 className="text-lg font-semibold text-cz-text mb-2">{session.title}</h3>
+                              <p className="text-cz-text-muted mb-3">{session.description}</p>
                               <div className="flex flex-wrap gap-4 text-sm text-cz-text-muted font-mono">
                                 <span>with {session.creator}</span>
-                                <span>{session.date}</span>
+                                {session.date && <span>{session.date}</span>}
                               </div>
                             </div>
-
-                            {(session.notesTitle || session.notesContent) && (
-                              <div className="mb-4 bg-cz-bg rounded-lg border border-cz-border p-5">
-                                {session.notesTitle && (
-                                  <h4 className="text-lg font-display font-bold text-cz-text mb-3">
-                                    {session.notesTitle}
-                                  </h4>
-                                )}
-                                {session.notesContent && (
-                                  <div className="text-cz-text-muted text-sm leading-relaxed whitespace-pre-line">
-                                    {session.notesContent}
-                                  </div>
-                                )}
-                              </div>
-                            )}
-
                             <button disabled className="px-4 py-2 bg-cz-text-dim/20 text-cz-text-dim rounded-lg cursor-not-allowed text-sm font-semibold">
                               ↓ Download PDF — Purchase required
                             </button>
@@ -267,6 +268,7 @@ function DashboardContent() {
     );
   }
 
+  // Purchased state
   return (
     <>
       <Navbar />
@@ -301,9 +303,7 @@ function DashboardContent() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {bundles.map((bundle) => {
-              const colors =
-                skillColorMap[bundle.skillNum as keyof typeof skillColorMap] ||
-                { text: 'text-cz-teal', bg: 'bg-cz-teal/10' };
+              const colors = skillColorMap[bundle.skill_num] || { text: 'text-cz-teal', bg: 'bg-cz-teal/10' };
               const isExpanded = expandedBundles.has(bundle.slug);
 
               return (
@@ -315,7 +315,7 @@ function DashboardContent() {
                     <div className="h-full bg-cz-bg-card border border-cz-border hover:border-cz-text-muted rounded-xl p-6 transition-all hover:bg-cz-bg-card-hover">
                       <div className="flex items-start justify-between mb-4">
                         <div className={`px-3 py-1 rounded-full text-xs font-mono ${colors.text} ${colors.bg}`}>
-                          {bundle.skillNum}
+                          {bundle.skill_num}
                         </div>
                         <span className="text-cz-text-muted transition-transform" style={{
                           transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
@@ -323,16 +323,11 @@ function DashboardContent() {
                           ↓
                         </span>
                       </div>
-
                       <h2 className="text-xl font-display font-bold text-cz-text mb-2">
                         {bundle.name}
                       </h2>
-
                       <div className="flex items-center gap-4 text-sm text-cz-text-muted">
                         <span>{bundle.sessions.length} sessions</span>
-                        <div className="flex-1 h-2 bg-cz-border rounded-full overflow-hidden">
-                          <div className="h-full bg-cz-accent w-1/4"></div>
-                        </div>
                       </div>
                     </div>
                   </button>
@@ -340,11 +335,11 @@ function DashboardContent() {
                   {isExpanded && (
                     <div className="mt-4 bg-cz-bg-card border border-cz-border rounded-xl p-6 space-y-6">
                       {bundle.sessions.map((session) => (
-                        <div key={session.number} className="border-b border-cz-border pb-6 last:border-b-0 last:pb-0">
+                        <div key={session.id} className="border-b border-cz-border pb-6 last:border-b-0 last:pb-0">
                           <div className="mb-4 aspect-video bg-cz-bg rounded-lg border border-cz-border flex items-center justify-center relative overflow-hidden">
-                            {session.videoId ? (
+                            {session.video_url ? (
                               <iframe
-                                src={`https://iframe.mediadelivery.net/embed/bundly/${session.videoId}?autoplay=false&preload=false`}
+                                src={session.video_url}
                                 allow="accelerometer; gyroscope; encrypted-media; picture-in-picture"
                                 allowFullScreen
                                 className="w-full h-full"
@@ -371,22 +366,22 @@ function DashboardContent() {
                             </p>
                             <div className="flex flex-wrap gap-4 text-sm text-cz-text-muted font-mono">
                               <span>with {session.creator}</span>
-                              <span>{session.date}</span>
+                              {session.date && <span>{session.date}</span>}
                               {session.duration && <span>{session.duration}</span>}
                             </div>
                           </div>
 
-                          {(session.notesTitle || session.notesContent) && (
+                          {(session.notes_title || session.notes_content) && (
                             <div className="mb-4 bg-cz-bg rounded-lg border border-cz-border p-5">
-                              {session.notesTitle && (
+                              {session.notes_title && (
                                 <h4 className="text-lg font-display font-bold text-cz-text mb-3">
-                                  {session.notesTitle}
+                                  {session.notes_title}
                                 </h4>
                               )}
-                              {session.notesContent && (
+                              {session.notes_content && (
                                 <div
                                   className="text-cz-text-muted text-sm leading-relaxed prose prose-invert prose-sm max-w-none [&_h2]:text-xl [&_h2]:font-display [&_h2]:font-bold [&_h2]:text-cz-text [&_h2]:mt-4 [&_h2]:mb-2 [&_h3]:text-lg [&_h3]:font-display [&_h3]:font-bold [&_h3]:text-cz-text [&_h3]:mt-3 [&_h3]:mb-2 [&_p]:mb-3 [&_b]:text-cz-text [&_strong]:text-cz-text"
-                                  dangerouslySetInnerHTML={{ __html: session.notesContent }}
+                                  dangerouslySetInnerHTML={{ __html: session.notes_content }}
                                 />
                               )}
                             </div>

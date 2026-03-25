@@ -1,28 +1,55 @@
 'use client';
 
-import { useState, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
-import { bundles } from '@/lib/bundles';
-import type { Bundle, Session } from '@/lib/bundles';
 
-const skillColorMap = {
+const skillColorMap: Record<string, { text: string; bg: string }> = {
   Create: { text: 'text-cz-coral', bg: 'bg-cz-coral/10' },
   Build: { text: 'text-cz-teal', bg: 'bg-cz-teal/10' },
   Think: { text: 'text-cz-teal', bg: 'bg-cz-teal/10' },
   Lead: { text: 'text-cz-accent', bg: 'bg-cz-accent/10' },
 };
 
+interface DbSession {
+  id: string;
+  bundle_id: string;
+  number: number;
+  creator: string;
+  date: string | null;
+  title: string;
+  description: string | null;
+  video_url: string | null;
+  duration: string | null;
+  notes_title: string | null;
+  notes_content: string | null;
+  sort_order: number;
+  is_active: boolean;
+}
+
+interface DbBundle {
+  id: string;
+  slug: string;
+  skill_num: string;
+  name: string;
+  tagline: string | null;
+  description: string | null;
+  sort_order: number;
+  is_active: boolean;
+  sessions: DbSession[];
+}
+
 function SessionRow({
-  bundle,
   session,
+  onSaved,
 }: {
-  bundle: Bundle;
-  session: Session;
+  session: DbSession;
+  onSaved: () => void;
 }) {
-  const [videoUrl, setVideoUrl] = useState(session.videoId || '');
-  const [notesTitle, setNotesTitle] = useState(session.notesTitle || '');
-  const [notesContent, setNotesContent] = useState(session.notesContent || '');
+  const [videoUrl, setVideoUrl] = useState(session.video_url || '');
+  const [notesTitle, setNotesTitle] = useState(session.notes_title || '');
+  const [notesContent, setNotesContent] = useState(session.notes_content || '');
   const [isSaving, setIsSaving] = useState(false);
+  const [saveStatus, setSaveStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const editorRef = useRef<HTMLDivElement>(null);
 
   const handleEditorInput = useCallback(() => {
@@ -31,16 +58,32 @@ function SessionRow({
     }
   }, []);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     setIsSaving(true);
-    console.log(`Saving session ${bundle.name} - Session ${session.number}:`, {
-      videoUrl,
-      notesTitle,
-      notesContent,
-      bundleSlug: bundle.slug,
-      sessionNumber: session.number,
-    });
-    setTimeout(() => setIsSaving(false), 500);
+    setSaveStatus('idle');
+    try {
+      const res = await fetch(`/api/admin/sessions/${session.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          video_url: videoUrl || null,
+          notes_title: notesTitle || null,
+          notes_content: notesContent || null,
+        }),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Failed to save');
+      }
+      setSaveStatus('success');
+      onSaved();
+      setTimeout(() => setSaveStatus('idle'), 2000);
+    } catch (err) {
+      console.error('Save failed:', err);
+      setSaveStatus('error');
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -54,7 +97,7 @@ function SessionRow({
             {session.title}
           </h4>
           <p className="text-sm text-cz-text-muted mt-1">
-            {session.creator} • {session.date}
+            {session.creator} {session.date ? `• ${session.date}` : ''}
           </p>
         </div>
 
@@ -77,7 +120,7 @@ function SessionRow({
             disabled={isSaving}
             className="flex-1 px-3 py-2 bg-cz-accent hover:bg-cz-accent-hover text-cz-bg font-body font-semibold rounded-lg transition-colors disabled:opacity-50 text-sm"
           >
-            {isSaving ? 'Saving...' : 'Save'}
+            {isSaving ? 'Saving...' : saveStatus === 'success' ? 'Saved!' : saveStatus === 'error' ? 'Error — Retry' : 'Save'}
           </button>
           <div className={`w-3 h-3 rounded-full ${videoUrl ? 'bg-cz-teal' : 'bg-cz-text-dim'}`} />
         </div>
@@ -156,48 +199,10 @@ function SessionRow({
   );
 }
 
-function BundleCard({ bundle }: { bundle: Bundle }) {
+function BundleCard({ bundle, onRefresh }: { bundle: DbBundle; onRefresh: () => void }) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [isActive, setIsActive] = useState(true);
-  const [pdfFile, setPdfFile] = useState<File | null>(null);
-  const [uploadedPdfs, setUploadedPdfs] = useState<
-    { name: string; size: number; id: string }[]
-  >([]);
 
-  const colors = skillColorMap[bundle.skillNum as keyof typeof skillColorMap];
-
-  const handlePdfUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setPdfFile(file);
-      console.log(`PDF selected for ${bundle.name}:`, {
-        fileName: file.name,
-        size: file.size,
-        bundleSlug: bundle.slug,
-      });
-
-      const newPdf = {
-        name: file.name,
-        size: Math.round(file.size / 1024),
-        id: Math.random().toString(36).slice(2, 9),
-      };
-      setUploadedPdfs([...uploadedPdfs, newPdf]);
-      setPdfFile(null);
-    }
-  };
-
-  const handleDeletePdf = (id: string) => {
-    console.log(`Deleting PDF from ${bundle.name}:`, id);
-    setUploadedPdfs(uploadedPdfs.filter((pdf) => pdf.id !== id));
-  };
-
-  const handleStatusToggle = () => {
-    setIsActive(!isActive);
-    console.log(`Toggling status for ${bundle.name}:`, {
-      isActive: !isActive,
-      bundleSlug: bundle.slug,
-    });
-  };
+  const colors = skillColorMap[bundle.skill_num] || { text: 'text-cz-teal', bg: 'bg-cz-teal/10' };
 
   return (
     <div className="bg-cz-bg-card border border-cz-border rounded-lg overflow-hidden">
@@ -208,7 +213,7 @@ function BundleCard({ bundle }: { bundle: Bundle }) {
         <div className="flex items-center gap-4 flex-1 text-left">
           <div>
             <div className={`inline-block px-3 py-1 rounded-full text-xs font-mono ${colors.text} ${colors.bg} mb-2`}>
-              {bundle.skillNum}
+              {bundle.skill_num}
             </div>
             <h3 className="text-lg font-display font-bold text-cz-text">
               {bundle.name}
@@ -220,23 +225,7 @@ function BundleCard({ bundle }: { bundle: Bundle }) {
         </div>
 
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2">
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleStatusToggle();
-              }}
-              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                isActive ? 'bg-cz-teal' : 'bg-cz-text-dim'
-              }`}
-            >
-              <span
-                className={`inline-block h-4 w-4 transform rounded-full bg-cz-bg transition-transform ${
-                  isActive ? 'translate-x-6' : 'translate-x-1'
-                }`}
-              />
-            </button>
-          </div>
+          <div className={`w-3 h-3 rounded-full ${bundle.is_active ? 'bg-cz-teal' : 'bg-cz-text-dim'}`} />
           <svg
             className={`w-5 h-5 text-cz-text-muted transition-transform ${
               isExpanded ? 'rotate-180' : ''
@@ -263,103 +252,8 @@ function BundleCard({ bundle }: { bundle: Bundle }) {
             </h4>
             <div className="space-y-4">
               {bundle.sessions.map((session) => (
-                <SessionRow key={session.number} bundle={bundle} session={session} />
+                <SessionRow key={session.id} session={session} onSaved={onRefresh} />
               ))}
-            </div>
-          </div>
-
-          <div className="border-t border-cz-border pt-6">
-            <h4 className="text-sm font-mono text-cz-teal uppercase tracking-wider mb-4">
-              Resources
-            </h4>
-
-            <div className="space-y-4">
-              <div>
-                <label className="block text-xs font-mono text-cz-text-muted mb-3">
-                  Upload PDF
-                </label>
-                <input
-                  type="file"
-                  accept=".pdf"
-                  onChange={handlePdfUpload}
-                  className="block w-full text-sm text-cz-text-muted
-                    file:mr-4 file:py-2 file:px-4
-                    file:rounded-lg file:border-0
-                    file:text-sm file:font-semibold
-                    file:bg-cz-accent file:text-cz-bg
-                    hover:file:bg-cz-accent-hover cursor-pointer"
-                />
-              </div>
-
-              {uploadedPdfs.length > 0 && (
-                <div>
-                  <p className="text-xs font-mono text-cz-text-muted mb-2">
-                    {uploadedPdfs.length} file{uploadedPdfs.length !== 1 ? 's' : ''}
-                  </p>
-                  <div className="space-y-2">
-                    {uploadedPdfs.map((pdf) => (
-                      <div
-                        key={pdf.id}
-                        className="flex items-center justify-between p-3 rounded-lg bg-cz-bg-card border border-cz-border/50"
-                      >
-                        <div className="flex items-center gap-2 flex-1 min-w-0">
-                          <svg
-                            className="w-4 h-4 text-cz-accent flex-shrink-0"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                          >
-                            <path d="M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
-                            <path d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H10a1 1 0 001-1V5a1 1 0 00-1-1H3zM14 7a1 1 0 00-1 1v6.05A2.5 2.5 0 0115.95 16H17a1 1 0 001-1v-5a1 1 0 00-.293-.707l-2-2A1 1 0 0015 7h-1z" />
-                          </svg>
-                          <div className="truncate">
-                            <p className="text-sm text-cz-text truncate">
-                              {pdf.name}
-                            </p>
-                            <p className="text-xs text-cz-text-muted">
-                              {pdf.size} KB
-                            </p>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-2 ml-2 flex-shrink-0">
-                          <button className="p-1 text-cz-text-muted hover:text-cz-teal transition-colors">
-                            <svg
-                              className="w-4 h-4"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                              />
-                            </svg>
-                          </button>
-                          <button
-                            onClick={() => handleDeletePdf(pdf.id)}
-                            className="p-1 text-cz-text-muted hover:text-cz-coral transition-colors"
-                          >
-                            <svg
-                              className="w-4 h-4"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                              />
-                            </svg>
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         </div>
@@ -369,6 +263,37 @@ function BundleCard({ bundle }: { bundle: Bundle }) {
 }
 
 export default function BundlesPage() {
+  const [bundles, setBundles] = useState<DbBundle[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchBundles = useCallback(async () => {
+    try {
+      const res = await fetch('/api/admin/bundles');
+      if (!res.ok) throw new Error('Failed to fetch bundles');
+      const data = await res.json();
+      setBundles(data);
+      setError(null);
+    } catch (err) {
+      console.error('Failed to fetch bundles:', err);
+      setError('Failed to load bundles from database. Have you run the SQL migrations?');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchBundles();
+  }, [fetchBundles]);
+
+  if (loading) {
+    return (
+      <div className="max-w-6xl mx-auto">
+        <p className="text-cz-text-muted">Loading bundles from database...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-6xl mx-auto">
       <div className="mb-8 flex items-center justify-between">
@@ -396,11 +321,23 @@ export default function BundlesPage() {
         </div>
       </div>
 
+      {error && (
+        <div className="mb-6 bg-cz-coral/10 border border-cz-coral/30 rounded-lg px-4 py-3">
+          <p className="text-sm text-cz-coral">{error}</p>
+        </div>
+      )}
+
       <div className="space-y-4">
         {bundles.map((bundle) => (
-          <BundleCard key={bundle.slug} bundle={bundle} />
+          <BundleCard key={bundle.id} bundle={bundle} onRefresh={fetchBundles} />
         ))}
       </div>
+
+      {!error && bundles.length === 0 && (
+        <div className="text-center py-12">
+          <p className="text-cz-text-muted">No bundles found. Run the SQL migrations to seed the initial data.</p>
+        </div>
+      )}
     </div>
   );
 }
