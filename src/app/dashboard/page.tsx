@@ -372,16 +372,16 @@ function DashboardContent() {
                           </div>
 
                           {(session.notes_title || session.notes_content) && (
-                            <div className="mb-4 bg-cz-bg rounded-lg border border-cz-border p-5">
+                            <div className="mb-4 bg-white rounded-lg border border-cz-border p-5">
                               {session.notes_title && (
-                                <h4 className="text-lg font-display font-bold text-cz-text mb-3">
+                                <h4 className="text-lg font-display font-bold text-gray-900 mb-3">
                                   {session.notes_title}
                                 </h4>
                               )}
                               {session.notes_content && (
                                 <div
-                                  className="text-sm leading-relaxed prose prose-invert prose-sm max-w-none [&_*]:!color-inherit [&_h2]:text-xl [&_h2]:font-display [&_h2]:font-bold [&_h2]:!text-white [&_h2]:mt-4 [&_h2]:mb-2 [&_h3]:text-lg [&_h3]:font-display [&_h3]:font-bold [&_h3]:!text-white [&_h3]:mt-3 [&_h3]:mb-2 [&_p]:!text-[#a0b4b6] [&_p]:mb-3 [&_b]:!text-white [&_strong]:!text-white [&_span]:!text-[#a0b4b6]"
-                                  style={{ color: '#a0b4b6' }}
+                                  className="text-sm leading-relaxed prose prose-sm max-w-none"
+                                  style={{ color: '#111' }}
                                   dangerouslySetInnerHTML={{ __html: session.notes_content }}
                                 />
                               )}
