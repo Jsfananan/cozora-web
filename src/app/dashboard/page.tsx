@@ -380,7 +380,8 @@ function DashboardContent() {
                               )}
                               {session.notes_content && (
                                 <div
-                                  className="text-cz-text-muted text-sm leading-relaxed prose prose-invert prose-sm max-w-none [&_h2]:text-xl [&_h2]:font-display [&_h2]:font-bold [&_h2]:text-cz-text [&_h2]:mt-4 [&_h2]:mb-2 [&_h3]:text-lg [&_h3]:font-display [&_h3]:font-bold [&_h3]:text-cz-text [&_h3]:mt-3 [&_h3]:mb-2 [&_p]:mb-3 [&_b]:text-cz-text [&_strong]:text-cz-text"
+                                  className="text-sm leading-relaxed prose prose-invert prose-sm max-w-none [&_*]:!color-inherit [&_h2]:text-xl [&_h2]:font-display [&_h2]:font-bold [&_h2]:!text-white [&_h2]:mt-4 [&_h2]:mb-2 [&_h3]:text-lg [&_h3]:font-display [&_h3]:font-bold [&_h3]:!text-white [&_h3]:mt-3 [&_h3]:mb-2 [&_p]:!text-[#a0b4b6] [&_p]:mb-3 [&_b]:!text-white [&_strong]:!text-white [&_span]:!text-[#a0b4b6]"
+                                  style={{ color: '#a0b4b6' }}
                                   dangerouslySetInnerHTML={{ __html: session.notes_content }}
                                 />
                               )}
