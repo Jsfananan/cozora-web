@@ -357,7 +357,7 @@ function DashboardContent() {
                             <span className="text-sm text-cz-text">{bundle.bundle_pdfs[0].file_name}</span>
                           </div>
                           <a
-                            href={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/bundle-content/${bundle.bundle_pdfs[0].storage_path}`}
+                            href={`/api/content/pdf/download?path=${encodeURIComponent(bundle.bundle_pdfs[0].storage_path)}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="px-4 py-2 bg-cz-accent/10 hover:bg-cz-accent/20 text-cz-accent rounded-lg transition-colors text-sm font-semibold"
