@@ -44,6 +44,7 @@ export interface BundlePdf {
 
 export interface BundleWithSessions extends Bundle {
   sessions: Session[];
+  bundle_pdfs: BundlePdf[];
 }
 
 export interface NewBundle {
@@ -121,11 +122,13 @@ export async function getBundlesWithSessions(): Promise<BundleWithSessions[]> {
     .select(
       `
       *,
-      sessions (*)
+      sessions (*),
+      bundle_pdfs (*)
     `
     )
     .order("sort_order", { ascending: true })
-    .order("sort_order", { ascending: true, referencedTable: "sessions" });
+    .order("sort_order", { ascending: true, referencedTable: "sessions" })
+    .order("created_at", { ascending: false, referencedTable: "bundle_pdfs" });
 
   if (error) {
     console.error("[getBundlesWithSessions] Query failed:", error.message);

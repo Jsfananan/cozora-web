@@ -43,3 +43,34 @@ export async function PUT(
     );
   }
 }
+
+export async function DELETE(
+  _request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params;
+    const supabase = createServiceClient();
+
+    const { error } = await supabase
+      .from('sessions')
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      console.error('[DELETE /api/admin/sessions] Delete failed:', error.message);
+      return NextResponse.json(
+        { error: `Failed to delete session: ${error.message}` },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error('[DELETE /api/admin/sessions]', error);
+    return NextResponse.json(
+      { error: 'Failed to delete session' },
+      { status: 500 }
+    );
+  }
+}

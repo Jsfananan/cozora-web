@@ -26,6 +26,15 @@ interface DbSession {
   is_active: boolean;
 }
 
+interface DbBundlePdf {
+  id: string;
+  bundle_id: string;
+  file_name: string;
+  storage_path: string;
+  file_size: number | null;
+  created_at: string;
+}
+
 interface DbBundle {
   id: string;
   slug: string;
@@ -36,6 +45,7 @@ interface DbBundle {
   sort_order: number;
   is_active: boolean;
   sessions: DbSession[];
+  bundle_pdfs: DbBundlePdf[];
 }
 
 function SessionRow({
@@ -56,6 +66,7 @@ function SessionRow({
   const [editDate, setEditDate] = useState(session.date || '');
   const [editDescription, setEditDescription] = useState(session.description || '');
   const [isSavingDetails, setIsSavingDetails] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const editorRef = useRef<HTMLDivElement>(null);
 
   const handleEditorInput = useCallback(() => {
@@ -89,6 +100,20 @@ function SessionRow({
       setSaveStatus('error');
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!window.confirm(`Delete session "${session.title}"? This cannot be undone.`)) return;
+    setIsDeleting(true);
+    try {
+      const res = await fetch(`/api/admin/sessions/${session.id}`, { method: 'DELETE' });
+      if (!res.ok) throw new Error('Failed to delete');
+      onSaved();
+    } catch (err) {
+      console.error('Delete failed:', err);
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -207,6 +232,14 @@ function SessionRow({
             className="flex-1 px-3 py-2 bg-cz-accent hover:bg-cz-accent-hover text-cz-bg font-body font-semibold rounded-lg transition-colors disabled:opacity-50 text-sm"
           >
             {isSaving ? 'Saving...' : saveStatus === 'success' ? 'Saved!' : saveStatus === 'error' ? 'Error — Retry' : 'Save'}
+          </button>
+          <button
+            onClick={handleDelete}
+            disabled={isDeleting}
+            className="px-3 py-2 bg-cz-coral/10 hover:bg-cz-coral/20 text-cz-coral rounded-lg transition-colors disabled:opacity-50 text-sm font-semibold"
+            title="Delete session"
+          >
+            {isDeleting ? '...' : '✕'}
           </button>
           <div className={`w-3 h-3 rounded-full ${videoUrl ? 'bg-cz-teal' : 'bg-cz-text-dim'}`} />
         </div>
@@ -389,6 +422,47 @@ function AddSessionForm({ bundle, onSaved }: { bundle: DbBundle; onSaved: () => 
 function BundleCard({ bundle, onRefresh }: { bundle: DbBundle; onRefresh: () => void }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [isUploadingPdf, setIsUploadingPdf] = useState(false);
+  const [isDeletingPdf, setIsDeletingPdf] = useState(false);
+
+  const handlePdfUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setIsUploadingPdf(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      const res = await fetch(`/api/admin/bundles/${bundle.id}/pdf`, {
+        method: 'POST',
+        body: formData,
+      });
+      if (!res.ok) throw new Error('Upload failed');
+      onRefresh();
+    } catch (err) {
+      console.error('PDF upload failed:', err);
+    } finally {
+      setIsUploadingPdf(false);
+      e.target.value = '';
+    }
+  };
+
+  const handlePdfDelete = async (pdfId: string) => {
+    if (!window.confirm('Delete this PDF?')) return;
+    setIsDeletingPdf(true);
+    try {
+      const res = await fetch(`/api/admin/bundles/${bundle.id}/pdf`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pdfId }),
+      });
+      if (!res.ok) throw new Error('Delete failed');
+      onRefresh();
+    } catch (err) {
+      console.error('PDF delete failed:', err);
+    } finally {
+      setIsDeletingPdf(false);
+    }
+  };
 
   const colors = skillColorMap[bundle.skill_num] || { text: 'text-cz-teal', bg: 'bg-cz-teal/10' };
 
@@ -459,6 +533,49 @@ function BundleCard({ bundle, onRefresh }: { bundle: DbBundle; onRefresh: () => 
               >
                 + Add Session
               </button>
+            )}
+          </div>
+
+          {/* Bundle PDF */}
+          <div className="border-t border-cz-border pt-6">
+            <h4 className="text-sm font-mono text-cz-teal uppercase tracking-wider mb-4">
+              Bundle PDF
+            </h4>
+            {bundle.bundle_pdfs?.length > 0 ? (
+              <div className="flex items-center justify-between p-3 rounded-lg bg-cz-bg-card border border-cz-border/50">
+                <div className="flex items-center gap-2 min-w-0">
+                  <span className="text-cz-accent text-sm">PDF</span>
+                  <span className="text-sm text-cz-text truncate">{bundle.bundle_pdfs[0].file_name}</span>
+                  {bundle.bundle_pdfs[0].file_size && (
+                    <span className="text-xs text-cz-text-muted">
+                      ({(bundle.bundle_pdfs[0].file_size / 1024 / 1024).toFixed(1)} MB)
+                    </span>
+                  )}
+                </div>
+                <button
+                  onClick={() => handlePdfDelete(bundle.bundle_pdfs[0].id)}
+                  disabled={isDeletingPdf}
+                  className="px-3 py-1 text-xs text-cz-coral hover:bg-cz-coral/10 rounded-lg transition-colors disabled:opacity-50"
+                >
+                  {isDeletingPdf ? '...' : 'Delete'}
+                </button>
+              </div>
+            ) : (
+              <div>
+                <input
+                  type="file"
+                  accept=".pdf"
+                  onChange={handlePdfUpload}
+                  disabled={isUploadingPdf}
+                  className="block w-full text-sm text-cz-text-muted
+                    file:mr-4 file:py-2 file:px-4
+                    file:rounded-lg file:border-0
+                    file:text-sm file:font-semibold
+                    file:bg-cz-teal file:text-cz-bg
+                    hover:file:bg-cz-teal/80 cursor-pointer disabled:opacity-50"
+                />
+                {isUploadingPdf && <p className="text-xs text-cz-text-muted mt-2">Uploading...</p>}
+              </div>
             )}
           </div>
         </div>

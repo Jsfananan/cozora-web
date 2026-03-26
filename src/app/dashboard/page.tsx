@@ -22,6 +22,15 @@ interface DbSession {
   is_active: boolean;
 }
 
+interface DbBundlePdf {
+  id: string;
+  bundle_id: string;
+  file_name: string;
+  storage_path: string;
+  file_size: number | null;
+  created_at: string;
+}
+
 interface DbBundle {
   id: string;
   slug: string;
@@ -32,6 +41,7 @@ interface DbBundle {
   sort_order: number;
   is_active: boolean;
   sessions: DbSession[];
+  bundle_pdfs: DbBundlePdf[];
 }
 
 const skillColorMap: Record<string, { text: string; bg: string }> = {
@@ -117,11 +127,6 @@ function DashboardContent() {
       next.add(sessionId);
     }
     setExpandedSessions(next);
-  };
-
-  const handleDownloadPDF = (bundleId: string) => {
-    // TODO: Call /api/content/pdf?bundleId=xxx to download PDF
-    console.log(`Download PDF for bundle: ${bundleId}`);
   };
 
   if (authState === 'loading' || bundlesLoading) {
@@ -234,6 +239,15 @@ function DashboardContent() {
 
                     {isExpanded && (
                       <div className="mt-4 bg-cz-bg-card border border-cz-border rounded-xl p-6 space-y-6">
+                        {bundle.bundle_pdfs?.length > 0 && (
+                          <div className="bg-cz-teal/5 border border-cz-teal/20 rounded-lg p-4 flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <span className="text-cz-text-dim">🔒</span>
+                              <span className="text-sm text-cz-text-muted">{bundle.bundle_pdfs[0].file_name}</span>
+                            </div>
+                            <span className="text-xs text-cz-text-dim font-mono">Purchase required</span>
+                          </div>
+                        )}
                         {bundle.sessions.map((session) => (
                           <div key={session.id} className="border-b border-cz-border pb-6 last:border-b-0 last:pb-0">
                             <div className="mb-4 aspect-video bg-cz-bg rounded-lg border border-cz-border flex items-center justify-center relative overflow-hidden">
@@ -245,7 +259,7 @@ function DashboardContent() {
                                 </p>
                               </div>
                             </div>
-                            <div className="mb-4">
+                            <div>
                               <h3 className="text-lg font-semibold text-cz-text mb-2">{session.title}</h3>
                               <p className="text-cz-text-muted mb-3">{session.description}</p>
                               <div className="flex flex-wrap gap-4 text-sm text-cz-text-muted font-mono">
@@ -253,9 +267,6 @@ function DashboardContent() {
                                 {session.date && <span>{session.date}</span>}
                               </div>
                             </div>
-                            <button disabled className="px-4 py-2 bg-cz-text-dim/20 text-cz-text-dim rounded-lg cursor-not-allowed text-sm font-semibold">
-                              ↓ Download PDF — Purchase required
-                            </button>
                           </div>
                         ))}
                       </div>
@@ -339,6 +350,22 @@ function DashboardContent() {
                   {/* Sessions list */}
                   {isBundleExpanded && (
                     <div className="border-t border-cz-border divide-y divide-cz-border/50">
+                      {bundle.bundle_pdfs?.length > 0 && (
+                        <div className="px-6 py-4 bg-cz-accent/5 flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <span className="text-cz-accent font-semibold text-sm">PDF</span>
+                            <span className="text-sm text-cz-text">{bundle.bundle_pdfs[0].file_name}</span>
+                          </div>
+                          <a
+                            href={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/bundle-content/${bundle.bundle_pdfs[0].storage_path}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="px-4 py-2 bg-cz-accent/10 hover:bg-cz-accent/20 text-cz-accent rounded-lg transition-colors text-sm font-semibold"
+                          >
+                            Download PDF
+                          </a>
+                        </div>
+                      )}
                       {bundle.sessions.map((session) => {
                         const isSessionExpanded = expandedSessions.has(session.id);
                         return (
@@ -406,13 +433,6 @@ function DashboardContent() {
                                   </div>
                                 )}
 
-                                {/* PDF */}
-                                <button
-                                  onClick={() => handleDownloadPDF(bundle.slug)}
-                                  className="px-4 py-2 bg-cz-accent/10 hover:bg-cz-accent/20 text-cz-accent rounded-lg transition-colors text-sm font-semibold"
-                                >
-                                  ↓ Download PDF
-                                </button>
                               </div>
                             )}
                           </div>
