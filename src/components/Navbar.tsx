@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [bannerDismissed, setBannerDismissed] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -15,128 +16,178 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav
-      className={`fixed w-full top-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? 'bg-cz-bg/85 backdrop-blur-xl border-b border-cz-border'
-          : 'bg-transparent'
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          <a
-            href="#"
-            className="text-2xl font-display font-bold text-cz-text"
-          >
-            cozora
-          </a>
-
-          <div className="hidden md:flex items-center gap-8">
-            <a
-              href="#skill-sets"
-              className="text-cz-text-muted hover:text-cz-text transition-colors"
+    <>
+      {/* Substack migration banner */}
+      {!bannerDismissed && (
+        <div className="fixed top-0 left-0 right-0 z-60 bg-gradient-to-r from-cz-deep-teal to-cz-deep-teal/80 border-b border-cz-teal/20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between gap-3">
+            <p className="text-sm text-cz-text font-body text-center flex-1">
+              <span className="hidden sm:inline">Cozora is now hosted on Substack! All workshops, interviews, and resources, directly on your favorite platform. </span>
+              <span className="sm:hidden">Cozora is now on Substack! </span>
+              <a
+                href="https://cozora.substack.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-cz-teal hover:text-cz-accent transition-colors underline underline-offset-2"
+              >
+                Find us at Cozora.substack.com
+              </a>
+            </p>
+            <button
+              onClick={() => setBannerDismissed(true)}
+              className="shrink-0 text-cz-text-muted hover:text-cz-text transition-colors p-1"
+              aria-label="Dismiss banner"
             >
-              Skill Sets
-            </a>
-            <a
-              href="#cz-schedule"
-              className="text-cz-text-muted hover:text-cz-text transition-colors"
-            >
-              Schedule
-            </a>
-            <a
-              href="#pricing"
-              className="text-cz-text-muted hover:text-cz-text transition-colors"
-            >
-              Pricing
-            </a>
-            <a
-              href="#about"
-              className="text-cz-text-muted hover:text-cz-text transition-colors"
-            >
-              About
-            </a>
-            <a
-              href="https://cozora.substack.com/subscribe"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-5 py-2 bg-cz-accent hover:bg-cz-accent-hover text-cz-bg font-semibold rounded-lg transition-colors text-sm"
-            >
-              Subscribe
-            </a>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
           </div>
-
-          <button
-            className="md:hidden"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label="Toggle menu"
-          >
-            <svg
-              className="w-6 h-6 text-cz-text"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              {isMobileMenuOpen ? (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              ) : (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              )}
-            </svg>
-          </button>
         </div>
+      )}
 
-        {isMobileMenuOpen && (
-          <div className="md:hidden pb-4 space-y-3">
+      <nav
+        className={`fixed w-full z-50 transition-all duration-300 ${
+          bannerDismissed ? 'top-0' : 'top-[41px]'
+        } ${
+          isScrolled || isMobileMenuOpen
+            ? 'bg-cz-bg/95 backdrop-blur-xl border-b border-cz-border'
+            : 'bg-transparent'
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
             <a
-              href="#skill-sets"
-              className="block text-cz-text-muted hover:text-cz-text transition-colors"
-              onClick={() => setIsMobileMenuOpen(false)}
+              href="#"
+              className="text-2xl font-display font-bold text-cz-text"
             >
-              Skill Sets
+              cozora
             </a>
-            <a
-              href="#cz-schedule"
-              className="block text-cz-text-muted hover:text-cz-text transition-colors"
-              onClick={() => setIsMobileMenuOpen(false)}
+
+            <div className="hidden md:flex items-center gap-8">
+              <a
+                href="#skill-sets"
+                className="text-cz-text-muted hover:text-cz-text transition-colors"
+              >
+                Skill Sets
+              </a>
+              <a
+                href="#cz-schedule"
+                className="text-cz-text-muted hover:text-cz-text transition-colors"
+              >
+                Schedule
+              </a>
+              <a
+                href="#pricing"
+                className="text-cz-text-muted hover:text-cz-text transition-colors"
+              >
+                Pricing
+              </a>
+              <a
+                href="#about"
+                className="text-cz-text-muted hover:text-cz-text transition-colors"
+              >
+                About
+              </a>
+              <a
+                href="https://cozora.substack.com/premium-hub"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-cz-teal hover:text-cz-accent transition-colors font-medium text-sm"
+              >
+                Member Resources
+              </a>
+              <a
+                href="https://cozora.substack.com/subscribe"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-5 py-2 bg-cz-accent hover:bg-cz-accent-hover text-cz-bg font-semibold rounded-lg transition-colors text-sm"
+              >
+                Subscribe
+              </a>
+            </div>
+
+            <button
+              className="md:hidden"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="Toggle menu"
             >
-              Schedule
-            </a>
-            <a
-              href="#pricing"
-              className="block text-cz-text-muted hover:text-cz-text transition-colors"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Pricing
-            </a>
-            <a
-              href="#about"
-              className="block text-cz-text-muted hover:text-cz-text transition-colors"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              About
-            </a>
-            <a
-              href="https://cozora.substack.com/subscribe"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block w-full text-center px-5 py-2.5 bg-cz-accent hover:bg-cz-accent-hover text-cz-bg font-semibold rounded-lg transition-colors text-sm mt-2"
-            >
-              Subscribe
-            </a>
+              <svg
+                className="w-6 h-6 text-cz-text"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                {isMobileMenuOpen ? (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                ) : (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                )}
+              </svg>
+            </button>
           </div>
-        )}
-      </div>
-    </nav>
+
+          {isMobileMenuOpen && (
+            <div className="md:hidden pb-4 space-y-3">
+              <a
+                href="#skill-sets"
+                className="block text-cz-text-muted hover:text-cz-text transition-colors"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Skill Sets
+              </a>
+              <a
+                href="#cz-schedule"
+                className="block text-cz-text-muted hover:text-cz-text transition-colors"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Schedule
+              </a>
+              <a
+                href="#pricing"
+                className="block text-cz-text-muted hover:text-cz-text transition-colors"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Pricing
+              </a>
+              <a
+                href="#about"
+                className="block text-cz-text-muted hover:text-cz-text transition-colors"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                About
+              </a>
+              <a
+                href="https://cozora.substack.com/premium-hub"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block text-cz-teal hover:text-cz-accent transition-colors font-medium"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Member Resources
+              </a>
+              <a
+                href="https://cozora.substack.com/subscribe"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block w-full text-center px-5 py-2.5 bg-cz-accent hover:bg-cz-accent-hover text-cz-bg font-semibold rounded-lg transition-colors text-sm mt-2"
+              >
+                Subscribe
+              </a>
+            </div>
+          )}
+        </div>
+      </nav>
+    </>
   );
 }
