@@ -17,25 +17,25 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Substack migration banner */}
+      {/* Premium subscriber redirect banner */}
       {!bannerDismissed && (
-        <div className="fixed top-0 left-0 right-0 z-60 bg-gradient-to-r from-cz-deep-teal to-cz-deep-teal/80 border-b border-cz-teal/20">
+        <div className="fixed top-0 left-0 right-0 z-60 bg-gradient-to-r from-cz-accent/95 to-cz-accent/80 border-b border-cz-accent">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between gap-3">
-            <p className="text-sm text-cz-text font-body text-center flex-1">
-              <span className="hidden sm:inline">Cozora is now hosted on Substack! All workshops, interviews, and resources, directly on your favorite platform. </span>
-              <span className="sm:hidden">Cozora is now on Substack! </span>
+            <p className="text-sm text-cz-bg font-body text-center flex-1 font-medium">
+              <span className="hidden sm:inline">Already a Cozora Premium Subscriber? </span>
+              <span className="sm:hidden">Premium Subscriber? </span>
               <a
-                href="https://cozora.substack.com"
+                href="https://cozora.substack.com/p/premium-hub"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-semibold text-cz-teal hover:text-cz-accent transition-colors underline underline-offset-2"
+                className="font-bold text-cz-bg hover:text-cz-deep-teal transition-colors underline underline-offset-2"
               >
-                Find us at Cozora.substack.com
+                Start Here →
               </a>
             </p>
             <button
               onClick={() => setBannerDismissed(true)}
-              className="shrink-0 text-cz-text-muted hover:text-cz-text transition-colors p-1"
+              className="shrink-0 text-cz-bg/70 hover:text-cz-bg transition-colors p-1"
               aria-label="Dismiss banner"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

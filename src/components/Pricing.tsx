@@ -27,13 +27,29 @@ export default function Pricing() {
       className="py-20 px-4 sm:px-6 lg:px-8 relative"
     >
       <div className="max-w-7xl mx-auto">
-        <div className="mb-16 text-center animate-fade-up">
+        <div className="mb-10 text-center animate-fade-up">
           <h2 className="text-4xl sm:text-5xl font-display font-bold text-cz-text mb-4">
             Two Ways to Learn
           </h2>
           <p className="text-lg text-cz-text-muted max-w-xl mx-auto">
             Start with the bundles, or go all-in with live sessions and community access.
           </p>
+        </div>
+
+        <div className="mb-12 flex justify-center animate-fade-up">
+          <a
+            href="https://cozora.substack.com/p/premium-hub"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group inline-flex items-center gap-3 px-5 py-3 bg-cz-bg-card border border-cz-accent/40 hover:border-cz-accent rounded-full transition-all hover:bg-cz-bg-card-hover"
+          >
+            <span className="text-xs font-mono font-semibold text-cz-accent uppercase tracking-wider">
+              Already a Premium Subscriber?
+            </span>
+            <span className="text-sm text-cz-text font-medium group-hover:text-cz-accent transition-colors">
+              Start Here →
+            </span>
+          </a>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8 items-stretch">
