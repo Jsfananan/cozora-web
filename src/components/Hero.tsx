@@ -55,14 +55,14 @@ export default function Hero() {
         <div className="animate-fade-up delay-200">
           <div className="relative">
             <div className="absolute -inset-1 bg-gradient-to-r from-cz-teal/20 to-cz-coral/20 rounded-2xl blur opacity-30" />
-            <div className="relative bg-cz-bg-card border border-cz-border rounded-2xl overflow-hidden" style={{ padding: '75% 0 0 0', position: 'relative' }}>
+            <div className="relative bg-cz-bg-card border border-cz-border rounded-2xl overflow-hidden aspect-video">
               <iframe
                 src="https://iframe.mediadelivery.net/embed/624658/b9ad6db2-d9f8-4f3b-9423-0150a241690f?autoplay=false&preload=true"
                 loading="lazy"
                 allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
                 allowFullScreen
                 title="Cozora Introduction"
-                style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 0 }}
+                className="absolute inset-0 w-full h-full border-0"
               />
             </div>
           </div>
