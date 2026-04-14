@@ -7,6 +7,15 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "*.bunny.net" },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: "/creator-guide",
+        destination: "https://cozora-creators.netlify.app/",
+        permanent: false,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
