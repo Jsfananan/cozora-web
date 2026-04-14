@@ -57,12 +57,12 @@ export default function Hero() {
             <div className="absolute -inset-1 bg-gradient-to-r from-cz-teal/20 to-cz-coral/20 rounded-2xl blur opacity-30" />
             <div className="relative bg-cz-bg-card border border-cz-border rounded-2xl overflow-hidden" style={{ padding: '75% 0 0 0', position: 'relative' }}>
               <iframe
-                src="https://player.vimeo.com/video/1173388069?badge=0&autopause=0&player_id=0&app_id=58479&title=0&byline=0&portrait=0&sidedock=0&fun=0&like=0&share=0&watchlater=0&vimeo_logo=0&end_screen=0&controls=play"
-                frameBorder="0"
-                allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
-                referrerPolicy="strict-origin-when-cross-origin"
-                title="Cozora"
-                style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+                src="https://iframe.mediadelivery.net/embed/624658/b9ad6db2-d9f8-4f3b-9423-0150a241690f?autoplay=false&preload=true"
+                loading="lazy"
+                allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
+                allowFullScreen
+                title="Cozora Introduction"
+                style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 0 }}
               />
             </div>
           </div>
