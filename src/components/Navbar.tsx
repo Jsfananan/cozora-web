@@ -19,8 +19,12 @@ export default function Navbar() {
     <>
       {/* Premium subscriber redirect banner */}
       {!bannerDismissed && (
-        <div className="fixed top-0 left-0 right-0 z-60 bg-gradient-to-r from-cz-accent/95 to-cz-accent/80 border-b border-cz-accent">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between gap-3">
+        <div className="fixed top-0 left-0 right-0 z-60 bg-gradient-to-r from-cz-accent/95 to-cz-accent/80 border-b border-cz-accent overflow-hidden">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 w-1/3 bg-gradient-to-r from-transparent via-white/25 to-transparent animate-banner-shimmer"
+          />
+          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between gap-3">
             <p className="text-sm text-cz-bg font-body text-center flex-1 font-medium">
               <span className="hidden sm:inline">Already a Cozora Premium Subscriber? </span>
               <span className="sm:hidden">Premium Subscriber? </span>
@@ -30,12 +34,12 @@ export default function Navbar() {
                 rel="noopener noreferrer"
                 className="font-bold text-cz-bg hover:text-cz-deep-teal transition-colors underline underline-offset-2"
               >
-                Start Here →
+                Start Here <span className="animate-arrow-nudge">→</span>
               </a>
             </p>
             <button
               onClick={() => setBannerDismissed(true)}
-              className="shrink-0 text-cz-bg/70 hover:text-cz-bg transition-colors p-1"
+              className="relative shrink-0 text-cz-bg/70 hover:text-cz-bg transition-colors p-1"
               aria-label="Dismiss banner"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

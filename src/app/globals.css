@@ -66,6 +66,28 @@ body {
 .delay-300 { animation-delay: 0.3s; }
 .delay-400 { animation-delay: 0.4s; }
 
+@keyframes banner-shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+.animate-banner-shimmer {
+  animation: banner-shimmer 3.5s ease-in-out infinite;
+}
+
+@keyframes arrow-nudge {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(4px); }
+}
+.animate-arrow-nudge {
+  display: inline-block;
+  animation: arrow-nudge 1.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-banner-shimmer,
+  .animate-arrow-nudge { animation: none; }
+}
+
 /* ===== SCROLLBAR ===== */
 
 ::-webkit-scrollbar {
