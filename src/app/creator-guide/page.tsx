@@ -174,6 +174,48 @@ export default function CreatorGuidePage() {
               Get Ready-Made Promo Copy
             </a>
 
+            <p className="cg-examples-head">
+              <strong>What creators are actually doing:</strong>
+            </p>
+
+            <div className="cg-example">
+              <div className="cg-example-tag">Example 1 · Paid subscriber benefits (Substack)</div>
+              <div className="cg-example-body">
+                <div className="cg-sub-label">Paid subscriber benefits</div>
+                <div className="cg-sub-sublabel">
+                  Let paid subscribers know what they&apos;ll get out of their subscription
+                </div>
+                <div className="cg-sub-pill">
+                  <span className="cg-sub-emoji">🤩</span>
+                  <span>50% off Live AI sessions with top experts (worth $360/yr with Cozora)</span>
+                </div>
+              </div>
+              <p className="cg-example-note">
+                Drop this line into your Substack&apos;s paid benefits list. Swap the emoji to match
+                your style.
+              </p>
+            </div>
+
+            <div className="cg-example">
+              <div className="cg-example-tag">Example 2 · Newsletter intro blurb + CTA</div>
+              <div className="cg-example-body">
+                <h3 className="cg-post-title">Before We Dive In: A Quick Share</h3>
+                <blockquote className="cg-post-quote">
+                  I co-founded <u>Cozora</u> for creators who want to learn AI from people actually
+                  using it daily. Every week, AI experts share their screens and show exactly how
+                  they work. Live.
+                </blockquote>
+                <p className="cg-post-p">
+                  👉 As a paid subscriber to <u>[your newsletter]</u>, you get 50% off.
+                </p>
+                <div className="cg-post-cta">Join Cozora here</div>
+              </div>
+              <p className="cg-example-note">
+                Use this as the intro block on a regular newsletter post. Replace the bracketed
+                text and drop in your affiliate link behind the button.
+              </p>
+            </div>
+
             <div className="cg-tip">
               <p>
                 <strong>💡 Pro tip:</strong> Lead with <em>why you use Cozora</em>. Frame the 50%
@@ -360,6 +402,73 @@ export default function CreatorGuidePage() {
         .cg-earnings { background: var(--cg-bg); border-radius: 10px; padding: 1.25rem; margin: 1.5rem 0; text-align: center; }
         .cg-earnings-amt { font-size: 2rem; font-weight: 700; color: var(--cg-gold); }
         .cg-earnings-lbl { font-size: 0.9rem; color: var(--cg-muted); }
+        .cg-examples-head { margin-top: 2rem; font-size: 1rem; }
+        .cg-example {
+          background: var(--cg-bg);
+          border: 1px solid var(--cg-border);
+          border-radius: 12px;
+          padding: 1.25rem;
+          margin-top: 1rem;
+        }
+        .cg-example-tag {
+          display: inline-block;
+          font-family: monospace;
+          font-size: 0.72rem;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          color: var(--cg-mint);
+          background: rgba(126, 211, 192, 0.1);
+          padding: 0.25rem 0.6rem;
+          border-radius: 50px;
+          margin-bottom: 0.9rem;
+        }
+        .cg-example-body {
+          background: #FAFAF7;
+          color: #1F2328;
+          border-radius: 8px;
+          padding: 1.1rem 1.15rem;
+          font-family: 'Inter', -apple-system, sans-serif;
+        }
+        .cg-example-note {
+          font-size: 0.82rem !important;
+          color: var(--cg-muted) !important;
+          margin-top: 0.75rem !important;
+          margin-bottom: 0 !important;
+        }
+        .cg-sub-label { font-weight: 700; font-size: 0.95rem; color: #1F2328; margin-bottom: 0.2rem; }
+        .cg-sub-sublabel { font-size: 0.82rem; color: #6E7781; margin-bottom: 0.75rem; }
+        .cg-sub-pill {
+          display: flex;
+          align-items: center;
+          gap: 0.6rem;
+          border: 1px solid #D0D7DE;
+          border-radius: 8px;
+          padding: 0.7rem 0.9rem;
+          font-size: 0.92rem;
+          color: #1F2328;
+          background: #FFFFFF;
+        }
+        .cg-sub-emoji { font-size: 1.1rem; flex-shrink: 0; }
+        .cg-post-title { font-family: 'Georgia', serif; font-size: 1.35rem; font-weight: 800; color: #1F2328; margin-bottom: 0.75rem; line-height: 1.25; }
+        .cg-post-quote {
+          border-left: 3px solid #EA580C;
+          padding: 0.15rem 0 0.15rem 0.9rem;
+          margin: 0 0 0.85rem;
+          font-family: 'Georgia', serif;
+          font-size: 0.95rem;
+          line-height: 1.55;
+          color: #1F2328;
+        }
+        .cg-post-p { font-family: 'Georgia', serif; font-size: 0.95rem; color: #1F2328; margin-bottom: 1rem; }
+        .cg-post-cta {
+          display: inline-block;
+          background: #EA580C;
+          color: #FFFFFF;
+          font-weight: 600;
+          font-size: 0.95rem;
+          padding: 0.7rem 1.25rem;
+          border-radius: 6px;
+        }
         .cg-gift {
           background: linear-gradient(135deg, rgba(199, 146, 25, 0.14), rgba(214, 59, 163, 0.1));
           border: 1px solid rgba(199, 146, 25, 0.4);
