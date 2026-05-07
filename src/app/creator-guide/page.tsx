@@ -5,11 +5,11 @@ import Footer from '@/components/Footer';
 export const metadata: Metadata = {
   title: 'Creator Guide — Cozora',
   description:
-    'Welcome to the Cozora creator cohort. Get paid for signups, join the creator WhatsApp, and grab your affiliate link.',
+    'Welcome to the Cozora creator cohort. Join the creator WhatsApp and grab your subscriber discount links and creator perks.',
   robots: { index: false, follow: false },
 };
 
-const AFFILIATE_SHEET_URL =
+const PERKS_SHEET_URL =
   'https://docs.google.com/spreadsheets/d/1ryhXIAyJXVL_L5NKteiPUIu3YtrsUGEp7mPtlO-oXL8/edit?usp=sharing';
 const WHATSAPP_URL = 'https://chat.whatsapp.com/JwZI9yVgYmXAXhcwdnl4sb?mode=gi_t';
 const PROMO_COPY_URL =
@@ -30,9 +30,8 @@ export default function CreatorGuidePage() {
             <h1 className="cg-logo">
               COZORA <span>Creators</span>
             </h1>
-            <p className="cg-tagline">Welcome to the team! Let&apos;s get you earning.</p>
+            <p className="cg-tagline">Welcome to the team! Let&apos;s get you set up.</p>
             <p className="cg-welcome">We are so glad you are here!</p>
-            <div className="cg-bonus">🏆 $50/month bonus for top contributor</div>
           </header>
 
           <div className="cg-mission">
@@ -54,28 +53,15 @@ export default function CreatorGuidePage() {
             </p>
             <p className="cg-perk-sub">
               Fully reciprocal and self-serve: add your own 99%–100% off link to the{' '}
-              <a href={AFFILIATE_SHEET_URL} target="_blank" rel="noreferrer">
-                Creator Affiliate &amp; Perks Sheet
+              <a href={PERKS_SHEET_URL} target="_blank" rel="noreferrer">
+                Subscriber Discount &amp; Creator Perks Sheet
               </a>{' '}
               and you&apos;ll instantly see everyone else&apos;s.
             </p>
           </div>
 
-          <section className="cg-step cg-step-primary">
-            <span className="cg-step-label">Step 1</span>
-            <h2 className="cg-step-title">Send Your PayPal Email for Payouts</h2>
-            <p className="cg-step-desc">
-              Affiliate commissions are paid via <strong>PayPal</strong>. DM <strong>Joel</strong>{' '}
-              or <strong>Nina</strong> on Substack or in the creator WhatsApp with the email address
-              tied to your PayPal account — that&apos;s all we need to get you set up.
-            </p>
-            <p className="cg-small">
-              Need a different payout method? Just ask — we&apos;ll work with you.
-            </p>
-          </section>
-
           <section className="cg-step">
-            <span className="cg-step-label">Step 2</span>
+            <span className="cg-step-label">Step 1</span>
             <h2 className="cg-step-title">Say Hi in the Creator WhatsApp</h2>
             <p className="cg-step-desc">
               Introduce yourself to the rest of the Cozora creator group. Share what you write
@@ -93,16 +79,16 @@ export default function CreatorGuidePage() {
           </section>
 
           <section className="cg-step">
-            <span className="cg-step-label">Step 3</span>
-            <h2 className="cg-step-title">Grab Your Affiliate Link &amp; Put It to Work</h2>
+            <span className="cg-step-label">Step 2</span>
+            <h2 className="cg-step-title">Grab Your Subscriber Discount Links &amp; Put Them to Work</h2>
             <p className="cg-step-desc">
-              Every creator gets <strong>two unique affiliate links</strong> — one for your free
-              subs, one for your paid subs. Signups through either are tracked to you.
+              Every creator gets <strong>two unique discount links</strong> — one for your free
+              subs, one for your paid subs. Each one drops a discount on Cozora for your audience.
             </p>
 
             <div className="cg-codes-wrap">
               <p className="cg-codes-title">
-                <strong>Two links, two offers:</strong>
+                <strong>Two links, two offers for your audience:</strong>
               </p>
               <div className="cg-codes">
                 <div className="cg-code">
@@ -120,31 +106,16 @@ export default function CreatorGuidePage() {
             </div>
 
             <a
-              href={AFFILIATE_SHEET_URL}
+              href={PERKS_SHEET_URL}
               target="_blank"
               rel="noreferrer"
               className="cg-btn cg-btn-primary"
             >
-              Open the Affiliate &amp; Perks Sheet →
+              Open the Subscriber Discount &amp; Creator Perks Sheet →
             </a>
             <p className="cg-small">
               Find the row with your name and grab both links. New creators: add your row.
             </p>
-
-            <div className="cg-gift">
-              <div className="cg-gift-head">
-                <span className="cg-gift-icon">🎁</span>
-                <h4>Bonus inside the sheet</h4>
-              </div>
-              <p>
-                The same sheet also holds <strong>creator-to-creator 99%–100% off perks</strong> —
-                free or near-free access to every other creator&apos;s premium Substack.
-              </p>
-              <p className="cg-gift-warn">
-                <strong>Keep it in the group.</strong> Do not share these links outside the Cozora
-                creator cohort.
-              </p>
-            </div>
 
             <p className="cg-promo-head">
               <strong>Then put your link everywhere:</strong>
@@ -156,13 +127,6 @@ export default function CreatorGuidePage() {
               <div className="cg-promo-item"><span>✓</span> Substack Note</div>
               <div className="cg-promo-item"><span>✓</span> Community post</div>
               <div className="cg-promo-item"><span>✓</span> Podcast / video mention</div>
-            </div>
-
-            <div className="cg-earnings">
-              <div className="cg-earnings-amt">$10,800/year</div>
-              <div className="cg-earnings-lbl">
-                potential earnings with just 5 signups per month
-              </div>
             </div>
 
             <a
@@ -212,7 +176,7 @@ export default function CreatorGuidePage() {
               </div>
               <p className="cg-example-note">
                 Use this as the intro block on a regular newsletter post. Replace the bracketed
-                text and drop in your affiliate link behind the button.
+                text and drop in your discount link behind the button.
               </p>
             </div>
 
@@ -300,15 +264,6 @@ export default function CreatorGuidePage() {
         .cg-logo span { color: var(--cg-pink); }
         .cg-tagline { color: var(--cg-muted); font-size: 1.05rem; }
         .cg-welcome { color: var(--cg-mint); font-size: 1.1rem; font-weight: 600; margin-top: 0.75rem; }
-        .cg-bonus {
-          display: inline-block;
-          background: linear-gradient(135deg, var(--cg-pink), #a82d82);
-          padding: 0.5rem 1.25rem;
-          border-radius: 50px;
-          font-weight: 600;
-          font-size: 0.9rem;
-          margin-top: 1.25rem;
-        }
         .cg-mission {
           background: var(--cg-bg-card);
           border: 1px solid var(--cg-border);
@@ -340,10 +295,6 @@ export default function CreatorGuidePage() {
           padding: 2rem;
           margin-bottom: 1.5rem;
         }
-        .cg-step-primary {
-          border-color: var(--cg-mint);
-          background: linear-gradient(135deg, rgba(29, 92, 94, 0.3), var(--cg-bg-card));
-        }
         .cg-step-label {
           display: inline-block;
           font-size: 0.75rem;
@@ -352,12 +303,6 @@ export default function CreatorGuidePage() {
           letter-spacing: 0.05em;
           color: var(--cg-mint);
           margin-bottom: 0.75rem;
-        }
-        .cg-step-primary .cg-step-label {
-          background: var(--cg-mint);
-          color: var(--cg-bg);
-          padding: 0.25rem 0.75rem;
-          border-radius: 50px;
         }
         .cg-step-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 0.75rem; }
         .cg-step-desc { margin-bottom: 1.5rem; font-size: 1rem; }
@@ -399,9 +344,6 @@ export default function CreatorGuidePage() {
           gap: 0.5rem;
         }
         .cg-promo-item span { color: var(--cg-mint); }
-        .cg-earnings { background: var(--cg-bg); border-radius: 10px; padding: 1.25rem; margin: 1.5rem 0; text-align: center; }
-        .cg-earnings-amt { font-size: 2rem; font-weight: 700; color: var(--cg-gold); }
-        .cg-earnings-lbl { font-size: 0.9rem; color: var(--cg-muted); }
         .cg-examples-head { margin-top: 2rem; font-size: 1rem; }
         .cg-example {
           background: var(--cg-bg);
@@ -469,20 +411,6 @@ export default function CreatorGuidePage() {
           padding: 0.7rem 1.25rem;
           border-radius: 6px;
         }
-        .cg-gift {
-          background: linear-gradient(135deg, rgba(199, 146, 25, 0.14), rgba(214, 59, 163, 0.1));
-          border: 1px solid rgba(199, 146, 25, 0.4);
-          border-radius: 10px;
-          padding: 1.1rem 1.25rem;
-          margin-top: 1.25rem;
-        }
-        .cg-gift-head { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
-        .cg-gift-icon { font-size: 1.15rem; }
-        .cg-gift-head h4 { font-size: 0.95rem; font-weight: 600; margin: 0; color: var(--cg-gold); }
-        .cg-gift p { font-size: 0.9rem; margin: 0; }
-        .cg-gift strong { color: var(--cg-gold); }
-        .cg-gift-warn { margin-top: 0.65rem !important; font-size: 0.85rem !important; color: var(--cg-muted) !important; }
-        .cg-gift-warn strong { color: var(--cg-pink); }
         .cg-tip {
           background: rgba(126, 211, 192, 0.08);
           border: 1px solid rgba(126, 211, 192, 0.25);
