@@ -1,8 +1,6 @@
-import { bundles, getBundleStats } from '@/lib/bundles';
 import Navbar from '@/components/Navbar';
 import BuyButton from '@/components/BuyButton';
-
-const { totalBundles, totalSessions } = getBundleStats();
+import { getBundlesWithSessions } from '@/lib/supabase/admin';
 
 const skillColorMap = {
   Create: { text: 'text-cz-coral', bg: 'bg-cz-coral/10' },
@@ -11,7 +9,17 @@ const skillColorMap = {
   Lead: { text: 'text-cz-accent', bg: 'bg-cz-accent/10' },
 };
 
-export default function BundlesPage() {
+export const revalidate = 60;
+
+export default async function BundlesPage() {
+  const all = await getBundlesWithSessions();
+  const bundles = all.filter((b) => b.is_active);
+  const totalBundles = bundles.length;
+  const totalSessions = bundles.reduce(
+    (sum, b) => sum + b.sessions.filter((s) => s.is_active).length,
+    0
+  );
+
   return (
     <>
       <Navbar />
@@ -22,7 +30,7 @@ export default function BundlesPage() {
               The Skill Sets
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold mb-6 text-cz-text">
-              Master AI in 4 Practical Skill Sets
+              Master AI in {totalBundles} Practical Skill Sets
             </h1>
             <p className="text-lg text-cz-text-muted max-w-2xl leading-relaxed">
               Get all {totalBundles} skill bundles — content creation, development,
@@ -35,28 +43,30 @@ export default function BundlesPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
             {bundles.map((bundle) => {
               const colors = skillColorMap[
-                bundle.skillNum as keyof typeof skillColorMap
+                bundle.skill_num as keyof typeof skillColorMap
               ] || { text: 'text-cz-teal', bg: 'bg-cz-teal/10' };
               return (
-                <div
-                  key={bundle.slug}
-                >
+                <div key={bundle.slug}>
                   <div className="h-full bg-cz-bg-card border border-cz-border rounded-xl p-6">
                     <div className={`inline-block px-3 py-1 rounded-full text-xs font-mono ${colors.text} ${colors.bg} mb-4`}>
-                      {bundle.skillNum}
+                      {bundle.skill_num}
                     </div>
 
                     <h2 className="text-2xl font-display font-bold text-cz-text mb-2">
                       {bundle.name}
                     </h2>
 
-                    <p className="text-sm text-cz-text-muted mb-4">
-                      {bundle.tagline}
-                    </p>
+                    {bundle.tagline && (
+                      <p className="text-sm text-cz-text-muted mb-4">
+                        {bundle.tagline}
+                      </p>
+                    )}
 
-                    <p className="text-cz-text-muted leading-relaxed">
-                      {bundle.description}
-                    </p>
+                    {bundle.description && (
+                      <p className="text-cz-text-muted leading-relaxed">
+                        {bundle.description}
+                      </p>
+                    )}
                   </div>
                 </div>
               );

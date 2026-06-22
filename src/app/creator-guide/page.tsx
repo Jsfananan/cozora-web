@@ -47,7 +47,7 @@ export default function CreatorGuidePage() {
               <h3>Creator Network Perks</h3>
             </div>
             <p>
-              All 30+ creators in the cohort give each other <strong>99%–100% off</strong> access
+              All 40+ creators in the community give each other <strong>99%–100% off</strong> access
               to their newsletters and services — over <strong>$3,000 in direct value</strong> just
               from joining the network.
             </p>

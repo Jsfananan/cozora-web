@@ -5,36 +5,36 @@ import BuyButton from './BuyButton';
 
 const faqs = [
   {
-    q: "What if I can\u2019t make the Thursday sessions live?",
-    a: "Every session is recorded. Most members watch 50/50 live vs replay. The value is in both the content and the community \u2014 live attendance helps with networking, but replays ensure you never miss the workflows.",
+    q: 'Do you still run weekly live sessions?',
+    a: "We\u2019ve moved away from a fixed weekly schedule. Now our creators go live for occasional interviews \u2014 and those are free for everyone, member or not. The weekly rhythm lives in the Skill Library: a new Claude skill you can use right away.",
+  },
+  {
+    q: 'What exactly is a \u201cskill\u201d?',
+    a: "Each week, one of our 40+ creators shares a skill they actually use \u2014 often one they\u2019ve refined over months. You get a short video walkthrough, the complete prompt or a downloadable skill you drop straight into Claude, and the thinking behind when and why to use it.",
+  },
+  {
+    q: 'What\u2019s the difference between the $99 bundles and the membership?',
+    a: "The $99 Skill Sets is a one-time purchase \u2014 lifetime access to our recorded back-catalog (16 expert sessions across 4 bundles). The membership is where the creator community and the weekly skill drops live.",
+  },
+  {
+    q: 'Where does all of this happen?',
+    a: "On Substack. You subscribe at cozora.substack.com \u2014 free to follow, $75/month for the community and the full Skill Library. The recorded bundles live here on cozora.org.",
   },
   {
     q: 'Do I need technical experience to join?',
-    a: "No. We have members from complete beginners to experienced developers. The smart matching system connects you with people at your level, and sessions are designed for practical implementation, not theory.",
-  },
-  {
-    q: 'How quickly will I see results?',
-    a: "Most members implement their first workflow within 2 weeks. By month\u2019s end, you\u2019ll have 2 working systems.",
+    a: "No. Members range from complete beginners to experienced builders. The skills are built for practical implementation \u2014 you drop them into Claude and go, no theory required.",
   },
   {
     q: 'What makes this different from AI courses?',
-    a: "Courses give you knowledge. We give you working systems, expert guidance, and the collaborators who help you ship. You\u2019re building, not just learning.",
-  },
-  {
-    q: 'What happens when new cohorts launch?',
-    a: "You get automatic access. Your price never increases. As we add AI Design, AI Video, AI Product Management, and AI Marketing cohorts throughout 2026, your membership expands \u2014 but your cost stays locked.",
-  },
-  {
-    q: "What if I don\u2019t find the right collaboration partners?",
-    a: "We don\u2019t leave it to chance. Onboarding calls, monthly show & tells, and discussion boards are all designed to surface connections. If you\u2019re not finding your people, we\u2019ll help you proactively.",
+    a: "Courses give you knowledge. We give you working skills and the community of creators who built them. You\u2019re shipping real workflows, not just watching lessons.",
   },
   {
     q: 'Can I cancel anytime?',
-    a: "Yes. There are no long-term contracts. Cancel anytime from your account settings. If you\u2019re on an annual plan, you keep access through the end of your billing period.",
+    a: "Yes. There are no long-term contracts. Cancel anytime from your Substack account. If you\u2019re on an annual plan, you keep access through the end of your billing period.",
   },
   {
-    q: 'Who are the creators teaching the sessions?',
-    a: "Real practitioners \u2014 not influencers. Our 30+ creators are actively building with AI: shipping products, running agencies, creating content, and leading teams. They teach what they use daily, and we add new voices every week.",
+    q: 'Who are the creators?',
+    a: "Real practitioners \u2014 not influencers. Our 40+ creators are actively building with AI: shipping products, running agencies, creating content, and leading teams. They share the skills they use daily, and we add new voices regularly.",
   },
 ];
 
@@ -100,7 +100,7 @@ export default function Faq() {
             Ready to start?
           </h3>
           <p className="text-cz-text-muted mb-8 max-w-md mx-auto">
-            Join 30+ expert creators and start building with AI this week.
+            Join 40+ expert creators and start building with AI this week.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a

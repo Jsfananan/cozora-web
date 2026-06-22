@@ -19,7 +19,7 @@ export default function Footer() {
             <ul className="space-y-2">
               <li>
                 <a href="#skill-sets" className="text-cz-text-muted hover:text-cz-text transition-colors text-sm">
-                  Skill Sets
+                  Skill Library
                 </a>
               </li>
               <li>
@@ -30,11 +30,6 @@ export default function Footer() {
               <li>
                 <a href="#pricing" className="text-cz-text-muted hover:text-cz-text transition-colors text-sm">
                   Pricing
-                </a>
-              </li>
-              <li>
-                <a href="#cz-schedule" className="text-cz-text-muted hover:text-cz-text transition-colors text-sm">
-                  Schedule
                 </a>
               </li>
             </ul>
@@ -67,7 +62,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="mailto:hello@cozora.org"
+                  href="/contact"
                   className="text-cz-text-muted hover:text-cz-text transition-colors text-sm"
                 >
                   Contact

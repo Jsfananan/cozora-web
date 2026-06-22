@@ -12,13 +12,13 @@ export default function Hero() {
         <div className="animate-fade-up">
           <div className="flex flex-wrap gap-3 mb-8">
             <div className="px-3 py-2 border border-cz-accent rounded-full text-sm font-mono text-cz-accent">
-              Live Sessions
+              Creator Community
             </div>
             <div className="px-3 py-2 border border-cz-teal rounded-full text-sm font-mono text-cz-teal">
-              30+ Experts
+              40+ Creators
             </div>
             <div className="px-3 py-2 border border-cz-coral rounded-full text-sm font-mono text-cz-coral">
-              New Creators Every Week
+              New Skill Every Week
             </div>
           </div>
 
@@ -28,9 +28,9 @@ export default function Hero() {
           </h1>
 
           <p className="text-lg text-cz-text-muted mb-8 leading-relaxed">
-            Weekly live sessions with AI practitioners. Master content creation,
-            development, knowledge systems, and leadership &mdash; straight from the
-            experts building with AI every day.
+            Join a community of 40+ of the top Substack AI creators &mdash; and get a
+            new Claude skill every week, with the video walkthrough, the ready-to-run
+            prompt, and the thinking behind it. Because you don&apos;t learn AI alone.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4">

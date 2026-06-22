@@ -4,9 +4,45 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
-import { bundles, getBundleStats } from '@/lib/bundles';
 
-const { totalBundles } = getBundleStats();
+type AccessState = 'loading' | 'valid' | 'invalid';
+
+interface DbSession {
+  id: string;
+  number: number;
+  creator: string;
+  date: string | null;
+  title: string;
+  description: string | null;
+  video_url: string | null;
+  duration: string | null;
+  notes_title: string | null;
+  notes_content: string | null;
+  sort_order: number;
+  is_active: boolean;
+}
+
+interface DbBundlePdf {
+  id: string;
+  bundle_id: string;
+  file_name: string;
+  storage_path: string;
+  file_size: number | null;
+  created_at: string;
+}
+
+interface DbBundle {
+  id: string;
+  slug: string;
+  skill_num: string;
+  name: string;
+  tagline: string | null;
+  description: string | null;
+  sort_order: number;
+  is_active: boolean;
+  sessions: DbSession[];
+  bundle_pdfs: DbBundlePdf[];
+}
 
 const skillColorMap: Record<string, { text: string; bg: string; border: string }> = {
   Create: { text: 'text-cz-coral', bg: 'bg-cz-coral/10', border: 'border-cz-coral/30' },
@@ -15,13 +51,13 @@ const skillColorMap: Record<string, { text: string; bg: string; border: string }
   Lead: { text: 'text-cz-accent', bg: 'bg-cz-accent/10', border: 'border-cz-accent/30' },
 };
 
-type AccessState = 'loading' | 'valid' | 'invalid';
-
 export default function AccessPage() {
   const params = useParams();
   const token = params.token as string;
   const [state, setState] = useState<AccessState>('loading');
   const [email, setEmail] = useState('');
+  const [bundles, setBundles] = useState<DbBundle[]>([]);
+  const [bundlesLoading, setBundlesLoading] = useState(true);
   const [expandedBundles, setExpandedBundles] = useState<Set<string>>(new Set());
   const [showBookmarkTip, setShowBookmarkTip] = useState(false);
 
@@ -37,7 +73,6 @@ export default function AccessPage() {
           const data = await res.json();
           setEmail(data.email);
           setState('valid');
-          // Show bookmark tip for first-time visitors
           if (!localStorage.getItem(`cz-bookmarked-${token}`)) {
             setShowBookmarkTip(true);
           }
@@ -50,6 +85,24 @@ export default function AccessPage() {
     };
     verify();
   }, [token]);
+
+  useEffect(() => {
+    if (state !== 'valid') return;
+    const fetchBundles = async () => {
+      try {
+        const res = await fetch('/api/admin/bundles');
+        if (res.ok) {
+          const data = await res.json();
+          setBundles(data);
+        }
+      } catch (err) {
+        console.error('Failed to fetch bundles:', err);
+      } finally {
+        setBundlesLoading(false);
+      }
+    };
+    fetchBundles();
+  }, [state]);
 
   const dismissBookmarkTip = () => {
     setShowBookmarkTip(false);
@@ -101,9 +154,8 @@ export default function AccessPage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen pt-16 px-4 sm:px-6 lg:px-8 pb-16">
+      <main className="min-h-screen pt-32 px-4 sm:px-6 lg:px-8 pb-16">
         <div className="max-w-7xl mx-auto">
-          {/* Bookmark tip banner */}
           {showBookmarkTip && (
             <div className="mb-8 bg-cz-accent/10 border border-cz-accent/30 rounded-xl p-5 flex items-start justify-between gap-4">
               <div>
@@ -124,14 +176,15 @@ export default function AccessPage() {
             </div>
           )}
 
-          {/* Header */}
           <div className="mb-12">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
               <h1 className="text-4xl sm:text-5xl font-display font-bold text-cz-text">
                 Your Skill Sets
               </h1>
               <div className="inline-flex items-center px-4 py-2 bg-cz-teal/10 border border-cz-teal/30 rounded-full">
-                <span className="text-sm font-mono text-cz-teal">All {totalBundles} bundles unlocked</span>
+                <span className="text-sm font-mono text-cz-teal">
+                  All {bundles.length || 4} bundles unlocked
+                </span>
               </div>
             </div>
             <p className="text-cz-text-muted">
@@ -140,108 +193,132 @@ export default function AccessPage() {
             </p>
           </div>
 
-          {/* Bundle grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {bundles.map((bundle) => {
-              const colors = skillColorMap[bundle.skillNum] || skillColorMap.Build;
-              const isExpanded = expandedBundles.has(bundle.slug);
+          {bundlesLoading ? (
+            <p className="text-cz-text-muted font-mono text-center py-16">Loading bundles...</p>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {bundles.map((bundle) => {
+                const colors = skillColorMap[bundle.skill_num] || skillColorMap.Build;
+                const isExpanded = expandedBundles.has(bundle.slug);
+                const pdf = bundle.bundle_pdfs?.[0];
 
-              return (
-                <div key={bundle.slug}>
-                  <button
-                    onClick={() => toggleBundle(bundle.slug)}
-                    className="w-full text-left"
-                  >
-                    <div className={`h-full bg-cz-bg-card border border-cz-border hover:border-cz-text-muted rounded-xl p-6 transition-all hover:bg-cz-bg-card-hover ${isExpanded ? 'border-cz-text-muted' : ''}`}>
-                      <div className="flex items-start justify-between mb-4">
-                        <div className={`px-3 py-1 rounded-full text-xs font-mono ${colors.text} ${colors.bg}`}>
-                          {bundle.skillNum}
+                return (
+                  <div key={bundle.slug}>
+                    <button
+                      onClick={() => toggleBundle(bundle.slug)}
+                      className="w-full text-left"
+                    >
+                      <div className={`h-full bg-cz-bg-card border border-cz-border hover:border-cz-text-muted rounded-xl p-6 transition-all hover:bg-cz-bg-card-hover ${isExpanded ? 'border-cz-text-muted' : ''}`}>
+                        <div className="flex items-start justify-between mb-4">
+                          <div className={`px-3 py-1 rounded-full text-xs font-mono ${colors.text} ${colors.bg}`}>
+                            {bundle.skill_num}
+                          </div>
+                          <span
+                            className="text-cz-text-muted transition-transform duration-200"
+                            style={{ transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)' }}
+                          >
+                            &#x25BC;
+                          </span>
                         </div>
-                        <span
-                          className="text-cz-text-muted transition-transform duration-200"
-                          style={{ transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)' }}
-                        >
-                          &#x25BC;
-                        </span>
+
+                        <h2 className="text-xl font-display font-bold text-cz-text mb-2">
+                          {bundle.name}
+                        </h2>
+                        {bundle.tagline && (
+                          <p className="text-sm text-cz-text-muted mb-3">
+                            {bundle.tagline}
+                          </p>
+                        )}
+
+                        <div className="flex items-center gap-4 text-sm text-cz-text-muted">
+                          <span>{bundle.sessions.length} sessions</span>
+                        </div>
                       </div>
+                    </button>
 
-                      <h2 className="text-xl font-display font-bold text-cz-text mb-2">
-                        {bundle.name}
-                      </h2>
-                      <p className="text-sm text-cz-text-muted mb-3">
-                        {bundle.tagline}
-                      </p>
-
-                      <div className="flex items-center gap-4 text-sm text-cz-text-muted">
-                        <span>{bundle.sessions.length} sessions</span>
-                      </div>
-                    </div>
-                  </button>
-
-                  {isExpanded && (
-                    <div className="mt-3 bg-cz-bg-card border border-cz-border rounded-xl p-6 space-y-6">
-                      {bundle.sessions.map((session) => (
-                        <div key={session.number} className="border-b border-cz-border pb-6 last:border-b-0 last:pb-0">
-                          {/* Video player */}
-                          <div className="mb-4 aspect-video bg-cz-bg rounded-lg border border-cz-border flex items-center justify-center relative overflow-hidden">
-                            {session.videoId ? (
-                              <iframe
-                                src={`https://iframe.mediadelivery.net/embed/${session.videoId}?autoplay=false&preload=false`}
-                                allow="accelerometer; gyroscope; encrypted-media; picture-in-picture"
-                                allowFullScreen
-                                className="w-full h-full"
-                              />
-                            ) : (
-                              <>
-                                <div className="absolute inset-0 bg-gradient-to-br from-cz-accent/10 to-cz-teal/10" />
-                                <div className="relative z-10 text-center">
-                                  <div className="text-4xl mb-2 text-cz-text-muted">&#9654;</div>
-                                  <p className="text-sm text-cz-text-muted font-mono">
-                                    Video coming soon
-                                  </p>
-                                </div>
-                              </>
-                            )}
-                          </div>
-
-                          {/* Session info */}
-                          <div className="mb-4">
-                            <h3 className="text-lg font-semibold text-cz-text mb-2">
-                              {session.title}
-                            </h3>
-                            <p className="text-cz-text-muted mb-3">
-                              {session.description}
-                            </p>
-                            <div className="flex flex-wrap gap-4 text-sm text-cz-text-muted font-mono">
-                              <span>with {session.creator}</span>
-                              <span>{session.date}</span>
-                              {session.duration && <span>{session.duration}</span>}
+                    {isExpanded && (
+                      <div className="mt-3 bg-cz-bg-card border border-cz-border rounded-xl p-6 space-y-6">
+                        {pdf && (
+                          <div className="bg-cz-accent/5 border border-cz-accent/20 rounded-lg p-4 flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                              <span className="text-cz-accent font-semibold text-sm">PDF</span>
+                              <span className="text-sm text-cz-text">{pdf.file_name}</span>
                             </div>
-                          </div>
-
-                          {/* Download PDF button */}
-                          {bundle.pdfUrl ? (
                             <a
-                              href={bundle.pdfUrl}
+                              href={`/api/content/pdf/download?path=${encodeURIComponent(pdf.storage_path)}`}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="inline-block px-4 py-2 bg-cz-accent/10 hover:bg-cz-accent/20 text-cz-accent rounded-lg transition-colors text-sm font-semibold"
+                              className="px-4 py-2 bg-cz-accent/10 hover:bg-cz-accent/20 text-cz-accent rounded-lg transition-colors text-sm font-semibold"
                             >
                               &#8595; Download PDF
                             </a>
-                          ) : (
-                            <span className="inline-block px-4 py-2 bg-cz-bg text-cz-text-dim rounded-lg text-sm font-mono">
-                              PDF coming soon
-                            </span>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
+                          </div>
+                        )}
+
+                        {bundle.sessions.map((session) => (
+                          <div key={session.id} className="border-b border-cz-border pb-6 last:border-b-0 last:pb-0">
+                            <div className="mb-4 aspect-video bg-cz-bg rounded-lg border border-cz-border flex items-center justify-center relative overflow-hidden">
+                              {session.video_url ? (
+                                <iframe
+                                  src={session.video_url}
+                                  allow="accelerometer; gyroscope; encrypted-media; picture-in-picture"
+                                  allowFullScreen
+                                  className="w-full h-full"
+                                />
+                              ) : (
+                                <>
+                                  <div className="absolute inset-0 bg-gradient-to-br from-cz-accent/10 to-cz-teal/10" />
+                                  <div className="relative z-10 text-center">
+                                    <div className="text-4xl mb-2 text-cz-text-muted">&#9654;</div>
+                                    <p className="text-sm text-cz-text-muted font-mono">
+                                      Video coming soon
+                                    </p>
+                                  </div>
+                                </>
+                              )}
+                            </div>
+
+                            <div className="mb-4">
+                              <h3 className="text-lg font-semibold text-cz-text mb-2">
+                                {session.title}
+                              </h3>
+                              {session.description && (
+                                <p className="text-cz-text-muted mb-3">
+                                  {session.description}
+                                </p>
+                              )}
+                              <div className="flex flex-wrap gap-4 text-sm text-cz-text-muted font-mono">
+                                <span>with {session.creator}</span>
+                                {session.date && <span>{session.date}</span>}
+                                {session.duration && <span>{session.duration}</span>}
+                              </div>
+                            </div>
+
+                            {(session.notes_title || session.notes_content) && (
+                              <div className="bg-white rounded-lg border border-cz-border p-5">
+                                {session.notes_title && (
+                                  <h4 className="text-lg font-display font-bold text-gray-900 mb-3">
+                                    {session.notes_title}
+                                  </h4>
+                                )}
+                                {session.notes_content && (
+                                  <div
+                                    className="text-sm leading-relaxed prose prose-sm max-w-none"
+                                    style={{ color: '#111' }}
+                                    dangerouslySetInnerHTML={{ __html: session.notes_content }}
+                                  />
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       </main>
     </>

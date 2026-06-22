@@ -153,6 +153,12 @@ export default function AdminLayout({
                 Bundles
               </Link>
               <Link
+                href="/admin/purchases"
+                className="block px-4 py-2 rounded-lg text-sm font-body text-cz-text-muted hover:text-cz-text hover:bg-cz-bg-card-hover transition-colors"
+              >
+                Purchases
+              </Link>
+              <Link
                 href="/admin/settings"
                 className="block px-4 py-2 rounded-lg text-sm font-body text-cz-text-muted hover:text-cz-text hover:bg-cz-bg-card-hover transition-colors"
               >

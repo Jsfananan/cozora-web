@@ -1,35 +1,46 @@
-import { getBundleStats } from '@/lib/bundles';
-
-const { totalBundles } = getBundleStats();
-
 const skillSets = [
   {
     label: 'Create',
     color: 'text-cz-teal',
-    title: 'Content Creation Mastery',
+    title: 'Content & Creation',
     description:
-      'Learn how top AI practitioners craft newsletters, blogs, and viral content. Get frameworks for turning your expertise into engaging material.',
+      'Skills for newsletters, blogs, video, and viral content — the exact workflows our creators use to turn expertise into work that ships.',
   },
   {
     label: 'Build',
     color: 'text-cz-accent',
-    title: 'AI Application Development',
+    title: 'Building with AI',
     description:
-      'From prompt engineering to full-stack AI apps. See real code, real workflows, and real problems solved by builders shipping AI products.',
+      'From prompt engineering to Claude Code and full-stack apps. Real skills from builders shipping AI products every day.',
   },
   {
     label: 'Think',
     color: 'text-cz-coral',
-    title: 'Knowledge & Reasoning Systems',
+    title: 'Knowledge & Reasoning',
     description:
-      'Master structured thinking with AI. Discover how to build knowledge bases, vector stores, and reasoning pipelines that actually work.',
+      'Skills for structured thinking with AI — knowledge bases, mental models, and reasoning systems that actually work.',
   },
   {
     label: 'Lead',
     color: 'text-cz-deep-teal',
-    title: 'Leadership in AI Transformation',
+    title: 'Leading the Change',
     description:
-      'Navigate organizational change as AI becomes embedded in your business. Learn from leaders managing teams, strategy, and culture.',
+      'Skills for embedding AI across a team or business — strategy, culture, and the decisions that come with it.',
+  },
+];
+
+const skillIncludes = [
+  {
+    title: 'A video walkthrough',
+    description: 'Watch a creator run the skill end to end, in 15–20 focused minutes.',
+  },
+  {
+    title: 'The skill, ready to run',
+    description: 'The complete prompt or a downloadable skill you drop straight into Claude.',
+  },
+  {
+    title: 'The why behind it',
+    description: 'The problem it solves and when to reach for it — so you actually use it.',
   },
 ];
 
@@ -41,12 +52,15 @@ export default function SkillSets() {
     >
       <div className="max-w-7xl mx-auto">
         <div className="mb-16 text-center animate-fade-up">
+          <p className="text-sm font-mono text-cz-coral mb-4 tracking-wide">
+            THE SKILL LIBRARY
+          </p>
           <h2 className="text-4xl sm:text-5xl font-display font-bold text-cz-text mb-4">
-            The Skill Sets
+            A new Claude skill every week.
           </h2>
-          <p className="text-lg text-cz-text-muted">
-            Master {totalBundles} essential skills. Updated every week with fresh
-            expert-led sessions.
+          <p className="text-lg text-cz-text-muted max-w-2xl mx-auto">
+            Each week, one of our creators drops a real skill they actually use &mdash;
+            something they&apos;ve refined over months. Ready to run that night.
           </p>
         </div>
 
@@ -74,6 +88,39 @@ export default function SkillSets() {
               </div>
             </div>
           ))}
+        </div>
+
+        <div className="mt-16 bg-cz-bg-card border border-cz-border rounded-2xl p-8 sm:p-10 animate-fade-up">
+          <h3 className="text-xl font-display font-bold text-cz-text mb-8 text-center">
+            Every skill comes with three things
+          </h3>
+          <div className="grid sm:grid-cols-3 gap-8">
+            {skillIncludes.map((item, index) => (
+              <div key={item.title} className="text-center sm:text-left">
+                <div className="font-mono text-sm text-cz-teal mb-2">
+                  0{index + 1}
+                </div>
+                <h4 className="font-display font-semibold text-cz-text mb-1.5">
+                  {item.title}
+                </h4>
+                <p className="text-sm text-cz-text-muted leading-relaxed">
+                  {item.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-10 flex justify-center animate-fade-up">
+          <a
+            href="https://cozora.substack.com/archive"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-cz-teal hover:text-cz-accent font-medium transition-colors"
+          >
+            See the latest skills on Substack
+            <span aria-hidden="true">&rarr;</span>
+          </a>
         </div>
       </div>
     </section>

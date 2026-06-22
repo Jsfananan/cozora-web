@@ -68,7 +68,7 @@ export default function Creators() {
               OUR CREATOR NETWORK
             </p>
             <h2 className="text-4xl sm:text-5xl font-display font-bold text-cz-text mb-4">
-              30+ Expert AI Creators &mdash; and growing every week
+              40+ Expert AI Creators &mdash; and growing
             </h2>
             <p className="text-lg text-cz-text-muted font-body max-w-2xl">
               We&apos;re constantly bringing in new voices across design, vibe-coding, video, leadership, strategy, and more.

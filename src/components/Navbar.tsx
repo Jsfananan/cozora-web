@@ -73,13 +73,7 @@ export default function Navbar() {
                 href="#skill-sets"
                 className="text-cz-text-muted hover:text-cz-text transition-colors"
               >
-                Skill Sets
-              </a>
-              <a
-                href="#cz-schedule"
-                className="text-cz-text-muted hover:text-cz-text transition-colors"
-              >
-                Schedule
+                Skill Library
               </a>
               <a
                 href="#pricing"
@@ -148,14 +142,7 @@ export default function Navbar() {
                 className="block text-cz-text-muted hover:text-cz-text transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Skill Sets
-              </a>
-              <a
-                href="#cz-schedule"
-                className="block text-cz-text-muted hover:text-cz-text transition-colors"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Schedule
+                Skill Library
               </a>
               <a
                 href="#pricing"

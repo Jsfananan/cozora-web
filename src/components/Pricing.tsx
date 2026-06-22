@@ -4,20 +4,20 @@ import { getBundleStats } from '@/lib/bundles';
 const { totalBundles, totalSessions } = getBundleStats();
 
 const features = [
-  'Access to all skill set bundles',
-  'Downloadable session guides',
-  'Expert frameworks & templates',
-  'Community access',
-  'Weekly email digest',
+  'Lifetime access to all 4 skill-set bundles',
+  '16 recorded expert sessions',
+  'Downloadable guides, frameworks & templates',
+  'Yours forever — watch anytime',
+  'No subscription required',
 ];
 
 const communityFeatures = [
-  'Everything in the Skill Sets',
-  'Weekly live group sessions',
-  'Direct access to 30+ expert practitioners',
-  'Community Slack channel',
-  'Priority Q&A and feedback',
-  'Exclusive expert interviews',
+  'Creator community of 40+ top AI creators',
+  'A new Claude skill every week',
+  'Each skill: video walkthrough + ready-to-run prompt + the why',
+  'Free creator interviews — live for everyone',
+  'Full Skill Library archive',
+  'Everything in the Skill Sets back-catalog',
 ];
 
 export default function Pricing() {
@@ -32,7 +32,7 @@ export default function Pricing() {
             Two Ways to Learn
           </h2>
           <p className="text-lg text-cz-text-muted max-w-xl mx-auto">
-            Start with the bundles, or go all-in with live sessions and community access.
+            Own the recorded library forever, or join the creator community and get a new skill every week.
           </p>
         </div>
 
@@ -100,7 +100,7 @@ export default function Pricing() {
                 </div>
 
                 <h3 className="text-2xl font-display font-bold text-cz-text mb-2">
-                  Skill Sets + Community
+                  The Creator Community
                 </h3>
                 <div className="mb-6">
                   <div className="mb-1">
@@ -112,7 +112,7 @@ export default function Pricing() {
                   </span>
                 </div>
                 <p className="text-sm text-cz-text-muted mb-6">
-                  Everything in the Skill Sets, plus live weekly sessions with expert creators and full community access.
+                  Join 40+ of the top Substack AI creators and get a new Claude skill every week &mdash; plus creator interviews, free to all.
                 </p>
 
                 <ul className="space-y-3 mb-8 flex-1">

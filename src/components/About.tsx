@@ -92,16 +92,16 @@ export default function About() {
             <p>
               The real advantage isn&apos;t information. It&apos;s{' '}
               <strong className="text-cz-text font-semibold">relationships with people who&apos;ve already solved the problems you&apos;re facing.</strong>{' '}
-              That&apos;s what Cozora is &mdash; a growing network of expert AI creators who show up every week to share what&apos;s actually working.
+              That&apos;s what Cozora is &mdash; a growing community of 40+ expert AI creators sharing the skills that are actually working.
             </p>
             <p>
-              We add new creators every week because AI doesn&apos;t stand still and neither do we. From vibe-coding to AI filmmaking, design systems to leadership strategy &mdash;{' '}
+              We bring in new creators regularly because AI doesn&apos;t stand still and neither do we. From vibe-coding to AI filmmaking, design systems to leadership strategy &mdash;{' '}
               <strong className="text-cz-text font-semibold">if AI is changing it, we&apos;re bringing in someone who&apos;s mastered it.</strong>
             </p>
             <p>
               Think of it as{' '}
               <strong className="text-cz-text font-semibold">the Y Combinator for AI projects.</strong>{' '}
-              Show up, learn something useful, put it into practice. Repeat every week with a different expert.
+              Learn a new skill, put it to work, and trade notes with people who&apos;ve already done it &mdash; something new every week.
             </p>
           </div>
         </div>
