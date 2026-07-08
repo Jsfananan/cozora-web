@@ -88,6 +88,69 @@ body {
   .animate-arrow-nudge { animation: none; }
 }
 
+/* ===== INSTALL GUIDE — SCENE ANIMATIONS ===== */
+
+@keyframes cz-pulse-ring {
+  0%   { box-shadow: 0 0 0 0 rgba(126, 211, 192, 0.55); }
+  70%  { box-shadow: 0 0 0 12px rgba(126, 211, 192, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(126, 211, 192, 0); }
+}
+.cz-pulse-ring { animation: cz-pulse-ring 1.8s ease-out infinite; }
+
+@keyframes cz-cursor-tap {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(0.82); }
+}
+.cz-cursor-tap { animation: cz-cursor-tap 1.8s ease-in-out infinite; }
+
+@keyframes cz-drop-in {
+  0%   { opacity: 0; transform: translateY(-10px) scale(0.96); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+.cz-drop-in { animation: cz-drop-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+
+@keyframes cz-rise-in {
+  0%   { opacity: 0; transform: translateY(12px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.cz-rise-in { animation: cz-rise-in 0.4s ease forwards; }
+
+@keyframes cz-caret {
+  0%, 49%  { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+.cz-caret { animation: cz-caret 0.9s step-end infinite; }
+
+@keyframes cz-check-pop {
+  0%   { opacity: 0; transform: scale(0.3); }
+  60%  { transform: scale(1.15); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.cz-check-pop { animation: cz-check-pop 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+
+@keyframes cz-shimmer-sweep {
+  0%   { transform: translateX(-120%); }
+  100% { transform: translateX(220%); }
+}
+.cz-shimmer-sweep { animation: cz-shimmer-sweep 2.6s ease-in-out infinite; }
+
+@keyframes cz-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+.cz-float { animation: cz-float 4s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cz-pulse-ring,
+  .cz-cursor-tap,
+  .cz-shimmer-sweep,
+  .cz-float,
+  .cz-caret { animation: none; }
+  .cz-drop-in,
+  .cz-rise-in,
+  .cz-check-pop { animation: none; opacity: 1; transform: none; }
+}
+
 /* ===== SCROLLBAR ===== */
 
 ::-webkit-scrollbar {

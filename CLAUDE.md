@@ -36,6 +36,13 @@ Ported from the Kajabi redesign (`~/Documents/Claude/cozora-kajabi-redesign/`). 
 - `/dashboard` — Buyer dashboard (video player + PDF downloads)
 - `/auth/login` — Login page
 - `/checkout/success` — Post-purchase confirmation + account creation
+- `/skills-guide` — **Interactive "Install a Claude Skill" guide** (built 2026-07-07; published at cozora.org/skills-guide 2026-07-08). Compass-style wizard: pick **surface** (web/desktop) → pick **delivery** (downloadable .zip vs prompt-to-paste) → verified steps, each with an animated faux-UI scene + optional real screenshot + check-to-advance → "Thank you for being part of Cozora" finale. Client-side state, progress persisted to localStorage. No auth (linked from Substack for members).
+
+### Install Guide (`/skills-guide`)
+- **Files:** `src/app/install/page.tsx` (route + metadata), `src/components/install/InstallGuide.tsx` (state machine: surface + delivery pickers, progress, screenshot reveal, finale), `src/components/install/SkillScene.tsx` (phase-driven animated mock-UI scenes), `src/lib/installSteps.ts` (step content + `buildSteps(surface, delivery)`). Scene keyframes live in `globals.css` under "INSTALL GUIDE — SCENE ANIMATIONS".
+- **Two tracks (delivery fork):** `file` = download .zip → enable code execution → Customize → Skills → Upload a skill → use. `prompt` = copy prompt → enable code execution → paste into Cowork (desktop) / Claude chat (web) → answer its questions → **Save skill** → use. Most Cozora skills are `prompt`.
+- **⚠ VERIFIED CONTENT:** every menu path/button label in `installSteps.ts` ("Customize → Skills", "Code execution and file creation", "+ Create skill", "Upload a skill", `.zip` < 50 MB, "Save skill", Cowork = desktop chat name) is verified against Anthropic's Help Center (support.claude.com, Nov 2026) AND Joel's own screenshots + "Leading with Claude" drafts (`~/Documents/Claude/leading-with-claude/screenshots/ss-red-pen-*.png`, `ss-list-of-my-skills.png`). Do NOT change labels without re-checking. Web & desktop flows are identical per Anthropic; only chrome + entry-point/Cowork wording differ.
+- **Real screenshots:** each step optionally reveals a real screenshot from `public/install-shots/` (filenames + shot list in `public/install-shots/SHOTLIST.md`). A step with a missing file just falls back to the animation (img onError hides the reveal). Already wired-in from the ebook: `use-skill.png`, `prompt-3-paste.png`, `prompt-5-save.png`. **Do NOT publish `ss-list-of-my-skills.png` as-is** — it exposes Joel's private skill names (wr-*, caio-*, client skills); needs a clean reshoot for `file-3-skills.png`.
 
 ### API Routes
 - `POST /api/checkout` — Creates Stripe Checkout Session

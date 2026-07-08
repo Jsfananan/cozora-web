@@ -88,6 +88,12 @@ export default function Navbar() {
                 About
               </a>
               <a
+                href="/skills-guide"
+                className="text-cz-text-muted hover:text-cz-text transition-colors"
+              >
+                Install a Skill
+              </a>
+              <a
                 href="https://cozora.substack.com/premium-hub"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -157,6 +163,13 @@ export default function Navbar() {
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 About
+              </a>
+              <a
+                href="/skills-guide"
+                className="block text-cz-text-muted hover:text-cz-text transition-colors"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Install a Skill
               </a>
               <a
                 href="https://cozora.substack.com/premium-hub"
