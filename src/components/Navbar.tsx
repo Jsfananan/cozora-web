@@ -73,7 +73,7 @@ export default function Navbar() {
                 href="#skill-sets"
                 className="text-cz-text-muted hover:text-cz-text transition-colors"
               >
-                Skill Library
+                Course Bundles
               </a>
               <a
                 href="#pricing"
@@ -154,7 +154,7 @@ export default function Navbar() {
                 className="block text-cz-text-muted hover:text-cz-text transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Skill Library
+                Course Bundles
               </a>
               <a
                 href="#pricing"

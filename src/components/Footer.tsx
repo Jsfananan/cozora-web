@@ -19,7 +19,7 @@ export default function Footer() {
             <ul className="space-y-2">
               <li>
                 <a href="#skill-sets" className="text-cz-text-muted hover:text-cz-text transition-colors text-sm">
-                  Skill Library
+                  Course Bundles
                 </a>
               </li>
               <li>
