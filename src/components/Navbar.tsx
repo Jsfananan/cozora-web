@@ -88,6 +88,12 @@ export default function Navbar() {
                 About
               </a>
               <a
+                href="/library"
+                className="text-cz-text-muted hover:text-cz-text transition-colors"
+              >
+                Library
+              </a>
+              <a
                 href="/skills-guide"
                 className="text-cz-text-muted hover:text-cz-text transition-colors"
               >
@@ -163,6 +169,13 @@ export default function Navbar() {
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 About
+              </a>
+              <a
+                href="/library"
+                className="block text-cz-text-muted hover:text-cz-text transition-colors"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Library
               </a>
               <a
                 href="/skills-guide"

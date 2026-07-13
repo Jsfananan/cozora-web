@@ -151,6 +151,30 @@ body {
   .cz-check-pop { animation: none; opacity: 1; transform: none; }
 }
 
+/* ===== PREMIUM LIBRARY ===== */
+
+/* Staggered card entrance (re-triggers on tab change via React remount) */
+@keyframes cz-lib-in {
+  0%   { opacity: 0; transform: translateY(22px) scale(0.985); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+.cz-lib-in {
+  opacity: 0;
+  animation: cz-lib-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Soft glow pulse behind the header label */
+@keyframes cz-lib-glow {
+  0%, 100% { opacity: 0.5; }
+  50%      { opacity: 1; }
+}
+.cz-lib-glow { animation: cz-lib-glow 3.2s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cz-lib-in { animation: none; opacity: 1; transform: none; }
+  .cz-lib-glow { animation: none; }
+}
+
 /* ===== SCROLLBAR ===== */
 
 ::-webkit-scrollbar {
