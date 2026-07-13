@@ -18,7 +18,7 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2">
               <li>
-                <a href="#skill-sets" className="text-cz-text-muted hover:text-cz-text transition-colors text-sm">
+                <a href="/#skill-sets" className="text-cz-text-muted hover:text-cz-text transition-colors text-sm">
                   Course Bundles
                 </a>
               </li>
@@ -28,7 +28,7 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="#pricing" className="text-cz-text-muted hover:text-cz-text transition-colors text-sm">
+                <a href="/#pricing" className="text-cz-text-muted hover:text-cz-text transition-colors text-sm">
                   Pricing
                 </a>
               </li>
@@ -51,12 +51,12 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="#about" className="text-cz-text-muted hover:text-cz-text transition-colors text-sm">
+                <a href="/#about" className="text-cz-text-muted hover:text-cz-text transition-colors text-sm">
                   About
                 </a>
               </li>
               <li>
-                <a href="#cz-faq" className="text-cz-text-muted hover:text-cz-text transition-colors text-sm">
+                <a href="/#cz-faq" className="text-cz-text-muted hover:text-cz-text transition-colors text-sm">
                   FAQ
                 </a>
               </li>

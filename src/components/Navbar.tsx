@@ -62,7 +62,7 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <a
-              href="#"
+              href="/"
               className="text-2xl font-display font-bold text-cz-text"
             >
               cozora
@@ -70,19 +70,19 @@ export default function Navbar() {
 
             <div className="hidden md:flex items-center gap-8">
               <a
-                href="#skill-sets"
+                href="/#skill-sets"
                 className="text-cz-text-muted hover:text-cz-text transition-colors"
               >
                 Course Bundles
               </a>
               <a
-                href="#pricing"
+                href="/#pricing"
                 className="text-cz-text-muted hover:text-cz-text transition-colors"
               >
                 Pricing
               </a>
               <a
-                href="#about"
+                href="/#about"
                 className="text-cz-text-muted hover:text-cz-text transition-colors"
               >
                 About
@@ -150,21 +150,21 @@ export default function Navbar() {
           {isMobileMenuOpen && (
             <div className="md:hidden pb-4 space-y-3">
               <a
-                href="#skill-sets"
+                href="/#skill-sets"
                 className="block text-cz-text-muted hover:text-cz-text transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Course Bundles
               </a>
               <a
-                href="#pricing"
+                href="/#pricing"
                 className="block text-cz-text-muted hover:text-cz-text transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Pricing
               </a>
               <a
-                href="#about"
+                href="/#about"
                 className="block text-cz-text-muted hover:text-cz-text transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
