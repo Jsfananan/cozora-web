@@ -19,6 +19,79 @@ const EXCLUDE_TAGS = new Set<string>([
 export const TIERS = ['Start Here', 'Apply AI', 'Go Deep'] as const;
 export type Tier = (typeof TIERS)[number];
 
+// Topic axis. Assignment is explicit-tag-first: if a post carries any of a
+// topic's `tags` in Substack, it wins (tag Joel's posts the same way tiers are
+// tagged). Untagged posts fall back to a keyword match over title+subtitle so
+// categories stay populated before everything is hand-tagged. Anything that
+// matches nothing lands in the "General" bucket.
+export interface TopicDef {
+  key: string;
+  label: string;
+  tags: string[]; // Substack tag aliases (case-insensitive) that pin this topic
+  keywords: string[]; // fallback matches against title + subtitle
+}
+
+export const TOPICS: TopicDef[] = [
+  {
+    key: 'writing',
+    label: 'Writing & Content',
+    tags: ['Writing', 'Writing & Content', 'Content'],
+    keywords: ['writ', 'content', 'newsletter', 'copy', 'carousel', 'essay', 'blog', 'ghostwrit', 'headline', 'editor', 'draft', 'post'],
+  },
+  {
+    key: 'video',
+    label: 'Video & Image',
+    tags: ['Video', 'Video & Image', 'Image', 'Design'],
+    keywords: ['video', 'image', 'photo', 'storyboard', 'thumbnail', 'visual', 'design', 'film', 'cinema', 'midjourney', 'veo'],
+  },
+  {
+    key: 'coding',
+    label: 'Coding & Building',
+    tags: ['Coding', 'Coding & Building', 'Build', 'Development'],
+    keywords: ['cod', 'build', 'vibe', 'developer', 'app ', 'api', 'deploy', 'script', 'automation', 'no-code', 'nocode'],
+  },
+  {
+    key: 'marketing',
+    label: 'Marketing & Growth',
+    tags: ['Marketing', 'Marketing & Growth', 'Growth'],
+    keywords: ['market', 'growth', 'ad ', 'ads', 'launch', 'funnel', 'sales', 'audience', 'seo', 'cold email', 'outreach', 'brand'],
+  },
+  {
+    key: 'research',
+    label: 'Research & Analysis',
+    tags: ['Research', 'Research & Analysis', 'Analysis'],
+    keywords: ['research', 'analy', 'data', 'report', 'synthes', 'insight', 'study', 'competitive'],
+  },
+  {
+    key: 'systems',
+    label: 'Productivity & Systems',
+    tags: ['Systems', 'Productivity', 'Productivity & Systems'],
+    keywords: ['system', 'productiv', 'workflow', 'organize', 'notion', 'task', 'plan', 'mind dump', 'inbox', 'note'],
+  },
+  {
+    key: 'leadership',
+    label: 'Leadership & Strategy',
+    tags: ['Leadership', 'Strategy', 'Leadership & Strategy'],
+    keywords: ['lead', 'manage', 'strateg', 'team', '1:1', 'one-on-one', 'coach', 'decision', 'meeting'],
+  },
+];
+
+export const GENERAL_TOPIC = { key: 'general', label: 'More Skills' } as const;
+
+function resolveTopic(tagNames: string[], title: string, subtitle: string): string | null {
+  const lowerTags = tagNames.map((t) => t.toLowerCase());
+  const explicit = TOPICS.find((topic) =>
+    topic.tags.some((tag) => lowerTags.includes(tag.toLowerCase())),
+  );
+  if (explicit) return explicit.key;
+
+  const hay = `${title} ${subtitle}`.toLowerCase();
+  const inferred = TOPICS.find((topic) =>
+    topic.keywords.some((kw) => hay.includes(kw)),
+  );
+  return inferred ? inferred.key : null;
+}
+
 export interface SkillPost {
   id: number;
   title: string;
@@ -28,6 +101,7 @@ export interface SkillPost {
   coverImage: string | null;
   date: string; // ISO
   tier: Tier | null;
+  topic: string | null; // TopicDef.key, or null → General bucket
   reactions: number;
 }
 
@@ -110,6 +184,7 @@ export async function getSkillPosts(): Promise<SkillPost[]> {
         coverImage: p.cover_image ?? null,
         date: p.post_date ?? '',
         tier: firstTier(names),
+        topic: resolveTopic(names, p.title ?? '', p.subtitle ?? ''),
         reactions: sumReactions(p.reactions),
       };
     })
