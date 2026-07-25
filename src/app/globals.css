@@ -9,6 +9,10 @@
   --color-cz-bg-card: #132224;
   --color-cz-bg-card-hover: #1a2e30;
 
+  /* Elevated surfaces (library cards — higher contrast vs page bg) */
+  --color-cz-bg-elevated: #1a2f31;
+  --color-cz-bg-elevated-hover: #223c3e;
+
   /* Surfaces */
   --color-cz-surface: #1D5C5E;
 

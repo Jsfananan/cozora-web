@@ -70,13 +70,13 @@ function FeaturedCard({ post, index }: { post: SkillPost; index: number }) {
       target="_blank"
       rel="noopener noreferrer"
       style={{ animationDelay: `${index * 60}ms` }}
-      className="cz-lib-in group flex flex-col overflow-hidden rounded-2xl border border-cz-border bg-cz-bg-card transition-all duration-300 hover:-translate-y-1.5 hover:border-cz-border-strong hover:bg-cz-bg-card-hover hover:shadow-xl hover:shadow-black/30"
+      className="cz-lib-in group flex flex-col overflow-hidden rounded-2xl border border-cz-border-strong bg-cz-bg-elevated shadow-lg shadow-black/30 transition-all duration-300 hover:-translate-y-1.5 hover:border-cz-teal/40 hover:bg-cz-bg-elevated-hover hover:shadow-xl hover:shadow-black/40"
     >
-      <div className="relative aspect-[16/9] w-full overflow-hidden bg-cz-surface/30">
+      <div className="relative aspect-[2/1] w-full overflow-hidden bg-cz-bg">
         <div className="pointer-events-none absolute inset-0 z-10 -translate-x-full skew-x-[-18deg] bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-[130%]" />
         {post.coverImage ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={post.coverImage} alt={post.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          <img src={post.coverImage} alt={post.title} loading="lazy" className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-105" />
         ) : (
           <div className={`flex h-full w-full items-center justify-center bg-gradient-to-br ${TOPIC_GRADIENT[post.topic ?? 'general']}`}>
             <span className="font-display text-2xl font-bold text-cz-text/40">cozora</span>
@@ -112,7 +112,7 @@ function SkillRow({ post, showTopic = true }: { post: SkillPost; showTopic?: boo
       href={post.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="group flex items-center gap-4 rounded-xl border border-cz-border bg-cz-bg-card px-4 py-3 transition-all duration-200 hover:border-cz-border-strong hover:bg-cz-bg-card-hover"
+      className="group flex items-center gap-4 rounded-xl border border-cz-border-strong bg-cz-bg-elevated px-4 py-3 shadow-sm shadow-black/20 transition-all duration-200 hover:border-cz-teal/40 hover:bg-cz-bg-elevated-hover"
     >
       <span className={`flex h-11 w-11 flex-none items-center justify-center rounded-[10px] bg-gradient-to-br font-display text-lg font-bold text-cz-bg/85 ${TOPIC_GRADIENT[post.topic ?? 'general']}`}>
         {initial}
@@ -161,10 +161,10 @@ function TopicSection({
 }) {
   const preview = posts.slice(0, 5);
   return (
-    <div className={`overflow-hidden rounded-2xl border bg-cz-bg-card ${open ? 'border-cz-border-strong' : 'border-cz-border'}`}>
+    <div className={`overflow-hidden rounded-2xl border bg-cz-bg-elevated shadow-sm shadow-black/20 ${open ? 'border-cz-teal/40' : 'border-cz-border-strong'}`}>
       <button
         onClick={onToggle}
-        className="flex w-full items-center justify-between px-5 py-4 text-left transition-colors hover:bg-cz-bg-card-hover"
+        className="flex w-full items-center justify-between px-5 py-4 text-left transition-colors hover:bg-cz-bg-elevated-hover"
       >
         <span className="flex items-center gap-3">
           <span className={`h-2.5 w-2.5 flex-none rounded-full bg-gradient-to-br ${TOPIC_GRADIENT[topicKey]}`} />
@@ -176,7 +176,7 @@ function TopicSection({
         </span>
       </button>
       {open && (
-        <div className="border-t border-cz-border p-3">
+        <div className="border-t border-cz-border-strong bg-cz-bg/50 p-3">
           <div className="flex flex-col gap-2">
             {preview.map((p) => (
               <SkillRow key={p.id} post={p} showTopic={false} />
