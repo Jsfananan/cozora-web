@@ -162,10 +162,10 @@ function DashboardContent() {
                 Sign In
               </Link>
               <Link
-                href="/bundles"
+                href="/access"
                 className="px-8 py-3 border border-cz-text-muted hover:border-cz-text bg-transparent text-cz-text rounded-lg transition-colors"
               >
-                Purchase Skill Sets
+                Recover Access
               </Link>
             </div>
           </div>
@@ -178,111 +178,34 @@ function DashboardContent() {
     return (
       <>
         <Navbar />
-        <main className="min-h-screen pt-16 px-4 sm:px-6 lg:px-8 pb-16">
-          <div className="max-w-7xl mx-auto">
-            <div className="mb-8 bg-gradient-to-r from-cz-accent/20 to-cz-coral/20 border border-cz-accent/40 rounded-xl p-6 sm:p-8">
-              <div className="text-center">
-                <h2 className="text-2xl sm:text-3xl font-display font-bold text-cz-text mb-2">
-                  Unlock All Skill Sets
-                </h2>
-                <p className="text-cz-text-muted mb-6">
-                  Get complete access to Create, Build, Think, and Lead bundles
-                </p>
-                <Link
-                  href="/bundles"
-                  className="inline-block px-8 py-3 bg-cz-accent hover:opacity-90 text-cz-bg font-semibold rounded-lg transition-opacity"
-                >
-                  Get All Skill Sets — $99
-                </Link>
-              </div>
-            </div>
-
-            <div className="mb-12">
-              <h1 className="text-3xl sm:text-4xl font-display font-bold text-cz-text mb-2">
-                Preview Available
-              </h1>
-              <p className="text-cz-text-muted">
-                See what&apos;s included in each bundle. Purchase to unlock all videos and downloads.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {bundles.map((bundle) => {
-                const colors = skillColorMap[bundle.skill_num] || { text: 'text-cz-teal', bg: 'bg-cz-teal/10' };
-                const isExpanded = expandedBundles.has(bundle.slug);
-
-                return (
-                  <div key={bundle.slug}>
-                    <button
-                      onClick={() => toggleBundleExpanded(bundle.slug)}
-                      className="w-full text-left"
-                    >
-                      <div className="h-full bg-cz-bg-card border border-cz-border hover:border-cz-text-muted rounded-xl p-6 transition-all hover:bg-cz-bg-card-hover">
-                        <div className="flex items-start justify-between mb-4">
-                          <div className={`px-3 py-1 rounded-full text-xs font-mono ${colors.text} ${colors.bg}`}>
-                            {bundle.skill_num}
-                          </div>
-                          <span className="text-cz-text-muted transition-transform" style={{
-                            transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
-                          }}>
-                            ↓
-                          </span>
-                        </div>
-                        <h2 className="text-xl font-display font-bold text-cz-text mb-2">
-                          {bundle.name}
-                        </h2>
-                        <div className="flex items-center gap-4 text-sm text-cz-text-muted">
-                          <span>{bundle.sessions.length} sessions</span>
-                        </div>
-                      </div>
-                    </button>
-
-                    {isExpanded && (
-                      <div className="mt-4 bg-cz-bg-card border border-cz-border rounded-xl p-6 space-y-6">
-                        {bundle.bundle_pdfs?.length > 0 && (
-                          <div className="bg-cz-teal/5 border border-cz-teal/20 rounded-lg p-4 flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <span className="text-cz-text-dim">🔒</span>
-                              <span className="text-sm text-cz-text-muted">{bundle.bundle_pdfs[0].file_name}</span>
-                            </div>
-                            <span className="text-xs text-cz-text-dim font-mono">Purchase required</span>
-                          </div>
-                        )}
-                        {bundle.sessions.map((session) => (
-                          <div key={session.id} className="border-b border-cz-border pb-6 last:border-b-0 last:pb-0">
-                            <div className="mb-4 aspect-video bg-cz-bg rounded-lg border border-cz-border flex items-center justify-center relative overflow-hidden">
-                              <div className="absolute inset-0 bg-gradient-to-br from-cz-accent/10 to-cz-teal/10" />
-                              <div className="relative z-10 text-center">
-                                <div className="text-5xl mb-2">🔒</div>
-                                <p className="text-sm text-cz-text-muted font-mono">
-                                  Purchase to unlock
-                                </p>
-                              </div>
-                            </div>
-                            <div>
-                              <h3 className="text-lg font-semibold text-cz-text mb-2">{session.title}</h3>
-                              <p className="text-cz-text-muted mb-3">{session.description}</p>
-                              <div className="flex flex-wrap gap-4 text-sm text-cz-text-muted font-mono">
-                                <span>with {session.creator}</span>
-                                {session.date && <span>{session.date}</span>}
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-
-            <div className="mt-12 text-center">
+        <main className="min-h-screen pt-32 px-4 sm:px-6 lg:px-8 pb-16">
+          <div className="max-w-2xl mx-auto text-center">
+            <h1 className="text-3xl sm:text-4xl font-display font-bold text-cz-text mb-4">
+              No Skill Sets on this account
+            </h1>
+            <p className="text-lg text-cz-text-muted mb-4">
+              We couldn&apos;t find a Skill Sets purchase linked to this email. If you
+              bought them with a different address, look them up below.
+            </p>
+            <p className="text-cz-text-muted mb-8">
+              The Skill Sets bundles are no longer sold. Everything Cozora publishes
+              now lives in the weekly Skill Library on Substack.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
-                href="/bundles"
-                className="inline-block px-8 py-3 bg-cz-accent hover:opacity-90 text-cz-bg font-semibold rounded-lg transition-opacity"
+                href="/access"
+                className="px-8 py-3 bg-cz-accent hover:opacity-90 text-cz-bg font-semibold rounded-lg transition-opacity"
               >
-                Get All Skill Sets — $99
+                Recover Access
               </Link>
+              <a
+                href="https://cozora.substack.com/subscribe"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-8 py-3 border border-cz-text-muted hover:border-cz-text bg-transparent text-cz-text rounded-lg transition-colors"
+              >
+                Join the Community
+              </a>
             </div>
           </div>
         </main>
@@ -294,7 +217,7 @@ function DashboardContent() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen pt-16 px-4 sm:px-6 lg:px-8 pb-16">
+      <main className="min-h-screen pt-32 px-4 sm:px-6 lg:px-8 pb-16">
         <div className="max-w-7xl mx-auto">
           {isAdminPreview && (
             <div className="mb-6 bg-cz-coral/10 border border-cz-coral/30 rounded-lg px-4 py-3 flex items-center justify-between">

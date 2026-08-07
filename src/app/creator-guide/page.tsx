@@ -204,7 +204,7 @@ export default function CreatorGuidePage() {
             <div className="cg-resource">
               <div>
                 <h4>Access Cozora on Substack</h4>
-                <p>Free access while you&apos;re a creator ($720/year value)</p>
+                <p>Free access while you&apos;re a creator ($359/year value)</p>
               </div>
               <a href="https://cozora.substack.com/" target="_blank" rel="noreferrer">
                 Open →

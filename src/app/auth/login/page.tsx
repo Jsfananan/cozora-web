@@ -78,13 +78,13 @@ export default function LoginPage() {
 
             <div className="mt-8 pt-8 border-t border-cz-border">
               <p className="text-cz-text-muted text-sm mb-4">
-                Don't have an account yet?
+                Bought the Skill Sets but don&apos;t have an account yet?
               </p>
               <Link
-                href="/bundles"
+                href="/access"
                 className="inline-block text-cz-accent hover:text-cz-accent-hover font-semibold transition-colors"
               >
-                Purchase the Skill Sets to get started →
+                Look up your access with your purchase email →
               </Link>
             </div>
           </div>

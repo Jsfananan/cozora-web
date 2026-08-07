@@ -1,23 +1,9 @@
-import BuyButton from './BuyButton';
-import { getBundleStats } from '@/lib/bundles';
-
-const { totalBundles, totalSessions } = getBundleStats();
-
-const features = [
-  'Lifetime access to all 4 skill-set bundles',
-  '16 recorded expert sessions',
-  'Downloadable guides, frameworks & templates',
-  'Yours forever — watch anytime',
-  'No subscription required',
-];
-
 const communityFeatures = [
-  'Creator community of 40+ top AI creators',
-  'A new Claude skill every week',
-  'Each skill: video walkthrough + ready-to-run prompt + the why',
-  'Free creator interviews — live for everyone',
-  'Full Skill Library archive',
-  'Everything in the Skill Sets back-catalog',
+  'A new Claude skill every week — yours to run that night',
+  'Every skill: video walkthrough + ready-to-run prompt + the why',
+  'The full Skill Library, searchable by topic',
+  'The creator community — 40+ of the top Substack AI creators',
+  'New creators added regularly across writing, code, video & strategy',
 ];
 
 export default function Pricing() {
@@ -26,96 +12,29 @@ export default function Pricing() {
       id="pricing"
       className="py-20 px-4 sm:px-6 lg:px-8 relative"
     >
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-10 text-center animate-fade-up">
+      <div className="max-w-3xl mx-auto">
+        <div className="mb-12 text-center animate-fade-up">
           <h2 className="text-4xl sm:text-5xl font-display font-bold text-cz-text mb-4">
-            Two Ways to Learn
+            Join the Creator Community
           </h2>
           <p className="text-lg text-cz-text-muted max-w-xl mx-auto">
-            Own the recorded library forever, or join the creator community and get a new skill every week.
+            40+ of the top Substack AI creators, and a new Claude skill every week you can run the night it drops.
           </p>
         </div>
 
-        <div className="mb-12 flex justify-center animate-fade-up">
-          <a
-            href="https://cozora.substack.com/p/premium-hub"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group inline-flex items-center gap-3 px-5 py-3 bg-cz-bg-card border border-cz-accent/40 hover:border-cz-accent rounded-full transition-all hover:bg-cz-bg-card-hover"
-          >
-            <span className="text-xs font-mono font-semibold text-cz-accent uppercase tracking-wider">
-              Already a Premium Subscriber?
-            </span>
-            <span className="text-sm text-cz-text font-medium group-hover:text-cz-accent transition-colors">
-              Start Here →
-            </span>
-          </a>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-8 items-stretch">
-          <div className="animate-fade-up">
-            <div className="bg-cz-bg-card border border-cz-border rounded-2xl p-8 h-full flex flex-col">
-              <h3 className="text-2xl font-display font-bold text-cz-text mb-2">
-                The Skill Sets
-              </h3>
-              <div className="mb-6">
-                <span className="text-5xl font-bold text-cz-accent">$99</span>
-                <span className="text-cz-text-muted ml-2">one-time</span>
-              </div>
-              <p className="text-sm text-cz-text-muted mb-6">
-                Lifetime access to all {totalBundles} bundles &mdash; {totalSessions} sessions of expert content you can watch anytime.
+        <div className="animate-fade-up delay-200">
+          <div className="relative">
+            <div className="absolute -inset-1 bg-gradient-to-br from-cz-teal/30 to-cz-accent/25 rounded-2xl blur-xl opacity-100" />
+            <div className="relative bg-gradient-to-br from-[#1D5C5E]/30 to-cz-bg-card border-2 border-cz-teal/70 rounded-2xl p-8 sm:p-10">
+              <p className="text-xs font-mono text-cz-coral uppercase tracking-wider mb-2">
+                Membership
               </p>
+              <h3 className="text-2xl font-display font-bold text-cz-text mb-6">
+                The Creator Community
+              </h3>
 
-              <ul className="space-y-3 mb-8 flex-1">
-                {features.map((feature) => (
-                  <li key={feature} className="flex gap-3">
-                    <svg
-                      className="w-5 h-5 text-cz-accent flex-shrink-0 mt-0.5"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                    <span className="text-cz-text-muted">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <BuyButton className="block w-full px-6 py-3.5 bg-cz-accent hover:bg-cz-accent-hover text-cz-bg rounded-lg transition-colors text-center font-semibold">
-                Get the Skill Sets
-              </BuyButton>
-            </div>
-          </div>
-
-          <div className="animate-fade-up delay-200">
-            <div className="relative h-full">
-              <div className="absolute inset-0 bg-gradient-to-br from-cz-teal/20 to-cz-accent/20 rounded-2xl blur-xl opacity-50" />
-              <div className="relative bg-gradient-to-br from-cz-bg-card to-cz-bg-card-hover border border-cz-teal/50 rounded-2xl p-8 h-full flex flex-col">
-                <div className="inline-block mb-6 px-3 py-1 bg-cz-teal/20 border border-cz-teal rounded-full text-cz-teal text-sm font-mono font-semibold w-fit">
-                  MOST POPULAR
-                </div>
-
-                <h3 className="text-2xl font-display font-bold text-cz-text mb-2">
-                  The Creator Community
-                </h3>
-                <div className="mb-6">
-                  <div className="mb-1">
-                    <span className="text-5xl font-bold text-cz-accent">$75</span>
-                    <span className="text-cz-text-muted ml-2">/month</span>
-                  </div>
-                  <span className="text-sm text-cz-text-muted">
-                    or $720/year (save $180)
-                  </span>
-                </div>
-                <p className="text-sm text-cz-text-muted mb-6">
-                  Join 40+ of the top Substack AI creators and get a new Claude skill every week &mdash; plus creator interviews, free to all.
-                </p>
-
-                <ul className="space-y-3 mb-8 flex-1">
+              <div className="grid sm:grid-cols-2 gap-8 items-start">
+                <ul className="space-y-3">
                   {communityFeatures.map((feature) => (
                     <li key={feature} className="flex gap-3">
                       <svg
@@ -129,23 +48,83 @@ export default function Pricing() {
                           clipRule="evenodd"
                         />
                       </svg>
-                      <span className="text-cz-text">{feature}</span>
+                      <span className="text-cz-text text-[0.95rem] leading-relaxed">{feature}</span>
                     </li>
                   ))}
                 </ul>
 
-                <a
-                  href="https://cozora.substack.com/subscribe"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block w-full px-6 py-3.5 bg-cz-teal hover:bg-cz-teal/90 text-cz-bg rounded-lg transition-colors text-center font-semibold"
-                >
-                  Subscribe on Substack
-                </a>
+                <div className="sm:border-l sm:border-cz-border sm:pl-8">
+                  <div className="mb-1 flex items-baseline gap-2">
+                    <span className="text-5xl font-bold text-cz-accent">$359</span>
+                    <span className="text-cz-text-muted">/year</span>
+                  </div>
+                  <p className="text-sm text-cz-teal font-medium mb-6">
+                    Nearly 3 months free
+                  </p>
+
+                  <a
+                    href="https://cozora.substack.com/subscribe"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block w-full px-6 py-4 bg-cz-accent hover:bg-cz-accent-hover text-cz-bg rounded-lg transition-colors text-center font-semibold text-lg"
+                  >
+                    Join for $359/year
+                  </a>
+
+                  <a
+                    href="https://cozora.substack.com/subscribe"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block w-full mt-3 px-6 py-3 border border-cz-border hover:border-cz-accent text-cz-text hover:text-cz-accent rounded-lg transition-colors text-center font-medium"
+                  >
+                    Or $39/month
+                  </a>
+
+                  <div className="mt-5 flex items-center gap-2 text-cz-teal">
+                    <svg
+                      className="w-4 h-4 flex-shrink-0"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                      />
+                    </svg>
+                    <span className="text-sm font-semibold">
+                      Cancel anytime &mdash; no contract, no lock-in
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
+
+        <p className="mt-8 text-center text-sm text-cz-text-dim">
+          Creator interviews are free for everyone —{' '}
+          <a
+            href="https://cozora.substack.com/subscribe"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-cz-text-muted hover:text-cz-accent underline underline-offset-4 transition-colors"
+          >
+            follow free
+          </a>{' '}
+          to catch those. Already a member?{' '}
+          <a
+            href="https://cozora.substack.com/p/premium-hub"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-cz-text-muted hover:text-cz-accent underline underline-offset-4 transition-colors"
+          >
+            Start here
+          </a>
+          .
+        </p>
       </div>
     </section>
   );

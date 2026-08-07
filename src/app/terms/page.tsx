@@ -46,9 +46,10 @@ export default function TermsPage() {
               </h2>
               <p>
                 By accessing or using cozora.org (the &quot;Site&quot;) or
-                purchasing a Cozora bundle (the &quot;Services&quot;), you agree
-                to these Terms of Service. If you don&apos;t agree, please
-                don&apos;t use the Site or Services.
+                accessing content you purchased from Cozora (the
+                &quot;Services&quot;), you agree to these Terms of Service. If
+                you don&apos;t agree, please don&apos;t use the Site or
+                Services.
               </p>
             </section>
 
@@ -57,9 +58,9 @@ export default function TermsPage() {
                 2. What Cozora provides
               </h2>
               <p>
-                Cozora offers AI education content, including live sessions
-                (hosted on Substack), recorded sessions, PDFs, and bundle
-                purchases. Content is provided for educational and informational
+                Cozora offers AI education content, including the Skill Library
+                and live sessions (hosted on Substack), recorded sessions, and
+                PDFs. Content is provided for educational and informational
                 purposes only.
               </p>
             </section>
@@ -80,11 +81,16 @@ export default function TermsPage() {
               <h2 className="font-display text-2xl font-semibold text-cz-text mb-3">
                 4. Pricing and payment
               </h2>
+              <p className="mb-3">
+                The Cozora membership is billed through Substack at the price
+                shown at cozora.substack.com. Substack handles billing,
+                renewals, and cancellations for the membership.
+              </p>
               <p>
-                Bundle pricing is shown on the purchase page. Payments are
-                processed by Stripe. A one-time bundle purchase grants access to
-                the bundle content as described at the time of purchase.
-                Applicable taxes may be added at checkout.
+                The one-time Skill Sets bundles are no longer offered for sale.
+                Purchases made while they were available were processed by
+                Stripe and remain governed by the terms in effect at the time of
+                purchase, including the access commitment in section 6 below.
               </p>
             </section>
 

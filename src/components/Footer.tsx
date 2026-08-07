@@ -19,12 +19,17 @@ export default function Footer() {
             <ul className="space-y-2">
               <li>
                 <a href="/#skill-sets" className="text-cz-text-muted hover:text-cz-text transition-colors text-sm">
-                  Course Bundles
+                  Weekly Skills
                 </a>
               </li>
               <li>
-                <a href="/bundles" className="text-cz-text-muted hover:text-cz-text transition-colors text-sm">
-                  Bundles
+                <a href="/library" className="text-cz-text-muted hover:text-cz-text transition-colors text-sm">
+                  Skill Library
+                </a>
+              </li>
+              <li>
+                <a href="/skills-guide" className="text-cz-text-muted hover:text-cz-text transition-colors text-sm">
+                  Install a Skill
                 </a>
               </li>
               <li>
@@ -95,8 +100,7 @@ export default function Footer() {
             &copy; {new Date().getFullYear()} Cozora. All rights reserved.
           </p>
           <p className="text-cz-text-dim text-xs text-center">
-            This platform is for educational purposes. Results are not
-            guaranteed. Past performance does not indicate future results.
+            This platform is for educational purposes.
           </p>
         </div>
       </div>

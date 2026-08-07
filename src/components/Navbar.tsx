@@ -19,27 +19,23 @@ export default function Navbar() {
     <>
       {/* Premium subscriber redirect banner */}
       {!bannerDismissed && (
-        <div className="fixed top-0 left-0 right-0 z-60 bg-gradient-to-r from-cz-accent/95 to-cz-accent/80 border-b border-cz-accent overflow-hidden">
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 w-1/3 bg-gradient-to-r from-transparent via-white/25 to-transparent animate-banner-shimmer"
-          />
+        <div className="fixed top-0 left-0 right-0 z-60 bg-cz-bg-card border-b border-cz-accent/40 overflow-hidden">
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between gap-3">
-            <p className="text-sm text-cz-bg font-body text-center flex-1 font-medium">
+            <p className="text-sm text-cz-text-muted font-body text-center flex-1">
               <span className="hidden sm:inline">Already a Cozora Premium Subscriber? </span>
               <span className="sm:hidden">Premium Subscriber? </span>
               <a
                 href="https://cozora.substack.com/p/premium-hub"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-bold text-cz-bg hover:text-cz-deep-teal transition-colors underline underline-offset-2"
+                className="font-semibold text-cz-accent hover:text-cz-text transition-colors underline underline-offset-2"
               >
-                Start Here <span className="animate-arrow-nudge">→</span>
+                Start Here →
               </a>
             </p>
             <button
               onClick={() => setBannerDismissed(true)}
-              className="relative shrink-0 text-cz-bg/70 hover:text-cz-bg transition-colors p-1"
+              className="relative shrink-0 text-cz-text-dim hover:text-cz-text transition-colors p-1"
               aria-label="Dismiss banner"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -73,7 +69,7 @@ export default function Navbar() {
                 href="/#skill-sets"
                 className="text-cz-text-muted hover:text-cz-text transition-colors"
               >
-                Course Bundles
+                Weekly Skills
               </a>
               <a
                 href="/#pricing"
@@ -113,7 +109,7 @@ export default function Navbar() {
                 rel="noopener noreferrer"
                 className="px-5 py-2 bg-cz-accent hover:bg-cz-accent-hover text-cz-bg font-semibold rounded-lg transition-colors text-sm"
               >
-                Subscribe
+                Join
               </a>
             </div>
 
@@ -154,7 +150,7 @@ export default function Navbar() {
                 className="block text-cz-text-muted hover:text-cz-text transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Course Bundles
+                Weekly Skills
               </a>
               <a
                 href="/#pricing"
@@ -199,7 +195,7 @@ export default function Navbar() {
                 rel="noopener noreferrer"
                 className="block w-full text-center px-5 py-2.5 bg-cz-accent hover:bg-cz-accent-hover text-cz-bg font-semibold rounded-lg transition-colors text-sm mt-2"
               >
-                Subscribe
+                Join
               </a>
             </div>
           )}

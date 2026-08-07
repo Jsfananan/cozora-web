@@ -1,5 +1,3 @@
-import BuyButton from './BuyButton';
-
 export default function Hero() {
   return (
     <section className="min-h-screen flex items-center pt-28 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
@@ -40,15 +38,18 @@ export default function Hero() {
               rel="noopener noreferrer"
               className="px-8 py-3.5 bg-cz-accent hover:bg-cz-accent-hover text-cz-bg font-semibold rounded-lg transition-colors text-center text-lg"
             >
-              Subscribe on Substack
+              Join for $39/month
             </a>
-            <BuyButton className="px-8 py-3.5 border border-cz-border hover:border-cz-accent bg-transparent text-cz-text hover:text-cz-accent rounded-lg transition-colors text-center text-lg">
-              Get Skill Sets &mdash; $99
-            </BuyButton>
+            <a
+              href="/library"
+              className="px-8 py-3.5 border border-cz-border hover:border-cz-accent bg-transparent text-cz-text hover:text-cz-accent rounded-lg transition-colors text-center text-lg"
+            >
+              See the skills first
+            </a>
           </div>
 
-          <p className="mt-4 text-sm text-cz-text-dim font-mono">
-            Free to subscribe &middot; $75/mo for full access
+          <p className="mt-4 text-sm text-cz-text-muted font-mono">
+            $359/year &mdash; nearly 3 months free &middot; Cancel anytime
           </p>
         </div>
 

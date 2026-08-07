@@ -1,24 +1,23 @@
 'use client';
 
 import { useState } from 'react';
-import BuyButton from './BuyButton';
 
 const faqs = [
   {
-    q: 'Do you still run weekly live sessions?',
-    a: "We\u2019ve moved away from a fixed weekly schedule. Now our creators go live for occasional interviews \u2014 and those are free for everyone, member or not. The weekly rhythm lives in the Skill Library: a new Claude skill you can use right away.",
+    q: 'What do I get with a membership?',
+    a: "The creator community, a new Claude skill every week, and the full Skill Library \u2014 every skill we\u2019ve published, searchable by topic. Creator interviews stay free for everyone, member or not.",
   },
   {
     q: 'What exactly is a \u201cskill\u201d?',
     a: "Each week, one of our 40+ creators shares a skill they actually use \u2014 often one they\u2019ve refined over months. You get a short video walkthrough, the complete prompt or a downloadable skill you drop straight into Claude, and the thinking behind when and why to use it.",
   },
   {
-    q: 'What\u2019s the difference between the $99 bundles and the membership?',
-    a: "The $99 Skill Sets is a one-time purchase \u2014 lifetime access to our recorded back-catalog (16 expert sessions across 4 bundles). The membership is where the creator community and the weekly skill drops live.",
+    q: 'How often do creators go live?',
+    a: "Creator interviews go live regularly, and they\u2019re free for everyone \u2014 member or not. The weekly rhythm lives in the Skill Library: a new Claude skill you can run the night it drops.",
   },
   {
     q: 'Where does all of this happen?',
-    a: "On Substack. You subscribe at cozora.substack.com \u2014 free to follow, $75/month for the community and the full Skill Library. The recorded bundles live here on cozora.org.",
+    a: "On Substack. You subscribe at cozora.substack.com \u2014 free to follow, $39/month or $359/year for the community and the full Skill Library.",
   },
   {
     q: 'Do I need technical experience to join?',
@@ -109,11 +108,14 @@ export default function Faq() {
               rel="noopener noreferrer"
               className="px-8 py-3.5 bg-cz-accent hover:bg-cz-accent-hover text-cz-bg font-semibold rounded-lg transition-colors text-center"
             >
-              Subscribe on Substack
+              Join for $39/month
             </a>
-            <BuyButton className="px-8 py-3.5 border border-cz-border hover:border-cz-accent text-cz-text hover:text-cz-accent rounded-lg transition-colors text-center">
-              Get Skill Sets &mdash; $99
-            </BuyButton>
+            <a
+              href="/library"
+              className="px-8 py-3.5 border border-cz-border hover:border-cz-accent text-cz-text hover:text-cz-accent rounded-lg transition-colors text-center"
+            >
+              See the skills first
+            </a>
           </div>
         </div>
       </div>

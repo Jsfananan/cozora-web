@@ -118,9 +118,9 @@ export default function Creators() {
           </div>
 
           <div className="space-y-4">
-            <div className="overflow-hidden -mx-4 sm:-mx-6 lg:-mx-8">
+            <div className="overflow-hidden -mx-4 sm:-mx-6 lg:-mx-8 [mask-image:linear-gradient(to_right,transparent,black_6%,black_94%,transparent)]">
               <div
-                className="flex gap-3 px-4 sm:px-6 lg:px-8 hover:[animation-play-state:paused]"
+                className="flex gap-3 px-4 sm:px-6 lg:px-8 hover:[animation-play-state:paused] motion-reduce:[animation-play-state:paused]"
                 style={{ animation: 'czMarquee 55s linear infinite' }}
               >
                 {[...row1Creators, ...row1Creators].map((creator, index) => (
@@ -131,9 +131,9 @@ export default function Creators() {
               </div>
             </div>
 
-            <div className="overflow-hidden -mx-4 sm:-mx-6 lg:-mx-8">
+            <div className="overflow-hidden -mx-4 sm:-mx-6 lg:-mx-8 [mask-image:linear-gradient(to_right,transparent,black_6%,black_94%,transparent)]">
               <div
-                className="flex gap-3 px-4 sm:px-6 lg:px-8 hover:[animation-play-state:paused]"
+                className="flex gap-3 px-4 sm:px-6 lg:px-8 hover:[animation-play-state:paused] motion-reduce:[animation-play-state:paused]"
                 style={{ animation: 'czMarquee 55s linear infinite reverse' }}
               >
                 {[...row2Creators, ...row2Creators].map((creator, index) => (

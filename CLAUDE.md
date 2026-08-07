@@ -1,7 +1,14 @@
 # Cozora Web — cozora.org
 
 ## Purpose
-Self-hosted landing page + bundle store for Cozora. Replaces Kajabi entirely. Subscriptions and live sessions live on Substack — this site handles the marketing landing page and the $99 one-time bundle purchase (all 4 skill sets).
+Self-hosted landing page for Cozora. Replaces Kajabi entirely. Subscriptions, the weekly Skill Library, and live sessions all live on Substack — this site is the marketing landing page, the public Skill Library index, the install guide, and the access portal for past Skill Sets buyers.
+
+## ⚠ The $99 Skill Sets bundle store is RETIRED (2026-08-07)
+Joel pulled the bundles from sale. **Do not rebuild any of it.**
+- **Gone:** `/bundles`, `/bundles/[slug]`, `/ai-bundles`, `/checkout`, `/checkout/success`, `src/components/BuyButton.tsx`, `POST /api/checkout`. All 301-redirect to `/` (`/checkout/success` → `/access`) via `redirects()` in `next.config.ts`.
+- **Still works — existing buyers keep access forever:** `/access` (email lookup), `/access/[token]`, `/auth/login`, `/dashboard` (purchased state), `/api/recover-access`, `/api/verify-purchase`, `/api/content/*`, `/admin/*`.
+- **Stripe:** `/api/webhooks/stripe` is intentionally left in place to honor any in-flight or manually-created session. Nothing on the site can start a new checkout. Archive the Stripe product separately if you want the paper trail closed.
+- `src/lib/bundles.ts` survives only as `getBundleStats()` + admin form types.
 
 ## Stack
 - **Framework:** Next.js 16, React 19, TypeScript
@@ -30,12 +37,12 @@ Ported from the Kajabi redesign (`~/Documents/Claude/cozora-kajabi-redesign/`). 
 ## Architecture
 
 ### Pages
-- `/` — Landing page (Hero, SkillSets, Pricing, Footer)
-- `/bundles` — Bundle storefront (all 4 skill sets)
-- `/bundles/[slug]` — Individual bundle detail (static, generateStaticParams)
-- `/dashboard` — Buyer dashboard (video player + PDF downloads)
+- `/` — Landing page (Hero, SkillSets, Pricing, Creators, About, Faq, Footer). Single offer: the $39/mo Substack membership.
+- `/library` — Public Premium Library (topic index + fast search)
+- `/dashboard` — Buyer dashboard (video player + PDF downloads) for past Skill Sets buyers
+- `/access` — Recover access by purchase email
 - `/auth/login` — Login page
-- `/checkout/success` — Post-purchase confirmation + account creation
+- `/creator-guide` — Onboarding guide for the 40+ community creators
 - `/skills-guide` — **Interactive "Install a Claude Skill" guide** (built 2026-07-07; published at cozora.org/skills-guide 2026-07-08). Compass-style wizard: pick **surface** (web/desktop) → pick **delivery** (downloadable .zip vs prompt-to-paste) → verified steps, each with an animated faux-UI scene + optional real screenshot + check-to-advance → "Thank you for being part of Cozora" finale. Client-side state, progress persisted to localStorage. No auth (linked from Substack for members).
 
 ### Install Guide (`/skills-guide`)
@@ -45,8 +52,10 @@ Ported from the Kajabi redesign (`~/Documents/Claude/cozora-kajabi-redesign/`). 
 - **Real screenshots:** each step optionally reveals a real screenshot from `public/install-shots/` (filenames + shot list in `public/install-shots/SHOTLIST.md`). A step with a missing file just falls back to the animation (img onError hides the reveal). Already wired-in from the ebook: `use-skill.png`, `prompt-3-paste.png`, `prompt-5-save.png`. **Do NOT publish `ss-list-of-my-skills.png` as-is** — it exposes Joel's private skill names (wr-*, caio-*, client skills); needs a clean reshoot for `file-3-skills.png`.
 
 ### API Routes
-- `POST /api/checkout` — Creates Stripe Checkout Session
-- `POST /api/webhooks/stripe` — Stripe webhook handler (checkout.session.completed)
+- `POST /api/webhooks/stripe` — Stripe webhook handler (checkout.session.completed). Legacy — retained to honor in-flight sessions; nothing on the site creates new ones.
+- `POST /api/recover-access` — Look up a past purchase by email, issue an access token
+- `POST /api/access/verify` / `POST /api/verify-purchase` — Access checks
+- `GET /api/content/video`, `/api/content/pdf`, `/api/content/pdf/download` — Gated content delivery
 
 ### Key Files
 - `src/lib/bundles.ts` — Bundle data (4 bundles, 16 sessions)
@@ -54,11 +63,10 @@ Ported from the Kajabi redesign (`~/Documents/Claude/cozora-kajabi-redesign/`). 
 - `src/lib/supabase/schema.sql` — Database schema (run in Supabase SQL Editor)
 - `src/lib/supabase/middleware.ts` — Purchase verification helpers
 
-## Bundle Model
-- $99 one-time payment unlocks ALL 4 bundles
-- 4 bundles: Create, Build, Think, Lead
-- Each bundle has 4-5 sessions (~60 min video + PDF)
-- Purchase recorded by email — linked to profile when user signs up
+## Offer Model (current)
+- **Only offer: the Cozora membership on Substack — $39/month or $359/year (save $109).** Free tier follows along; creator interviews are free to all.
+- Prices are stated in `src/components/Hero.tsx`, `src/components/Pricing.tsx`, `src/components/Faq.tsx`, and `src/app/creator-guide/page.tsx`. Change all four together.
+- **Legacy (closed):** $99 one-time unlocked all 4 bundles (Create, Build, Think, Lead — 15 sessions). Purchases were recorded by email and linked to a profile at signup. Those records still power `/access` and `/dashboard`.
 
 ## Environment Variables
 | Variable | Required | Notes |

@@ -1,3 +1,5 @@
+import { getSkillPosts } from '@/lib/substack';
+
 const skillSets = [
   {
     label: 'Create',
@@ -44,7 +46,14 @@ const skillIncludes = [
   },
 ];
 
-export default function SkillSets() {
+export default async function SkillSets() {
+  let recent: Awaited<ReturnType<typeof getSkillPosts>> = [];
+  try {
+    recent = (await getSkillPosts()).slice(0, 3);
+  } catch {
+    recent = [];
+  }
+
   return (
     <section
       id="skill-sets"
@@ -63,6 +72,47 @@ export default function SkillSets() {
             something they&apos;ve refined over months. Ready to run that night.
           </p>
         </div>
+
+        {recent.length > 0 && (
+          <div className="mb-16 animate-fade-up">
+            <p className="text-xs font-mono text-cz-teal uppercase tracking-wider mb-5 text-center">
+              Recent drops
+            </p>
+            <div className="grid md:grid-cols-3 gap-5">
+              {recent.map((post) => (
+                <a
+                  key={post.id}
+                  href={post.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group block bg-cz-bg-card border border-cz-border rounded-xl p-6 transition-all duration-300 hover:-translate-y-1 hover:border-cz-teal"
+                >
+                  <div className="flex items-center gap-2 mb-3">
+                    {post.tier && (
+                      <span className="font-mono text-[0.7rem] text-cz-coral uppercase tracking-wider">
+                        {post.tier}
+                      </span>
+                    )}
+                    <span className="font-mono text-[0.7rem] text-cz-text-dim">
+                      {new Date(post.date).toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                      })}
+                    </span>
+                  </div>
+                  <h3 className="font-display font-bold text-cz-text mb-2 leading-snug group-hover:text-cz-teal transition-colors">
+                    {post.title}
+                  </h3>
+                  {post.subtitle && (
+                    <p className="text-sm text-cz-text-muted leading-relaxed line-clamp-3">
+                      {post.subtitle}
+                    </p>
+                  )}
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div className="grid md:grid-cols-2 gap-6">
           {skillSets.map((set, index) => (

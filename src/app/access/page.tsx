@@ -4,9 +4,6 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
-import { getBundleStats } from '@/lib/bundles';
-
-const { totalBundles } = getBundleStats();
 
 export default function RecoverAccessPage() {
   const router = useRouter();
@@ -86,13 +83,14 @@ export default function RecoverAccessPage() {
           </div>
 
           <p className="mt-6 text-center text-sm text-cz-text-dim">
-            Haven&apos;t purchased yet?{' '}
+            Trouble finding your purchase?{' '}
             <Link
-              href="/bundles"
+              href="/contact"
               className="text-cz-accent hover:underline"
             >
-              Get All Skill Sets &mdash; $99
-            </Link>
+              Get in touch
+            </Link>{' '}
+            and we&apos;ll sort it out.
           </p>
         </div>
       </main>

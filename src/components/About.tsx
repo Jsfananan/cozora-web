@@ -86,7 +86,7 @@ function FounderAvatar({
 export default function About() {
   return (
     <section className="py-20 px-4 sm:px-6 lg:px-8" id="about">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         <p className="text-sm font-mono text-cz-coral mb-4 tracking-wide">
           WHO WE ARE
         </p>
@@ -95,7 +95,7 @@ export default function About() {
         </h2>
 
         <div className="grid md:grid-cols-[0.8fr_1.2fr] gap-12 md:gap-16 items-start">
-          <div className="flex flex-row md:flex-col gap-3">
+          <div className="flex flex-col gap-3">
             {founders.map((founder) => (
               <a
                 key={founder.name}
@@ -142,9 +142,8 @@ export default function About() {
               <strong className="text-cz-text font-semibold">if AI is changing it, we&apos;re bringing in someone who&apos;s mastered it.</strong>
             </p>
             <p>
-              Think of it as{' '}
-              <strong className="text-cz-text font-semibold">the Y Combinator for AI projects.</strong>{' '}
-              Learn a new skill, put it to work, and trade notes with people who&apos;ve already done it &mdash; something new every week.
+              <strong className="text-cz-text font-semibold">Learn a new skill, put it to work, and trade notes with the person who built it</strong>{' '}
+              &mdash; something new every week.
             </p>
           </div>
         </div>
