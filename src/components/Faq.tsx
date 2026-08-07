@@ -5,11 +5,11 @@ import { useState } from 'react';
 const faqs = [
   {
     q: 'What do I get with a membership?',
-    a: "The creator community, a new Claude skill every week, and the full Skill Library \u2014 every skill we\u2019ve published, searchable by topic. Creator interviews stay free for everyone, member or not.",
+    a: "The creator community, new Claude skills every week, and the full Skill Library \u2014 fully searchable, so you can find the skill you need in seconds. Creator interviews stay free for everyone, member or not.",
   },
   {
     q: 'What exactly is a \u201cskill\u201d?',
-    a: "Each week, one of our 40+ creators shares a skill they actually use \u2014 often one they\u2019ve refined over months. You get a short video walkthrough, the complete prompt or a downloadable skill you drop straight into Claude, and the thinking behind when and why to use it.",
+    a: "Every week, our 40+ creators share skills they actually use \u2014 often ones they\u2019ve refined over months. You get the complete prompt or a downloadable skill you drop straight into Claude, the thinking behind when and why to use it, and for many of them, a video of the creator running it end to end.",
   },
   {
     q: 'How often do creators go live?',

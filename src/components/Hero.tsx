@@ -16,7 +16,7 @@ export default function Hero() {
               40+ Creators
             </div>
             <div className="px-3 py-2 border border-cz-coral rounded-full text-sm font-mono text-cz-coral">
-              New Skill Every Week
+              New Skills Every Week
             </div>
           </div>
 
@@ -26,9 +26,9 @@ export default function Hero() {
           </h1>
 
           <p className="text-lg text-cz-text-muted mb-8 leading-relaxed">
-            Join a community of 40+ of the top Substack AI creators &mdash; and get a
-            new Claude skill every week, with the video walkthrough, the ready-to-run
-            prompt, and the thinking behind it. Because you don&apos;t learn AI alone.
+            Join a community of 40+ of the top Substack AI creators &mdash; and get
+            new Claude skills every week, with the ready-to-run prompt and the
+            thinking behind it. Because you don&apos;t learn AI alone.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4">

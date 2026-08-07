@@ -33,16 +33,16 @@ const skillSets = [
 
 const skillIncludes = [
   {
-    title: 'A video walkthrough',
-    description: 'Watch a creator run the skill end to end, in 15–20 focused minutes.',
-  },
-  {
     title: 'The skill, ready to run',
     description: 'The complete prompt or a downloadable skill you drop straight into Claude.',
   },
   {
     title: 'The why behind it',
     description: 'The problem it solves and when to reach for it — so you actually use it.',
+  },
+  {
+    title: 'A walkthrough when it helps',
+    description: 'Many skills come with a video of a creator running it end to end.',
   },
 ];
 
@@ -65,11 +65,11 @@ export default async function SkillSets() {
             THE SKILL LIBRARY
           </p>
           <h2 className="text-4xl sm:text-5xl font-display font-bold text-cz-text mb-4">
-            A new Claude skill every week.
+            New Claude skills every week.
           </h2>
           <p className="text-lg text-cz-text-muted max-w-2xl mx-auto">
-            Each week, one of our creators drops a real skill they actually use &mdash;
-            something they&apos;ve refined over months. Ready to run that night.
+            Every week, our creators drop real skills they actually use &mdash;
+            ones they&apos;ve refined over months. Ready to run that night.
           </p>
         </div>
 
@@ -142,7 +142,7 @@ export default async function SkillSets() {
 
         <div className="mt-16 bg-cz-bg-card border border-cz-border rounded-2xl p-8 sm:p-10 animate-fade-up">
           <h3 className="text-xl font-display font-bold text-cz-text mb-8 text-center">
-            Every skill comes with three things
+            What every skill drop gives you
           </h3>
           <div className="grid sm:grid-cols-3 gap-8">
             {skillIncludes.map((item, index) => (

@@ -4,11 +4,11 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Cozora — Learn AI from the Experts Who Are Building It",
   description:
-    "Join a community of 40+ of the top Substack AI creators and get a new Claude skill every week — the video walkthrough, the ready-to-run prompt, and the why behind it. You don't learn AI alone.",
+    "Join a community of 40+ of the top Substack AI creators and get new Claude skills every week — the ready-to-run prompt, the why behind it, and a fully searchable library. You don't learn AI alone.",
   openGraph: {
     title: "Cozora — Learn AI from the Experts Who Are Building It",
     description:
-      "Join 40+ of the top Substack AI creators and get a new Claude skill every week — video walkthrough, ready-to-run prompt, and the why behind it.",
+      "Join 40+ of the top Substack AI creators and get new Claude skills every week — ready-to-run prompts, the why behind them, and a fully searchable library.",
     url: "https://cozora.org",
     siteName: "Cozora",
     type: "website",

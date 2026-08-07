@@ -1,7 +1,7 @@
 const communityFeatures = [
-  'A new Claude skill every week — yours to run that night',
-  'Every skill: video walkthrough + ready-to-run prompt + the why',
-  'The full Skill Library, searchable by topic',
+  'New Claude skills every week — yours to run that night',
+  'The ready-to-run prompt, the why behind it, and a walkthrough when it helps',
+  'A fully searchable library — find the skill you need in seconds',
   'The creator community — 40+ of the top Substack AI creators',
   'New creators added regularly across writing, code, video & strategy',
 ];
@@ -18,7 +18,7 @@ export default function Pricing() {
             Join the Creator Community
           </h2>
           <p className="text-lg text-cz-text-muted max-w-xl mx-auto">
-            40+ of the top Substack AI creators, and a new Claude skill every week you can run the night it drops.
+            40+ of the top Substack AI creators, and new Claude skills every week you can run the night they drop.
           </p>
         </div>
 
