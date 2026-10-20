@@ -107,7 +107,7 @@ export const JOURNEYS: JourneyDef[] = [
     tagline: 'Find what your readers want, write in your voice, fill your Notes, then repurpose each post into video.',
     audience: 'Substack writers and creators',
     topic: 'writing',
-    status: 'draft', // flip to 'live' only after Joel approves
+    status: 'live',
     steps: [
       'audience-problem-miner-skill',
       'voice-profile-builder-skill',
