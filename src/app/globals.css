@@ -386,6 +386,31 @@ body {
   .cz-sc-nib { opacity: 0; }
 }
 
+/* ===== WELCOME POP-UP (WelcomePop.tsx) ===== */
+@keyframes cz-wel-fade { from { opacity: 0; } to { opacity: 1; } }
+.cz-wel-backdrop { animation: cz-wel-fade 0.35s ease-out both; }
+@keyframes cz-wel-pop {
+  0%   { opacity: 0; transform: translateY(24px) scale(0.82); }
+  60%  { opacity: 1; transform: translateY(-4px) scale(1.03); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+.cz-wel-pop { animation: cz-wel-pop 0.6s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.cz-wel-line { animation: cz-lib-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
+@keyframes cz-wel-spin { to { transform: rotate(360deg); } }
+.cz-wel-ring { animation: cz-wel-spin 9s linear infinite; }
+@keyframes cz-wel-wave {
+  0%, 60%, 100% { transform: rotate(0deg); }
+  10%, 30% { transform: rotate(16deg); }
+  20%, 40% { transform: rotate(-10deg); }
+}
+.cz-wel-wave { transform-origin: 60% 70%; animation: cz-wel-wave 2.4s ease-in-out 0.6s infinite; }
+@keyframes cz-wel-out { to { opacity: 0; transform: scale(0.96); } }
+.cz-wel-out { animation: cz-wel-out 0.22s ease-in forwards; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cz-wel-backdrop, .cz-wel-pop, .cz-wel-line, .cz-wel-ring, .cz-wel-wave, .cz-wel-out { animation: none; }
+}
+
 /* ===== SCROLLBAR ===== */
 
 ::-webkit-scrollbar {

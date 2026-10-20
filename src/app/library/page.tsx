@@ -3,6 +3,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import LibraryBrowser from '@/components/library/LibraryBrowser';
 import JourneyShowcase from '@/components/library/JourneyShowcase';
+import WelcomePop from '@/components/library/WelcomePop';
 import { getSkillPosts } from '@/lib/substack';
 import { resolveJourneys } from '@/lib/journeys';
 
@@ -154,6 +155,7 @@ export default async function LibraryPage() {
         </div>
       </main>
       <Footer />
+      <WelcomePop />
     </div>
   );
 }
