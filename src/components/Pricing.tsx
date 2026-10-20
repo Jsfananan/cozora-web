@@ -55,11 +55,11 @@ export default function Pricing() {
 
                 <div className="sm:border-l sm:border-cz-border sm:pl-8">
                   <div className="mb-1 flex items-baseline gap-2">
-                    <span className="text-5xl font-bold text-cz-accent">$359</span>
+                    <span className="text-5xl font-bold text-cz-accent">$99</span>
                     <span className="text-cz-text-muted">/year</span>
                   </div>
                   <p className="text-sm text-cz-teal font-medium mb-6">
-                    Nearly 3 months free
+                    Nearly 7 months free
                   </p>
 
                   <a
@@ -68,7 +68,7 @@ export default function Pricing() {
                     rel="noopener noreferrer"
                     className="block w-full px-6 py-4 bg-cz-accent hover:bg-cz-accent-hover text-cz-bg rounded-lg transition-colors text-center font-semibold text-lg"
                   >
-                    Join for $359/year
+                    Join for $99/year
                   </a>
 
                   <a
@@ -77,7 +77,7 @@ export default function Pricing() {
                     rel="noopener noreferrer"
                     className="block w-full mt-3 px-6 py-3 border border-cz-border hover:border-cz-accent text-cz-text hover:text-cz-accent rounded-lg transition-colors text-center font-medium"
                   >
-                    Or $39/month
+                    Or $19/month
                   </a>
 
                   <div className="mt-5 flex items-center gap-2 text-cz-teal">

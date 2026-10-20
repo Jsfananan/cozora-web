@@ -38,7 +38,7 @@ export default function Hero() {
               rel="noopener noreferrer"
               className="px-8 py-3.5 bg-cz-accent hover:bg-cz-accent-hover text-cz-bg font-semibold rounded-lg transition-colors text-center text-lg"
             >
-              Join for $39/month
+              Join for $19/month
             </a>
             <a
               href="/library"
@@ -49,7 +49,7 @@ export default function Hero() {
           </div>
 
           <p className="mt-4 text-sm text-cz-text-muted font-mono">
-            $359/year &mdash; nearly 3 months free &middot; Cancel anytime
+            $99/year &mdash; nearly 7 months free &middot; Cancel anytime
           </p>
         </div>
 

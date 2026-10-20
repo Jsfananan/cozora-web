@@ -2,7 +2,23 @@
 
 import { useState, useEffect } from 'react';
 
-export default function Navbar() {
+interface BannerConfig {
+  lead: string; // shown from sm up
+  short: string; // shown on phones
+  linkText: string;
+  href: string;
+}
+
+// Default: point existing subscribers at the Premium hub. A page can swap the message
+// (the library page asks non-members to sign up instead).
+const DEFAULT_BANNER: BannerConfig = {
+  lead: 'Already a Cozora Premium Subscriber? ',
+  short: 'Premium Subscriber? ',
+  linkText: 'Start Here →',
+  href: 'https://cozora.substack.com/p/premium-hub',
+};
+
+export default function Navbar({ banner = DEFAULT_BANNER }: { banner?: BannerConfig } = {}) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [bannerDismissed, setBannerDismissed] = useState(false);
@@ -22,15 +38,15 @@ export default function Navbar() {
         <div className="fixed top-0 left-0 right-0 z-60 bg-cz-bg-card border-b border-cz-accent/40 overflow-hidden">
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between gap-3">
             <p className="text-sm text-cz-text-muted font-body text-center flex-1">
-              <span className="hidden sm:inline">Already a Cozora Premium Subscriber? </span>
-              <span className="sm:hidden">Premium Subscriber? </span>
+              <span className="hidden sm:inline">{banner.lead}</span>
+              <span className="sm:hidden">{banner.short}</span>
               <a
-                href="https://cozora.substack.com/p/premium-hub"
+                href={banner.href}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-semibold text-cz-accent hover:text-cz-text transition-colors underline underline-offset-2"
               >
-                Start Here →
+                {banner.linkText}
               </a>
             </p>
             <button
@@ -64,7 +80,7 @@ export default function Navbar() {
               cozora
             </a>
 
-            <div className="hidden md:flex items-center gap-8">
+            <div className="hidden lg:flex items-center gap-8">
               <a
                 href="/#skill-sets"
                 className="text-cz-text-muted hover:text-cz-text transition-colors"
@@ -114,7 +130,7 @@ export default function Navbar() {
             </div>
 
             <button
-              className="md:hidden"
+              className="lg:hidden"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle menu"
             >
@@ -144,7 +160,7 @@ export default function Navbar() {
           </div>
 
           {isMobileMenuOpen && (
-            <div className="md:hidden pb-4 space-y-3">
+            <div className="lg:hidden pb-4 space-y-3">
               <a
                 href="/#skill-sets"
                 className="block text-cz-text-muted hover:text-cz-text transition-colors"

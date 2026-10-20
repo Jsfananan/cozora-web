@@ -17,7 +17,7 @@ const faqs = [
   },
   {
     q: 'Where does all of this happen?',
-    a: "On Substack. You subscribe at cozora.substack.com \u2014 free to follow, $39/month or $359/year for the community and the full Skill Library.",
+    a: "On Substack. You subscribe at cozora.substack.com \u2014 free to follow, $19/month or $99/year for the community and the full Skill Library.",
   },
   {
     q: 'Do I need technical experience to join?',
@@ -108,7 +108,7 @@ export default function Faq() {
               rel="noopener noreferrer"
               className="px-8 py-3.5 bg-cz-accent hover:bg-cz-accent-hover text-cz-bg font-semibold rounded-lg transition-colors text-center"
             >
-              Join for $39/month
+              Join for $19/month
             </a>
             <a
               href="/library"

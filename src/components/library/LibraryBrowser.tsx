@@ -92,6 +92,7 @@ function FeaturedCard({ post, index }: { post: SkillPost; index: number }) {
         <h3 className="font-display text-lg font-bold leading-snug text-cz-text transition-colors group-hover:text-cz-accent">
           {post.title}
         </h3>
+        {post.creator && <p className="mt-1 font-mono text-xs text-cz-teal">by {post.creator}</p>}
         {post.subtitle && <p className="mt-2 line-clamp-2 text-sm text-cz-text-muted">{post.subtitle}</p>}
         <div className="mt-4 flex items-center justify-between border-t border-cz-border pt-3">
           <span className="font-mono text-xs text-cz-text-muted">{formatDate(post.date)}</span>
@@ -121,6 +122,7 @@ function SkillRow({ post, showTopic = true }: { post: SkillPost; showTopic?: boo
         <span className="block truncate font-display text-[15px] font-bold text-cz-text transition-colors group-hover:text-cz-accent">
           {post.title}
         </span>
+        {post.creator && <span className="mt-0.5 block truncate font-mono text-[11px] text-cz-teal">by {post.creator}</span>}
         {post.subtitle && <span className="mt-0.5 block truncate text-[13px] text-cz-text-muted">{post.subtitle}</span>}
       </span>
       <span className="hidden flex-none items-center gap-2 sm:flex">
@@ -226,7 +228,11 @@ export default function LibraryBrowser({ posts }: { posts: SkillPost[] }) {
     return posts.filter((p) => {
       const tierOk = tab === 'All' || p.tier === tab;
       const topicOk = topic === null || (p.topic ?? GENERAL_TOPIC.key) === topic;
-      const textOk = !q || p.title.toLowerCase().includes(q) || p.subtitle.toLowerCase().includes(q);
+      const textOk =
+        !q ||
+        p.title.toLowerCase().includes(q) ||
+        p.subtitle.toLowerCase().includes(q) ||
+        (p.creator ?? '').toLowerCase().includes(q);
       return tierOk && topicOk && textOk;
     });
   }, [posts, tab, topic, q]);
@@ -274,7 +280,8 @@ export default function LibraryBrowser({ posts }: { posts: SkillPost[] }) {
       </div>
 
       {/* Topic filter */}
-      <div className="animate-fade-up delay-400 mb-2 flex flex-wrap justify-center gap-2">
+      <div className="animate-fade-up delay-400 mb-2 flex flex-wrap items-center justify-center gap-2">
+        <span className="mr-1 font-mono text-xs uppercase tracking-widest text-cz-text-muted">Topic</span>
         <button
           onClick={() => selectTopic(null)}
           className={`rounded-full border px-4 py-2 font-mono text-sm transition-all duration-300 hover:-translate-y-0.5 ${topic === null ? 'border-cz-border-strong bg-cz-deep-teal text-cz-teal' : 'border-cz-border bg-cz-bg-card text-cz-text-muted hover:text-cz-text'}`}
@@ -298,7 +305,8 @@ export default function LibraryBrowser({ posts }: { posts: SkillPost[] }) {
       </div>
 
       {/* Depth (tier) filter */}
-      <div className="animate-fade-up delay-400 mb-10 flex flex-wrap justify-center gap-2">
+      <div className="animate-fade-up delay-400 mb-10 flex flex-wrap items-center justify-center gap-2">
+        <span className="mr-1 font-mono text-xs uppercase tracking-widest text-cz-text-muted">Level</span>
         {TABS.map((t) => (
           <button
             key={t}
@@ -307,7 +315,7 @@ export default function LibraryBrowser({ posts }: { posts: SkillPost[] }) {
               tab === t ? 'border-cz-accent bg-cz-accent text-cz-bg shadow-lg shadow-cz-accent/20' : 'border-cz-border bg-cz-bg-card text-cz-text-muted hover:border-cz-border-strong hover:text-cz-text'
             }`}
           >
-            {t}
+            {t === 'All' ? 'All levels' : t}
             <span className={`ml-2 ${tab === t ? 'text-cz-bg/70' : 'text-cz-text-dim'}`}>{tierCounts[t]}</span>
           </button>
         ))}

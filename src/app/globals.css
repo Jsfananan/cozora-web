@@ -179,6 +179,213 @@ body {
   .cz-lib-glow { animation: none; }
 }
 
+/* ===== LIGHT, WARM THEME (library page) =====
+   Re-points the cz-* tokens inside .cz-light so every existing component on the page
+   (navbar, library browser, footer) goes light without touching its classes.
+   Brand hexes from the cozora-brand guide; #2A8C80 and #1D5C5E are legible shades of
+   Jelly Mint / Transformative Teal for text on cream. */
+.cz-light {
+  --color-cz-bg: #FBF6EC;
+  --color-cz-bg-card: #FFFFFF;
+  --color-cz-bg-card-hover: #FFF8EC;
+  --color-cz-bg-elevated: #FFFFFF;
+  --color-cz-bg-elevated-hover: #FFFBF3;
+  --color-cz-surface: #F4ECDD;
+  --color-cz-border: #EFE4D0;
+  --color-cz-border-strong: #E2D3B8;
+  --color-cz-text: #1F2937;
+  --color-cz-text-muted: #4B5563; /* ≥7:1 on cream, legible at mono sizes */
+  --color-cz-text-dim: #6B7280;
+  --color-cz-accent: #1D5C5E;
+  --color-cz-accent-hover: #247070;
+  --color-cz-coral: #D63BA3;
+  --color-cz-teal: #2A8C80;
+  --color-cz-deep-teal: #E3F4EF;
+  --color-cz-deep-teal-hover: #D3EEE6;
+  background-color: var(--color-cz-bg);
+  color: var(--color-cz-text);
+}
+
+/* ===== LEARNING JOURNEYS ===== */
+
+@keyframes cz-jny-ring {
+  0%   { transform: scale(0.9); opacity: 0.6; }
+  100% { transform: scale(1.9); opacity: 0; }
+}
+.cz-jny-ring { animation: cz-jny-ring 2.2s cubic-bezier(0.22, 1, 0.36, 1) infinite; }
+
+@keyframes cz-jny-pop {
+  0%   { transform: scale(0.5); opacity: 0; }
+  60%  { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.cz-jny-pop { animation: cz-jny-pop 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+@keyframes cz-jny-drift {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50%      { transform: translate3d(24px, -18px, 0); }
+}
+.cz-jny-drift { animation: cz-jny-drift 14s ease-in-out infinite; }
+.cz-jny-drift-slow { animation: cz-jny-drift 20s ease-in-out infinite reverse; }
+
+/* One-time intro: before the section is seen, path pieces wait hidden; when it
+   scrolls into view the path draws itself and the steps pop in, in order. */
+/* One keyframe for both orientations: the clip opens from the top-left corner, so a
+   vertical line draws downward and a horizontal one draws rightward. (Swapping
+   animation-name in a media query left the desktop line stuck invisible in Chrome.) */
+@keyframes cz-jny-draw { from { clip-path: inset(0 100% 100% 0); } to { clip-path: inset(0 0 0 0); } }
+.cz-jny-pre .cz-jny-node,
+.cz-jny-pre .cz-jny-track,
+.cz-jny-pre .cz-jny-label { opacity: 0; }
+.cz-jny-intro .cz-jny-node {
+  animation: cz-jny-pop 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--i) * 140ms);
+}
+.cz-jny-intro .cz-jny-label {
+  animation: cz-lib-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--i) * 140ms + 60ms);
+}
+.cz-jny-intro .cz-jny-track {
+  animation: cz-jny-draw 0.45s ease-out both;
+  animation-delay: calc(var(--i) * 140ms + 160ms);
+}
+
+@keyframes cz-jny-shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.cz-jny-shimmer {
+  background: linear-gradient(90deg, #F1E7D6 0%, #FBF3E4 40%, #F1E7D6 80%);
+  background-size: 200% 100%;
+  animation: cz-jny-shimmer 2.4s linear infinite;
+}
+
+@keyframes cz-jny-confetti {
+  0%   { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+  100% { transform: translate(var(--dx), var(--dy)) rotate(var(--r)) scale(0.6); opacity: 0; }
+}
+.cz-jny-confetti { animation: cz-jny-confetti 1.4s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+@keyframes cz-jny-caret { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+.cz-jny-caret { animation: cz-jny-caret 1s steps(1) infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cz-jny-ring,
+  .cz-jny-drift,
+  .cz-jny-drift-slow,
+  .cz-jny-shimmer,
+  .cz-jny-caret { animation: none; }
+  .cz-jny-ring,
+  .cz-jny-confetti { opacity: 0; animation: none; }
+  .cz-jny-pop,
+  .cz-jny-intro .cz-jny-node,
+  .cz-jny-intro .cz-jny-label,
+  .cz-jny-intro .cz-jny-track { animation: none; opacity: 1; transform: none; clip-path: none; }
+  .cz-jny-pre .cz-jny-node,
+  .cz-jny-pre .cz-jny-track,
+  .cz-jny-pre .cz-jny-label { opacity: 1; }
+}
+
+/* ===== JOURNEY SCENES (JourneyScene.tsx) =====
+   Looping motion graphics, one per journey. Every element is visible in its resting
+   state, so with motion turned off each scene shows its finished frame. */
+.cz-sc { transform-box: fill-box; transform-origin: center; }
+
+/* Get started */
+@keyframes cz-sc-drop {
+  0%   { transform: translateY(-70px); opacity: 0; }
+  24%  { transform: translateY(0); opacity: 1; }
+  29%  { transform: translateY(-5px); }
+  34%  { transform: translateY(0); }
+  86%  { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(0); opacity: 0; }
+}
+.cz-sc-drop { animation: cz-sc-drop 4.5s cubic-bezier(0.22, 1, 0.36, 1) infinite; }
+@keyframes cz-sc-pop {
+  0%, 34% { transform: scale(0); }
+  44%     { transform: scale(1.18); }
+  50%     { transform: scale(1); }
+  86%     { transform: scale(1); opacity: 1; }
+  100%    { transform: scale(1); opacity: 0; }
+}
+.cz-sc-pop { animation: cz-sc-pop 4.5s ease-out infinite; }
+@keyframes cz-sc-twinkle {
+  0%, 100% { transform: scale(0.4) rotate(0deg); opacity: 0.3; }
+  50%      { transform: scale(1) rotate(45deg); opacity: 1; }
+}
+.cz-sc-twinkle { animation: cz-sc-twinkle 1.9s ease-in-out infinite; }
+
+/* Write in my voice */
+.cz-sc-l1, .cz-sc-l2, .cz-sc-l3 { stroke-dasharray: 100; }
+@keyframes cz-sc-l1 { 0% { stroke-dashoffset: 100; } 20%, 94% { stroke-dashoffset: 0; opacity: 1; } 100% { stroke-dashoffset: 0; opacity: 0; } }
+@keyframes cz-sc-l2 { 0%, 22% { stroke-dashoffset: 100; } 42%, 94% { stroke-dashoffset: 0; opacity: 1; } 100% { stroke-dashoffset: 0; opacity: 0; } }
+@keyframes cz-sc-l3 { 0%, 44% { stroke-dashoffset: 100; } 60%, 94% { stroke-dashoffset: 0; opacity: 1; } 100% { stroke-dashoffset: 0; opacity: 0; } }
+.cz-sc-l1 { animation: cz-sc-l1 5s linear infinite; }
+.cz-sc-l2 { animation: cz-sc-l2 5s linear infinite; }
+.cz-sc-l3 { animation: cz-sc-l3 5s linear infinite; }
+@keyframes cz-sc-nib {
+  0%   { transform: translate(0, 0); opacity: 1; }
+  20%  { transform: translate(134px, 0); }
+  21%  { transform: translate(0, 26px); }
+  42%  { transform: translate(134px, 26px); }
+  43%  { transform: translate(0, 52px); }
+  60%  { transform: translate(102px, 52px); opacity: 1; }
+  66%, 100% { transform: translate(102px, 52px); opacity: 0; }
+}
+.cz-sc-nib { animation: cz-sc-nib 5s linear infinite; }
+@keyframes cz-sc-post {
+  0%, 62% { transform: translate(-60px, 0) scale(0.6); opacity: 0; }
+  74%     { transform: translate(0, var(--py)) scale(1); opacity: 1; }
+  94%     { transform: translate(0, var(--py)) scale(1); opacity: 1; }
+  100%    { transform: translate(0, var(--py)) scale(1); opacity: 0; }
+}
+.cz-sc-post { animation: cz-sc-post 5s cubic-bezier(0.22, 1, 0.36, 1) infinite; }
+
+/* Lead through hard moments */
+@keyframes cz-sc-bubble-a {
+  0%       { transform: scale(0.6); opacity: 0; }
+  10%, 90% { transform: scale(1); opacity: 1; }
+  100%     { transform: scale(1); opacity: 0; }
+}
+@keyframes cz-sc-bubble-b {
+  0%, 26%  { transform: scale(0.6); opacity: 0; }
+  36%, 90% { transform: scale(1); opacity: 1; }
+  100%     { transform: scale(1); opacity: 0; }
+}
+.cz-sc-bubble-a { transform-origin: left bottom; animation: cz-sc-bubble-a 5s cubic-bezier(0.22, 1, 0.36, 1) infinite; }
+.cz-sc-bubble-b { transform-origin: right bottom; animation: cz-sc-bubble-b 5s cubic-bezier(0.22, 1, 0.36, 1) infinite; }
+@keyframes cz-sc-dot { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+.cz-sc-dot { animation: cz-sc-dot 0.9s ease-in-out infinite; }
+.cz-sc-pulse { stroke-dasharray: 100; }
+@keyframes cz-sc-pulse { 0% { stroke-dashoffset: 100; } 45%, 90% { stroke-dashoffset: 0; opacity: 1; } 100% { stroke-dashoffset: 0; opacity: 0; } }
+.cz-sc-pulse { animation: cz-sc-pulse 5s ease-out infinite; }
+
+/* Make video and visuals */
+@keyframes cz-sc-strip { from { transform: translateX(0); } to { transform: translateX(-544px); } }
+.cz-sc-strip { animation: cz-sc-strip 9s linear infinite; }
+@keyframes cz-sc-play { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+.cz-sc-play { animation: cz-sc-play 1.8s ease-in-out infinite; }
+@keyframes cz-sc-eq { 0% { transform: scaleY(0.3); } 100% { transform: scaleY(1); } }
+.cz-sc-eq { transform-origin: bottom; animation: cz-sc-eq 0.8s ease-in-out infinite alternate; }
+
+/* Build my brand */
+@keyframes cz-sc-fan {
+  0%, 8%    { transform: rotate(0deg); }
+  32%, 76%  { transform: rotate(var(--r)); }
+  100%      { transform: rotate(0deg); }
+}
+.cz-sc-fan { transform-origin: bottom; animation: cz-sc-fan 4.5s cubic-bezier(0.65, 0, 0.35, 1) infinite; }
+
+/* Picker icon: gentle float on the selected journey, wiggle on hover */
+@keyframes cz-sc-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+.cz-sc-float { animation: cz-sc-float 2.6s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cz-sc, .cz-sc-float { animation: none !important; }
+  .cz-sc-l1, .cz-sc-l2, .cz-sc-l3, .cz-sc-pulse { stroke-dashoffset: 0; }
+  .cz-sc-nib { opacity: 0; }
+}
+
 /* ===== SCROLLBAR ===== */
 
 ::-webkit-scrollbar {

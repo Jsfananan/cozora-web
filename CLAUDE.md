@@ -37,8 +37,8 @@ Ported from the Kajabi redesign (`~/Documents/Claude/cozora-kajabi-redesign/`). 
 ## Architecture
 
 ### Pages
-- `/` — Landing page (Hero, SkillSets, Pricing, Creators, About, Faq, Footer). Single offer: the $39/mo Substack membership.
-- `/library` — Public Premium Library (topic index + fast search)
+- `/` — Landing page (Hero, SkillSets, Pricing, Creators, About, Faq, Footer). Single offer: the $19/mo Substack membership.
+- `/library` — Cozora Library: warm light theme (`.cz-light`), hero, animated **Learning Journeys** (`JourneyShowcase.tsx` + per-journey motion graphics in `JourneyScene.tsx`, data in `src/lib/journeys.ts`), creators strip, then the searchable browser. Banner on this page reads "Not a Cozora member? Sign up here" (Navbar `banner` prop). See "Library notes" below.
 - `/dashboard` — Buyer dashboard (video player + PDF downloads) for past Skill Sets buyers
 - `/access` — Recover access by purchase email
 - `/auth/login` — Login page
@@ -64,7 +64,7 @@ Ported from the Kajabi redesign (`~/Documents/Claude/cozora-kajabi-redesign/`). 
 - `src/lib/supabase/middleware.ts` — Purchase verification helpers
 
 ## Offer Model (current)
-- **Only offer: the Cozora membership on Substack — $39/month or $359/year (save $109).** Free tier follows along; creator interviews are free to all.
+- **Only offer: the Cozora membership on Substack — $19/month or $99/year (save $129).** Free tier follows along; creator interviews are free to all.
 - Prices are stated in `src/components/Hero.tsx`, `src/components/Pricing.tsx`, `src/components/Faq.tsx`, and `src/app/creator-guide/page.tsx`. Change all four together.
 - **Legacy (closed):** $99 one-time unlocked all 4 bundles (Create, Build, Think, Lead — 15 sessions). Purchases were recorded by email and linked to a profile at signup. Those records still power `/access` and `/dashboard`.
 
@@ -94,3 +94,13 @@ Ported from the Kajabi redesign (`~/Documents/Claude/cozora-kajabi-redesign/`). 
 5. Upload PDFs to Supabase Storage
 6. Create GitHub repo + deploy to Vercel
 7. Point cozora.org DNS to Vercel
+
+## Library notes (2026-10-19)
+- **Data comes live from the Substack archive** (`src/lib/substack.ts`). Pagination advances by the size of each page returned, because Substack returns short pages that are not the last. Paid-only posts only; Q&A/workshop/summit tags excluded; re-posts collapse by title.
+- **Tagging rules:** `docs/TAGGING.md`. Run `npm run audit:tags` (needs network, run outside the sandbox) for the worklist.
+- **Journey step lines:** `VERIFIED_OUTCOMES` ship; `DRAFT_OUTCOMES` (written from titles only) render in `next dev` only. Confirm a draft against the skill before moving it up.
+- **No testing claim on the page** until `docs/TESTING-STANDARD-DRAFT.md` is approved by both founders.
+- **Counts on the page** use depth-tagged posts only. Untagged older posts (mostly Q&A/class recordings) still appear in the browser.
+- ⚠ **Turbopack dev can serve a stale `globals.css`** after edits (new rules simply missing). Fix: stop the dev server, `rm -rf .next/dev .next/cache`, restart.
+- Motion respects `prefers-reduced-motion` (scenes freeze on their finished frame).
+
