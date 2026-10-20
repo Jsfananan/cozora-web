@@ -327,14 +327,14 @@ export default function LibraryBrowser({ posts }: { posts: SkillPost[] }) {
           {featured.length > 0 && (
             <>
               <p className="mb-4 font-mono text-xs uppercase tracking-widest text-cz-accent">★ New this week</p>
-              <div className="mb-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="mb-12 grid grid-cols-1 gap-8">
                 {featured.map((p, i) => (
                   <FeaturedCard key={p.id} post={p} index={i} />
                 ))}
               </div>
             </>
           )}
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-4">
             {[...TOPICS, GENERAL_TOPIC].map((t) => {
               const group = topicGroups.get(t.key) ?? [];
               if (group.length === 0) return null;
@@ -372,7 +372,7 @@ export default function LibraryBrowser({ posts }: { posts: SkillPost[] }) {
 
           {filtered.length > 0 ? (
             <>
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-3">
                 {filtered.slice(0, visible).map((p) => (
                   <SkillRow key={p.id} post={p} showTopic={topic === null} />
                 ))}

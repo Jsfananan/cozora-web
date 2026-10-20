@@ -165,6 +165,21 @@ function StepPreview({ step, reduced }: { step: JourneyStep; reduced: boolean })
   );
 }
 
+/* ---------- Badge ---------- */
+function Medal({ icon, size = 'lg', reduced = false }: { icon: JourneyIcon; size?: 'sm' | 'lg'; reduced?: boolean }) {
+  const dim = size === 'lg' ? 'h-28 w-28' : 'h-7 w-7';
+  return (
+    <span className={`relative inline-block flex-none ${dim} ${size === 'lg' && !reduced ? 'cz-jny-badge' : ''}`}>
+      <span
+        className={`absolute inset-0 flex items-center justify-center overflow-hidden rounded-full bg-gradient-to-br text-white ring-white ${size === 'lg' ? 'ring-4 shadow-[0_18px_40px_-14px_rgba(199,146,25,0.7)]' : 'ring-2'} ${ICON_GRADIENT[icon]}`}
+      >
+        <Icon name={icon} className={size === 'lg' ? 'h-12 w-12' : 'h-3.5 w-3.5'} />
+        <span aria-hidden className="cz-jny-glint absolute inset-y-0 left-0 w-1/3 bg-white/35" />
+      </span>
+    </span>
+  );
+}
+
 /* ---------- Finale ---------- */
 const CONFETTI_COLORS = ['#D63BA3', '#C79219', '#7ED3C0', '#F08A6B', '#1D5C5E', '#F6C26B'];
 
@@ -182,9 +197,9 @@ function Finale({
   onRestart: () => void;
 }) {
   return (
-    <div className="relative overflow-hidden rounded-3xl border border-cz-border-strong bg-white px-6 py-12 text-center shadow-[0_24px_60px_-32px_rgba(199,146,25,0.5)]">
+    <div className="relative overflow-hidden rounded-3xl border border-cz-border-strong bg-white px-6 py-16 text-center shadow-[0_24px_60px_-32px_rgba(199,146,25,0.5)]">
       {!reduced && (
-        <div aria-hidden className="pointer-events-none absolute left-1/2 top-16">
+        <div aria-hidden className="pointer-events-none absolute left-1/2 top-24">
           {Array.from({ length: 22 }).map((_, i) => {
             const angle = (i / 22) * Math.PI * 2;
             const dist = 110 + (i % 4) * 30;
@@ -206,11 +221,12 @@ function Finale({
           })}
         </div>
       )}
-      <div className={`mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br text-white ${ICON_GRADIENT[journey.icon]} ${reduced ? '' : 'cz-jny-pop'}`}>
-        <Check className="h-8 w-8" />
+      <div className="flex justify-center">
+        <Medal icon={journey.icon} reduced={reduced} />
       </div>
-      <h3 className="mt-5 font-display text-2xl font-bold text-cz-text sm:text-3xl">Journey complete</h3>
-      <p className="mx-auto mt-2 max-w-md text-cz-text-muted">You finished all {journey.steps.length} steps. Nice work.</p>
+      <p className="mt-6 font-mono text-xs uppercase tracking-widest text-[#B02E86]">Badge earned</p>
+      <h3 className="mt-2 font-display text-2xl font-bold text-cz-text sm:text-3xl">{journey.title}</h3>
+      <p className="mx-auto mt-3 max-w-sm text-cz-text-muted">You finished all {journey.steps.length} steps. Nice work.</p>
       <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
         {next && (
           <button
@@ -242,6 +258,7 @@ export default function JourneyShowcase({ journeys }: { journeys: ResolvedJourne
   const [progress, setProgress] = useState<Progress>({});
   const [loaded, setLoaded] = useState(false);
   const [finale, setFinale] = useState(false);
+  const [cheer, setCheer] = useState<{ done: string; next: string | null } | null>(null);
   // After someone picks a journey, the big goal cards fold into a compact strip so the
   // journey map gets the screen. "All goals" brings the cards back.
   const [compact, setCompact] = useState(false);
@@ -296,6 +313,7 @@ export default function JourneyShowcase({ journeys }: { journeys: ResolvedJourne
     const idx = journey.steps.findIndex((s) => !d.includes(s.slug));
     setActive(idx === -1 ? 0 : idx);
     setFinale(idx === -1 && d.length > 0);
+    setCheer(null);
     // only on journey change / first load, not on every progress tick
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loaded, sel]);
@@ -318,15 +336,15 @@ export default function JourneyShowcase({ journeys }: { journeys: ResolvedJourne
   const isDone = done.includes(step.slug);
   const nextJourney = journeys.length > 1 ? journeys[(sel + 1) % journeys.length] : null;
 
-  // Below 1024px the stage sits below the vertical step list; bring it into view after a tap.
+  // The step card opens inline under its step; bring it into view after a tap.
   function revealStage() {
-    if (window.matchMedia('(min-width: 1024px)').matches) return;
     window.requestAnimationFrame(() => stageRef.current?.scrollIntoView({ block: 'start', behavior: reduced ? 'auto' : 'smooth' }));
   }
 
   function goTo(i: number) {
     setActive(i);
     setFinale(false);
+    setCheer(null);
     revealStage();
   }
 
@@ -339,8 +357,15 @@ export default function JourneyShowcase({ journeys }: { journeys: ResolvedJourne
     update(() => nextDone);
     const nextIdx = journey.steps.findIndex((s, i) => i > active && !nextDone.includes(s.slug));
     const anyOpen = journey.steps.findIndex((s) => !nextDone.includes(s.slug));
-    if (anyOpen === -1) setFinale(true);
-    else setActive(nextIdx === -1 ? anyOpen : nextIdx);
+    if (anyOpen === -1) {
+      setCheer(null);
+      setFinale(true);
+    } else {
+      const target = nextIdx === -1 ? anyOpen : nextIdx;
+      setCheer({ done: displayTitle(step.title), next: displayTitle(journey.steps[target].title) });
+      setActive(target);
+    }
+    revealStage();
   }
 
   function onTabKey(e: KeyboardEvent<HTMLDivElement>) {
@@ -377,7 +402,7 @@ export default function JourneyShowcase({ journeys }: { journeys: ResolvedJourne
       ref={sectionRef}
       id="journeys"
       aria-label="Learning journeys"
-      className="relative mb-16 scroll-mt-28 overflow-hidden rounded-[28px] border border-[#F0E2C8] bg-gradient-to-br from-[#FFF1DC] via-[#FFFDF8] to-[#E6F6F0] p-5 shadow-[0_30px_80px_-40px_rgba(199,146,25,0.45)] sm:p-10"
+      className="relative mb-16 scroll-mt-28 overflow-hidden rounded-[28px] border border-[#F0E2C8] bg-gradient-to-br from-[#FFF1DC] via-[#FFFDF8] to-[#E6F6F0] p-5 shadow-[0_30px_80px_-40px_rgba(199,146,25,0.45)] sm:p-12"
     >
       <div aria-hidden className="cz-jny-drift pointer-events-none absolute -left-24 -top-24 h-72 w-72 rounded-full bg-[#FFD3A8]/50 blur-3xl" />
       <div aria-hidden className="cz-jny-drift-slow pointer-events-none absolute -bottom-28 -right-16 h-80 w-80 rounded-full bg-[#7ED3C0]/30 blur-3xl" />
@@ -427,7 +452,7 @@ export default function JourneyShowcase({ journeys }: { journeys: ResolvedJourne
           className={
             compact
               ? 'flex min-w-0 flex-1 snap-x gap-2 overflow-x-auto px-1 py-1 [scrollbar-width:none] lg:flex-wrap lg:overflow-visible'
-              : 'mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5'
+              : 'mt-8 grid grid-cols-2 gap-4'
           }
           role="tablist"
           aria-label="Choose a journey"
@@ -472,13 +497,13 @@ export default function JourneyShowcase({ journeys }: { journeys: ResolvedJourne
                 aria-selected={selected}
                 tabIndex={selected ? 0 : -1}
                 onClick={() => pick(i)}
-                className={`group relative flex flex-col items-start gap-3 rounded-2xl border p-4 text-left transition-all duration-300 hover:-translate-y-0.5 ${FOCUS} ${
+                className={`group relative flex flex-col items-start gap-3 rounded-2xl border p-5 pb-6 text-left transition-all duration-300 hover:-translate-y-0.5 ${FOCUS} ${
                   selected
                     ? 'border-cz-accent bg-cz-deep-teal shadow-[0_14px_30px_-18px_rgba(29,92,94,0.55)]'
                     : 'border-cz-border-strong bg-white/70 hover:bg-white'
                 }`}
               >
-                {selected && (
+                {selected && jd !== j.steps.length && (
                   <span aria-hidden className="absolute right-3 top-3 flex h-6 w-6 items-center justify-center rounded-full bg-cz-accent text-white">
                     <Check className="h-3.5 w-3.5" />
                   </span>
@@ -492,6 +517,11 @@ export default function JourneyShowcase({ journeys }: { journeys: ResolvedJourne
                 <span className="font-mono text-[13px] text-cz-text-muted">
                   {jd > 0 ? `${jd} of ${j.steps.length} done` : plural(j.steps.length, 'step', 'steps')}
                 </span>
+                {jd === j.steps.length && (
+                  <span className="absolute right-3 top-3">
+                    <Medal icon={j.icon} size="sm" />
+                  </span>
+                )}
                 {jd > 0 && (
                   <span className="absolute inset-x-4 bottom-2 h-1 overflow-hidden rounded-full bg-cz-border">
                     <span className="block h-full rounded-full bg-gradient-to-r from-[#7ED3C0] to-cz-accent" style={{ width: `${(jd / j.steps.length) * 100}%` }} />
@@ -506,39 +536,55 @@ export default function JourneyShowcase({ journeys }: { journeys: ResolvedJourne
         {/* Journey summary */}
         <div
           key={`sum-${journey.id}`}
-          className={`cz-lib-in grid items-center gap-6 md:grid-cols-[1fr_minmax(0,360px)] ${compact ? 'mt-4' : 'mt-8'}`}
+          className={`cz-lib-in flex flex-col gap-8 ${compact ? 'mt-8' : 'mt-12'}`}
           role="tabpanel"
           aria-label={journey.intent}
         >
-          <div>
-          <p className="max-w-3xl font-display text-xl font-semibold leading-snug text-cz-text sm:text-2xl">{journey.tagline}</p>
-          <p className="mt-2 font-mono text-[13px] text-cz-text-muted">
-            For {journey.audience} · {plural(n, 'step', 'steps')}
-            {journey.creatorCount > 0 && <> · {plural(journey.creatorCount, 'creator', 'creators')}</>}
-            {' · '}
-            {(() => {
-              const free = journey.steps.filter(isFree).length;
-              const paid = n - free;
-              if (!free) return 'all Premium skills';
-              if (!paid) return 'all free';
-              return `${free} free, ${paid} Premium`;
-            })()}
-          </p>
-          </div>
-          <div className={`relative mx-auto aspect-[16/10] w-full max-w-[360px] overflow-hidden rounded-3xl ${compact ? 'hidden md:block' : ''} border border-[#F0E2C8] bg-white/70 shadow-[0_20px_50px_-30px_rgba(199,146,25,0.55)]`}>
+          <div className="relative mx-auto aspect-[16/10] w-full max-w-[340px] overflow-hidden rounded-3xl border border-[#F0E2C8] bg-white/70 shadow-[0_20px_50px_-30px_rgba(199,146,25,0.55)]">
             <div aria-hidden className={`absolute -right-10 -top-10 h-40 w-40 rounded-full bg-gradient-to-br opacity-25 blur-2xl ${ICON_GRADIENT[journey.icon]}`} />
             <div className="relative h-full w-full p-2">
               <JourneyScene icon={journey.icon} />
             </div>
           </div>
+          <div>
+            <p className="font-display text-2xl font-semibold leading-snug text-cz-text">{journey.tagline}</p>
+            <p className="mt-3 font-mono text-[13px] text-cz-text-muted">
+              For {journey.audience} · {plural(n, 'step', 'steps')}
+              {journey.creatorCount > 0 && <> · {plural(journey.creatorCount, 'creator', 'creators')}</>}
+              {' · '}
+              {(() => {
+                const free = journey.steps.filter(isFree).length;
+                const paid = n - free;
+                if (!free) return 'all Premium skills';
+                if (!paid) return 'all free';
+                return `${free} free, ${paid} Premium`;
+              })()}
+            </p>
+            <div className="mt-6">
+              <div className="flex items-center justify-between gap-3 font-mono text-[13px] text-cz-text-muted">
+                <span>{done.length} of {n} done</span>
+                {firstOpen !== -1 && done.length > 0 && !finale && (
+                  <button
+                    type="button"
+                    onClick={() => goTo(firstOpen)}
+                    className={`inline-flex items-center gap-1.5 text-right font-display text-sm font-semibold text-cz-teal transition-colors hover:text-cz-accent ${FOCUS}`}
+                  >
+                    Next up: {displayTitle(journey.steps[firstOpen].title)} <Arrow className="h-3.5 w-3.5 flex-none" />
+                  </button>
+                )}
+              </div>
+              <div className="mt-2 h-2 overflow-hidden rounded-full bg-[#EADBBE]">
+                <div
+                  className="h-full rounded-full bg-gradient-to-r from-[#7ED3C0] via-cz-teal to-cz-accent transition-[width] duration-1000 ease-out"
+                  style={{ width: `${(done.length / Math.max(n, 1)) * 100}%` }}
+                />
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* Path */}
-        <ol
-          key={`path-${journey.id}`}
-          className={`mt-7 grid grid-cols-1 gap-2 lg:grid-cols-[repeat(var(--n),minmax(0,1fr))] lg:gap-3 ${pathClass}`}
-          style={{ '--n': n } as CSSProperties}
-        >
+        {/* Path: one vertical line; the open step expands in place */}
+        <ol key={`path-${journey.id}`} className={`mt-14 flex flex-col gap-5 ${pathClass}`}>
           {journey.steps.map((s, i) => {
             const isActive = i === active && !finale;
             const stepDone = done.includes(s.slug);
@@ -550,14 +596,11 @@ export default function JourneyShowcase({ journeys }: { journeys: ResolvedJourne
             return (
               <li key={s.slug} className="relative" style={{ '--i': i } as CSSProperties}>
                 {i < n - 1 && (
-                  <div
-                    aria-hidden
-                    className="cz-jny-track absolute left-[26.5px] top-[28px] h-[calc(100%+0.5rem)] w-[3px] lg:left-1/2 lg:top-[23px] lg:h-[3px] lg:w-[calc(100%+0.75rem)]"
-                  >
+                  <div aria-hidden className="cz-jny-track absolute left-[27.5px] top-[30px] h-[calc(100%+1.25rem)] w-[3px]">
                     <span className="absolute left-0 top-0 block h-full w-full rounded-full bg-[#D8C39A]" />
                     <span
-                      className={`absolute left-0 top-0 block h-full w-full origin-top rounded-full bg-gradient-to-b from-[#7ED3C0] to-cz-teal transition-transform duration-700 lg:origin-left lg:bg-gradient-to-r ${
-                        stepDone ? 'scale-100' : 'scale-y-0 lg:scale-x-0 lg:scale-y-100'
+                      className={`absolute left-0 top-0 block h-full w-full origin-top rounded-full bg-gradient-to-b from-[#7ED3C0] to-cz-teal transition-transform duration-700 ${
+                        stepDone ? 'scale-y-100' : 'scale-y-0'
                       }`}
                     />
                   </div>
@@ -566,14 +609,15 @@ export default function JourneyShowcase({ journeys }: { journeys: ResolvedJourne
                   type="button"
                   onClick={() => goTo(i)}
                   aria-current={isActive ? 'step' : undefined}
+                  aria-expanded={isActive}
                   aria-label={`Step ${i + 1}: ${displayTitle(s.title)}${stepDone ? ' (done)' : ''}`}
-                  className={`relative flex min-h-[56px] w-full items-center gap-3 rounded-2xl p-2 text-left transition-colors lg:flex-col lg:gap-2.5 lg:p-1 lg:text-center ${FOCUS} ${
-                    isActive ? 'bg-white/80 lg:bg-transparent' : 'hover:bg-white/60 lg:hover:bg-transparent'
+                  className={`relative flex min-h-[60px] w-full items-center gap-4 rounded-2xl p-2 text-left transition-colors ${FOCUS} ${
+                    isActive ? 'bg-white/80' : 'hover:bg-white/60'
                   }`}
                 >
                   <span className="cz-jny-node relative z-10 flex-none">
                     <span
-                      className={`relative flex h-10 w-10 items-center justify-center rounded-full border-2 font-display text-sm font-bold transition-all duration-500 ${nodeState}`}
+                      className={`relative flex h-11 w-11 items-center justify-center rounded-full border-2 font-display text-sm font-bold transition-all duration-500 ${nodeState}`}
                     >
                       {stepDone ? <Check /> : i + 1}
                       {isActive && !reduced && (
@@ -583,23 +627,71 @@ export default function JourneyShowcase({ journeys }: { journeys: ResolvedJourne
                   </span>
                   <span className="cz-jny-label min-w-0">
                     <span
-                      className={`block font-display text-sm font-semibold leading-snug transition-colors lg:text-[13px] ${
+                      className={`block font-display text-base font-semibold leading-snug transition-colors ${
                         isActive ? 'text-[#B02E86]' : stepDone ? 'text-cz-teal' : 'text-cz-text'
                       }`}
                     >
                       {displayTitle(s.title)}
                     </span>
-                    {s.creator && <span className="mt-0.5 block truncate font-mono text-[13px] text-cz-text">{s.creator}</span>}
+                    {s.creator && <span className="mt-0.5 block truncate font-mono text-[13px] text-cz-text-muted">{s.creator}</span>}
                   </span>
                 </button>
+
+                {isActive && (
+                  <div ref={stageRef} key={`${journey.id}-${active}`} className="cz-lib-in ml-11 mt-4 sm:ml-[3.75rem] scroll-mt-36">
+                    {cheer && (
+                      <p className={`mb-4 inline-flex flex-wrap items-center gap-2 rounded-full bg-cz-deep-teal px-4 py-2 text-sm font-medium text-cz-teal ${reduced ? '' : 'cz-jny-pop'}`}>
+                        <Check className="h-4 w-4" />
+                        {cheer.done} done.{cheer.next && <> Next up: {cheer.next}.</>}
+                      </p>
+                    )}
+                    <div className="flex flex-col gap-6 rounded-3xl border border-cz-border-strong bg-white/85 p-5 backdrop-blur-sm sm:p-7">
+                      <div>
+                        <p className="font-mono text-xs uppercase tracking-widest text-[#B02E86]">
+                          Step {active + 1} of {n}
+                          {isDone && <span className="ml-2 text-cz-teal">· done</span>}
+                        </p>
+                        <h3 className="mt-2 font-display text-2xl font-bold leading-tight text-cz-text">{displayTitle(step.title)}</h3>
+                        {step.creator && <p className="mt-1 text-base text-cz-text-muted">by {step.creator}</p>}
+                      </div>
+
+                      <StepPreview step={step} reduced={reduced} />
+
+                      <div>
+                        <div className="flex flex-wrap items-center gap-3">
+                          <a
+                            href={step.url}
+                            target={isFree(step) ? undefined : '_blank'}
+                            rel={isFree(step) ? undefined : 'noopener noreferrer'}
+                            className={`inline-flex min-h-[52px] items-center gap-2 rounded-full bg-cz-accent px-7 font-display text-base font-semibold text-white shadow-lg shadow-cz-accent/25 transition-all hover:-translate-y-0.5 hover:bg-cz-accent-hover ${FOCUS}`}
+                          >
+                            {active === firstOpen && done.length > 0 ? `Continue at step ${active + 1}` : `Open step ${active + 1}`}
+                            <Arrow className="h-5 w-5" />
+                          </a>
+                          <button
+                            type="button"
+                            onClick={markDone}
+                            aria-pressed={isDone}
+                            className={`inline-flex min-h-[48px] items-center gap-1.5 rounded-full border px-5 text-sm font-semibold transition-colors ${FOCUS} ${
+                              isDone ? 'border-cz-teal bg-cz-deep-teal text-cz-teal' : 'border-cz-border-strong bg-white text-cz-text hover:border-cz-teal'
+                            }`}
+                          >
+                            <Check className="h-3.5 w-3.5" />
+                            {isDone ? 'Done' : "I've done this"}
+                          </button>
+                        </div>
+                        {!isFree(step) && <p className="mt-3 text-sm text-cz-text-muted">Premium skill on Substack. Members open it in full.</p>}
+                      </div>
+                    </div>
+                  </div>
+                )}
               </li>
             );
           })}
         </ol>
 
-        {/* Stage */}
-        <div ref={stageRef} className="mt-7 scroll-mt-28">
-          {finale ? (
+        {finale && (
+          <div ref={stageRef} className="mt-10 scroll-mt-28">
             <Finale
               journey={journey}
               next={nextJourney}
@@ -611,72 +703,8 @@ export default function JourneyShowcase({ journeys }: { journeys: ResolvedJourne
                 setFinale(false);
               }}
             />
-          ) : (
-            <div
-              key={`${journey.id}-${active}`}
-              className="cz-lib-in grid gap-6 rounded-3xl border border-cz-border-strong bg-white/85 p-5 backdrop-blur-sm sm:p-8 md:grid-cols-[0.9fr_1.1fr] md:items-center"
-            >
-              <div>
-                <p className="font-mono text-xs uppercase tracking-widest text-[#B02E86]">
-                  Step {active + 1} of {n}
-                  {isDone && <span className="ml-2 text-cz-teal">· done</span>}
-                </p>
-                <h3 className="mt-2 font-display text-2xl font-bold leading-tight text-cz-text sm:text-3xl">{displayTitle(step.title)}</h3>
-                {step.creator && <p className="mt-1 text-base text-cz-text-muted">by {step.creator}</p>}
-
-                <div className="mt-6 flex flex-wrap items-center gap-3">
-                  <a
-                    href={step.url}
-                    target={isFree(step) ? undefined : '_blank'}
-                    rel={isFree(step) ? undefined : 'noopener noreferrer'}
-                    className={`inline-flex min-h-[52px] items-center gap-2 rounded-full bg-cz-accent px-7 font-display text-base font-semibold text-white shadow-lg shadow-cz-accent/25 transition-all hover:-translate-y-0.5 hover:bg-cz-accent-hover ${FOCUS}`}
-                  >
-                    {active === firstOpen && done.length > 0 ? `Continue at step ${active + 1}` : `Open step ${active + 1}`}
-                    <Arrow className="h-5 w-5" />
-                  </a>
-                  <button
-                    type="button"
-                    onClick={markDone}
-                    aria-pressed={isDone}
-                    className={`inline-flex min-h-[48px] items-center gap-1.5 rounded-full border px-5 text-sm font-semibold transition-colors ${FOCUS} ${
-                      isDone ? 'border-cz-teal bg-cz-deep-teal text-cz-teal' : 'border-cz-border-strong bg-white text-cz-text hover:border-cz-teal'
-                    }`}
-                  >
-                    <Check className="h-3.5 w-3.5" />
-                    {isDone ? 'Done' : "I've done this"}
-                  </button>
-                </div>
-
-                {!isFree(step) && (
-                  <p className="mt-3 text-sm text-cz-text-muted">Premium skill on Substack. Members open it in full.</p>
-                )}
-
-                <div className="mt-4 flex items-center gap-1 text-sm font-medium">
-                  {active > 0 && (
-                    <button
-                      type="button"
-                      onClick={() => goTo(active - 1)}
-                      className={`inline-flex min-h-[44px] items-center rounded-full px-3 text-cz-text-muted transition-colors hover:text-cz-text ${FOCUS}`}
-                    >
-                      ← Step {active}
-                    </button>
-                  )}
-                  {active < n - 1 && (
-                    <button
-                      type="button"
-                      onClick={() => goTo(active + 1)}
-                      className={`inline-flex min-h-[44px] items-center rounded-full px-3 text-cz-teal transition-colors hover:text-cz-accent ${FOCUS}`}
-                    >
-                      Step {active + 2} →
-                    </button>
-                  )}
-                </div>
-              </div>
-
-              <StepPreview step={step} reduced={reduced} />
-            </div>
-          )}
-        </div>
+          </div>
+        )}
 
         {journey.steps[0]?.url !== '/skills-guide' && (
           <p className="mt-5 text-sm text-cz-text-muted">

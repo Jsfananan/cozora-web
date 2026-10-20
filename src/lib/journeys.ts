@@ -89,6 +89,9 @@ export const VERIFIED_OUTCOMES: Record<string, string> = {
   'difficult-feedback-opener-rehearsal': 'Rehearse how you open a hard feedback conversation.',
   'the-30-second-music-video-assembler': 'Assemble a 30-second music video.',
   'cozora-skills-youtube-content-repurposing': 'Turn a YouTube video into content for your other channels.',
+
+  // Added 2026-10-20 with the Substack journey draft. Written from the post's public preview.
+  '21-substack-notes-agent': 'Pull your Notes performance data first, then write 21 Notes in your voice weighted toward what converted.',
 };
 
 export const DRAFT_OUTCOMES: Record<string, string> = {
@@ -96,6 +99,26 @@ export const DRAFT_OUTCOMES: Record<string, string> = {
 };
 
 export const JOURNEYS: JourneyDef[] = [
+  {
+    id: 'substack-creators',
+    title: 'Write, Grow and Run Your Substack',
+    intent: 'Grow my Substack',
+    icon: 'pen',
+    tagline: 'Find what your readers want, write in your voice, fill your Notes, then repurpose each post into video.',
+    audience: 'Substack writers and creators',
+    topic: 'writing',
+    status: 'draft', // flip to 'live' only after Joel approves
+    steps: [
+      'audience-problem-miner-skill',
+      'voice-profile-builder-skill',
+      'draft-enhancement-pass',
+      'the-21-angle-notes-skill',
+      '21-substack-notes-agent',
+      'voice-anchored-social-repurposer',
+      'video-script-writer-skill',
+      'cozora-skills-youtube-content-repurposing',
+    ],
+  },
   {
     id: 'get-started',
     title: 'Get Started',
