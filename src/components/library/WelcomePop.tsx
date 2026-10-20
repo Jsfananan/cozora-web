@@ -7,6 +7,46 @@ const SEEN_KEY = 'cz-welcome-seen';
 // A one-time welcome that pops up shortly after the library loads. Shows once per
 // browser session (sessionStorage), closes on Escape, the backdrop, or either button,
 // and "Start my journey" scrolls to the journeys section.
+const MAP_PATH = 'M24 62 Q62 0 100 26 T176 60 T252 26';
+const STOPS = [
+  { x: 24, y: 62, delay: 700 },
+  { x: 100, y: 26, delay: 1000 },
+  { x: 176, y: 60, delay: 1300 },
+];
+
+/* A tiny journey map that draws itself: the path, three numbered stops, a traveler
+   dot riding the path, and the goal star at the end. Runs once, about 1.3s. */
+function MiniMap() {
+  return (
+    <div aria-hidden className="relative mx-auto h-[84px] w-[276px]">
+      <svg viewBox="0 0 276 84" className="absolute inset-0 h-full w-full overflow-visible">
+        <defs>
+          <linearGradient id="cz-wel-path-grad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor="#7ED3C0" />
+            <stop offset="60%" stopColor="#1D5C5E" />
+            <stop offset="100%" stopColor="#D63BA3" />
+          </linearGradient>
+        </defs>
+        <path d={MAP_PATH} fill="none" stroke="#E8DCC6" strokeWidth="4" strokeLinecap="round" strokeDasharray="2 9" />
+        <path className="cz-wel-path" d={MAP_PATH} pathLength={100} fill="none" stroke="url(#cz-wel-path-grad)" strokeWidth="4" strokeLinecap="round" />
+        {STOPS.map((s, i) => (
+          <g key={i} className="cz-wel-node" style={{ animationDelay: `${s.delay}ms` }}>
+            <circle cx={s.x} cy={s.y} r="12" fill="#fff" stroke="#1D5C5E" strokeWidth="3" />
+            <text x={s.x} y={s.y + 4.5} textAnchor="middle" fontSize="12" fontWeight="700" fill="#1D5C5E" fontFamily="Sora, sans-serif">
+              {i + 1}
+            </text>
+          </g>
+        ))}
+        <g className="cz-wel-node cz-wel-goal" style={{ animationDelay: '1700ms' }}>
+          <circle cx="252" cy="26" r="15" fill="#D63BA3" />
+          <path d="M252 16l2.9 6.1 6.6.8-4.9 4.5 1.3 6.6-5.9-3.3-5.9 3.3 1.3-6.6-4.9-4.5 6.6-.8z" fill="#fff" />
+        </g>
+      </svg>
+      <span className="cz-wel-traveler absolute left-0 top-0 h-3.5 w-3.5 rounded-full bg-[#F6C26B] shadow-[0_0_0_4px_rgba(246,194,107,0.35)]" />
+    </div>
+  );
+}
+
 export default function WelcomePop() {
   const [open, setOpen] = useState(false);
   const [closing, setClosing] = useState(false);
@@ -40,12 +80,16 @@ export default function WelcomePop() {
 
   useEffect(() => {
     if (!open) return;
-    primaryRef.current?.focus();
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const focusTimer = window.setTimeout(() => primaryRef.current?.focus(), reduce ? 0 : 2100);
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') close();
     };
     window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      window.clearTimeout(focusTimer);
+    };
   }, [open, close]);
 
   if (!open) return null;
@@ -121,7 +165,11 @@ export default function WelcomePop() {
             Ready to start your journey?
           </p>
 
-          <div className="cz-wel-line mt-7 flex flex-col items-center gap-2" style={{ animationDelay: '480ms' }}>
+          <div className="mt-6">
+            <MiniMap />
+          </div>
+
+          <div className="cz-wel-line mt-6 flex flex-col items-center gap-2" style={{ animationDelay: '2000ms' }}>
             <button
               ref={primaryRef}
               type="button"

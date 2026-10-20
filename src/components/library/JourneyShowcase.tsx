@@ -242,6 +242,9 @@ export default function JourneyShowcase({ journeys }: { journeys: ResolvedJourne
   const [progress, setProgress] = useState<Progress>({});
   const [loaded, setLoaded] = useState(false);
   const [finale, setFinale] = useState(false);
+  // After someone picks a journey, the big goal cards fold into a compact strip so the
+  // journey map gets the screen. "All goals" brings the cards back.
+  const [compact, setCompact] = useState(false);
   const sectionRef = useRef<HTMLElement | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -352,6 +355,21 @@ export default function JourneyShowcase({ journeys }: { journeys: ResolvedJourne
     tabRefs.current[next]?.focus();
   }
 
+  useEffect(() => {
+    if (!compact) return;
+    const el = tabRefs.current[sel];
+    const box = el?.parentElement;
+    if (!el || !box) return;
+    box.scrollTo({ left: Math.max(0, el.offsetLeft - box.offsetLeft - 12), behavior: reduced ? 'auto' : 'smooth' });
+  }, [compact, sel, reduced]);
+
+  function pick(i: number) {
+    setSel(i);
+    if (compact) return;
+    setCompact(true);
+    window.requestAnimationFrame(() => sectionRef.current?.scrollIntoView({ block: 'start', behavior: reduced ? 'auto' : 'smooth' }));
+  }
+
   const pathClass = reduced ? '' : seen ? 'cz-jny-intro' : 'cz-jny-pre';
 
   return (
@@ -372,32 +390,88 @@ export default function JourneyShowcase({ journeys }: { journeys: ResolvedJourne
         )}
 
         {/* Heading */}
-        <div className="flex flex-wrap items-center gap-3">
-          <span className="inline-flex items-center rounded-full bg-cz-coral px-3 py-1 font-mono text-[11px] font-semibold uppercase tracking-widest text-white">
-            New
-          </span>
-          <span className="font-mono text-sm uppercase tracking-widest text-cz-accent">Learning journeys</span>
-        </div>
-        <h2 className="mt-3 font-display text-3xl font-bold text-cz-text sm:text-4xl">What do you want to do?</h2>
-        <p className="mt-2 max-w-2xl text-base text-cz-text-muted sm:text-lg">
-          Pick a goal. We&apos;ll walk you through the right skills in order, one step at a time.
-        </p>
+        {!compact && (
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="inline-flex items-center rounded-full bg-cz-coral px-3 py-1 font-mono text-[11px] font-semibold uppercase tracking-widest text-white">
+              New
+            </span>
+            <span className="font-mono text-sm uppercase tracking-widest text-cz-accent">Learning journeys</span>
+          </div>
+        )}
+        {!compact && (
+          <>
+            <h2 className="mt-3 font-display text-3xl font-bold text-cz-text sm:text-4xl">What do you want to do?</h2>
+            <p className="mt-2 max-w-2xl text-base text-cz-text-muted sm:text-lg">
+              Pick a goal. We&apos;ll walk you through the right skills in order, one step at a time.
+            </p>
+          </>
+        )}
 
-        {/* Intent picker */}
-        <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5" role="tablist" aria-label="Choose a journey" onKeyDown={onTabKey}>
+        {/* Intent picker: full cards, or a compact strip once a journey is picked */}
+        <div className={compact ? 'cz-lib-in flex items-center gap-2' : ''}>
+        {compact && (
+          <button
+            type="button"
+            onClick={() => setCompact(false)}
+            aria-label="Show all goals"
+            title="All goals"
+            className={`flex h-11 w-11 flex-none items-center justify-center rounded-full border border-cz-border-strong bg-white/80 text-cz-text transition-colors hover:border-cz-teal ${FOCUS}`}
+          >
+            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 5h6v6H4zM14 5h6v6h-6zM4 15h6v5H4zM14 15h6v5h-6z" />
+            </svg>
+          </button>
+        )}
+        <div
+          key={compact ? 'strip' : 'grid'}
+          className={
+            compact
+              ? 'flex min-w-0 flex-1 snap-x gap-2 overflow-x-auto px-1 py-1 [scrollbar-width:none] lg:flex-wrap lg:overflow-visible'
+              : 'mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5'
+          }
+          role="tablist"
+          aria-label="Choose a journey"
+          onKeyDown={onTabKey}
+        >
           {journeys.map((j, i) => {
             const selected = i === sel;
             const jd = (progress[j.id] ?? []).filter((s) => j.steps.some((st) => st.slug === s)).length;
+            const setRef = (el: HTMLButtonElement | null) => {
+              tabRefs.current[i] = el;
+            };
+            if (compact) {
+              return (
+                <button
+                  key={j.id}
+                  ref={setRef}
+                  role="tab"
+                  aria-selected={selected}
+                  tabIndex={selected ? 0 : -1}
+                  onClick={() => pick(i)}
+                  className={`flex min-h-[44px] flex-none snap-start items-center gap-2 rounded-full border py-1.5 pl-1.5 pr-3.5 text-left transition-colors duration-300 ${FOCUS} ${
+                    selected ? 'border-cz-accent bg-cz-accent text-white shadow-md shadow-cz-accent/25' : 'border-cz-border-strong bg-white/80 text-cz-text hover:bg-white'
+                  }`}
+                >
+                  <span className={`flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br text-white ${ICON_GRADIENT[j.icon]}`}>
+                    <Icon name={j.icon} className="h-4 w-4" />
+                  </span>
+                  <span className="whitespace-nowrap font-display text-sm font-semibold lg:text-[13px]">{j.intent}</span>
+                  {jd > 0 && (
+                    <span className={`font-mono text-xs ${selected ? 'text-white/80' : 'text-cz-text-muted'}`}>
+                      {jd}/{j.steps.length}
+                    </span>
+                  )}
+                </button>
+              );
+            }
             return (
               <button
                 key={j.id}
-                ref={(el) => {
-                  tabRefs.current[i] = el;
-                }}
+                ref={setRef}
                 role="tab"
                 aria-selected={selected}
                 tabIndex={selected ? 0 : -1}
-                onClick={() => setSel(i)}
+                onClick={() => pick(i)}
                 className={`group relative flex flex-col items-start gap-3 rounded-2xl border p-4 text-left transition-all duration-300 hover:-translate-y-0.5 ${FOCUS} ${
                   selected
                     ? 'border-cz-accent bg-cz-deep-teal shadow-[0_14px_30px_-18px_rgba(29,92,94,0.55)]'
@@ -427,11 +501,12 @@ export default function JourneyShowcase({ journeys }: { journeys: ResolvedJourne
             );
           })}
         </div>
+        </div>
 
         {/* Journey summary */}
         <div
           key={`sum-${journey.id}`}
-          className="cz-lib-in mt-8 grid items-center gap-6 md:grid-cols-[1fr_minmax(0,360px)]"
+          className={`cz-lib-in grid items-center gap-6 md:grid-cols-[1fr_minmax(0,360px)] ${compact ? 'mt-4' : 'mt-8'}`}
           role="tabpanel"
           aria-label={journey.intent}
         >
@@ -450,7 +525,7 @@ export default function JourneyShowcase({ journeys }: { journeys: ResolvedJourne
             })()}
           </p>
           </div>
-          <div className="relative mx-auto aspect-[16/10] w-full max-w-[360px] overflow-hidden rounded-3xl border border-[#F0E2C8] bg-white/70 shadow-[0_20px_50px_-30px_rgba(199,146,25,0.55)]">
+          <div className={`relative mx-auto aspect-[16/10] w-full max-w-[360px] overflow-hidden rounded-3xl ${compact ? 'hidden md:block' : ''} border border-[#F0E2C8] bg-white/70 shadow-[0_20px_50px_-30px_rgba(199,146,25,0.55)]`}>
             <div aria-hidden className={`absolute -right-10 -top-10 h-40 w-40 rounded-full bg-gradient-to-br opacity-25 blur-2xl ${ICON_GRADIENT[journey.icon]}`} />
             <div className="relative h-full w-full p-2">
               <JourneyScene icon={journey.icon} />

@@ -407,8 +407,29 @@ body {
 @keyframes cz-wel-out { to { opacity: 0; transform: scale(0.96); } }
 .cz-wel-out { animation: cz-wel-out 0.22s ease-in forwards; }
 
+/* Mini journey map: path draws, stops pop, a traveler rides the path to the goal. */
+.cz-wel-path { stroke-dasharray: 100; animation: cz-wel-draw 1.2s ease-in-out 0.7s both; }
+@keyframes cz-wel-draw { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
+.cz-wel-node { transform-box: fill-box; transform-origin: center; animation: cz-jny-pop 0.45s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.cz-wel-goal { animation: cz-jny-pop 0.45s cubic-bezier(0.22, 1, 0.36, 1) both, cz-sc-play 1.8s ease-in-out 2.2s infinite; }
+.cz-wel-traveler {
+  offset-path: path('M24 62 Q62 0 100 26 T176 60 T252 26');
+  offset-anchor: center;
+  offset-rotate: 0deg;
+  animation: cz-wel-travel 1.2s ease-in-out 0.7s both;
+}
+@keyframes cz-wel-travel {
+  0%   { offset-distance: 0%; opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { offset-distance: 100%; opacity: 0; }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .cz-wel-backdrop, .cz-wel-pop, .cz-wel-line, .cz-wel-ring, .cz-wel-wave, .cz-wel-out { animation: none; }
+  .cz-wel-backdrop, .cz-wel-pop, .cz-wel-line, .cz-wel-ring, .cz-wel-wave, .cz-wel-out,
+  .cz-wel-path, .cz-wel-node, .cz-wel-goal { animation: none; }
+  .cz-wel-path { stroke-dashoffset: 0; }
+  .cz-wel-traveler { animation: none; opacity: 0; }
 }
 
 /* ===== SCROLLBAR ===== */
