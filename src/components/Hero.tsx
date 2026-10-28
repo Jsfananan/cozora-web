@@ -1,6 +1,6 @@
 export default function Hero() {
   return (
-    <section className="min-h-screen flex items-center pt-28 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    <section className="min-h-screen flex items-center pt-28 px-4 sm:px-6 lg:px-8 relative overflow-hidden mx-3 sm:mx-4 mt-16 rounded-[2rem] border border-cz-teal/20 bg-gradient-to-b from-cz-deep-teal/25 to-cz-bg-card/60 shadow-[0_40px_80px_-40px_rgba(0,0,0,0.6)]">
       <div className="absolute inset-0 -z-10">
         <div className="absolute top-1/4 left-0 w-96 h-96 bg-cz-teal/10 rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-cz-coral/10 rounded-full blur-3xl" />

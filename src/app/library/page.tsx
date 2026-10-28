@@ -65,7 +65,7 @@ export default async function LibraryPage() {
       <main className="pb-24 pt-32 sm:pt-40">
         <div className="mx-auto max-w-3xl px-5 sm:px-6">
           {/* Hero */}
-          <header className="mx-auto mb-16 text-center">
+          <header className="mx-auto mb-16 rounded-[2rem] border border-cz-border-strong bg-white/60 px-5 py-12 text-center shadow-[0_30px_70px_-40px_rgba(31,41,55,0.35)] sm:px-10">
             <p className="animate-fade-up inline-flex items-center rounded-full border border-cz-border-strong bg-white px-3 py-1 font-mono text-xs uppercase tracking-widest text-cz-accent">
               Cozora Library
             </p>

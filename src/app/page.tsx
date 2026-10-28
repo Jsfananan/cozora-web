@@ -6,6 +6,7 @@ import Creators from '@/components/Creators';
 import About from '@/components/About';
 import Faq from '@/components/Faq';
 import Footer from '@/components/Footer';
+import Reveal from '@/components/library/Reveal';
 
 // The "Recent drops" strip in SkillSets pulls live from the Substack archive.
 // Without this the homepage would freeze those three skills at build time.
@@ -17,11 +18,11 @@ export default function Home() {
       <Navbar />
       <main>
         <Hero />
-        <SkillSets />
-        <Pricing />
-        <Creators />
-        <About />
-        <Faq />
+        <Reveal><SkillSets /></Reveal>
+        <Reveal><Pricing /></Reveal>
+        <Reveal><Creators /></Reveal>
+        <Reveal><About /></Reveal>
+        <Reveal><Faq /></Reveal>
       </main>
       <Footer />
     </>

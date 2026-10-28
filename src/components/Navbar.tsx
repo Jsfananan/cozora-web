@@ -67,7 +67,7 @@ export default function Navbar({ banner = DEFAULT_BANNER }: { banner?: BannerCon
           bannerDismissed ? 'top-0' : 'top-[41px]'
         } ${
           isScrolled || isMobileMenuOpen
-            ? 'bg-cz-bg/95 backdrop-blur-xl border-b border-cz-border'
+            ? 'bg-cz-bg/85 backdrop-blur-xl border-b border-cz-border lg:left-4 lg:right-4 lg:mt-3 lg:w-auto lg:rounded-full lg:border lg:shadow-[0_12px_40px_-12px_rgba(0,0,0,0.35)]'
             : 'bg-transparent'
         }`}
       >
