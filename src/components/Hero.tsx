@@ -1,5 +1,6 @@
 import { getSkillPosts } from '@/lib/substack';
 import { resolveJourneys } from '@/lib/journeys';
+import HeroScene from './HeroScene';
 
 // Single place for the headline so a slogan change is one edit.
 const HEADLINE = 'Your path through AI skills, from the creators building them.';
@@ -66,6 +67,10 @@ export default async function Hero() {
           </a>
         </div>
         <p className="mt-4 text-sm text-cz-text-muted">$19/month or $99/year. Cancel anytime.</p>
+      </div>
+
+      <div className="animate-fade-up delay-300 mx-auto mt-14 max-w-xl">
+        <HeroScene />
       </div>
 
       <div className="animate-fade-up delay-200 mt-16 rounded-3xl border border-cz-border bg-cz-deep-teal/70 p-7 sm:p-9">

@@ -387,7 +387,7 @@ export default function InstallGuide() {
               title="Switch Claude surface"
             >
               <span className="text-cz-teal">
-                <span className="block h-4 w-4">
+                <span className="block h-4 w-4 [&>svg]:h-full [&>svg]:w-full">
                   <SurfaceIcon kind={sMeta.icon} />
                 </span>
               </span>

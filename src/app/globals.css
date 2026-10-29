@@ -457,3 +457,31 @@ h1, h2, h3, h4 { text-wrap: balance; }
   .cz-reveal-off { opacity: 1; transform: none; }
   .cz-jny-badge, .cz-jny-glint, .cz-jny-bob { animation: none; }
 }
+
+/* ===== HERO MOTION GRAPHIC (HeroScene.tsx) =====
+   8s loop. The marker sits on a stone for ~1.6s, then hops to the next; each stone swells
+   as the marker lands. Positions mirror STONES in HeroScene.tsx (marker rides 34px above). */
+@keyframes cz-hero-hop {
+  0%, 12%   { transform: translate(62px, 112px); }
+  20%, 32%  { transform: translate(150px, 60px); }
+  40%, 52%  { transform: translate(244px, 104px); }
+  60%, 72%  { transform: translate(338px, 52px); }
+  80%, 92%  { transform: translate(424px, 92px); }
+  100%      { transform: translate(62px, 112px); }
+}
+.cz-hero-hop { animation: cz-hero-hop 8s cubic-bezier(0.45, 0, 0.25, 1) infinite; }
+@keyframes cz-hero-bounce {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-5px); }
+}
+.cz-hero-bounce { animation: cz-hero-bounce 1.6s ease-in-out infinite; }
+.cz-hero-stone { transform-box: fill-box; transform-origin: center; animation: cz-hero-swell 8s ease-in-out infinite; }
+@keyframes cz-hero-swell {
+  0%, 100% { transform: scale(1); }
+  6%       { transform: scale(1.18); }
+  16%      { transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cz-hero-hop { animation: none; transform: translate(424px, 92px); }
+  .cz-hero-bounce, .cz-hero-stone { animation: none; }
+}

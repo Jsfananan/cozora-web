@@ -327,7 +327,7 @@ export default function LibraryBrowser({ posts }: { posts: SkillPost[] }) {
           {featured.length > 0 && (
             <>
               <p className="mb-4 font-mono text-xs uppercase tracking-widest text-cz-accent">★ New this week</p>
-              <div className="mb-12 grid grid-cols-1 gap-8">
+              <div className="mb-12 grid grid-cols-1 gap-8 lg:grid-cols-3 lg:gap-6">
                 {featured.map((p, i) => (
                   <FeaturedCard key={p.id} post={p} index={i} />
                 ))}

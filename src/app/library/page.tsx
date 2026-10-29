@@ -64,9 +64,9 @@ export default async function LibraryPage() {
     <div className="cz-light min-h-screen">
       <Navbar banner={{ lead: 'Not a Cozora member? ', short: 'Not a member? ', linkText: 'Sign up here →', href: SUBSCRIBE_URL }} />
       <main className="pb-24 pt-32 sm:pt-40">
-        <div className="mx-auto max-w-3xl px-5 sm:px-6">
+        <div className="mx-auto max-w-6xl px-5 sm:px-6">
           {/* Hero */}
-          <header className="mx-auto mb-16 rounded-[2rem] border border-cz-border-strong bg-white/60 px-5 py-12 text-center shadow-[0_30px_70px_-40px_rgba(31,41,55,0.35)] sm:px-10">
+          <header className="mx-auto mb-16 max-w-3xl rounded-[2rem] border border-cz-border-strong bg-white/60 px-5 py-12 text-center shadow-[0_30px_70px_-40px_rgba(31,41,55,0.35)] sm:px-10">
             <p className="animate-fade-up inline-flex items-center rounded-full border border-cz-border-strong bg-white px-3 py-1 font-mono text-xs uppercase tracking-widest text-cz-accent">
               Cozora Library
             </p>
@@ -81,7 +81,7 @@ export default async function LibraryPage() {
               <p className="mb-5 text-center font-display text-lg font-semibold text-cz-text">How do you want to start?</p>
               <div className="grid grid-cols-2 gap-3 sm:gap-5">
                 {[
-                  { href: '#journeys', title: 'Follow a journey', body: 'Pick a goal and we walk you through the right skills in order.', tone: 'from-[#8FD3C4] to-[#1F5F5B]', glow: 'bg-[#8FD3C4]/40', primary: true },
+                  { href: '#journeys', title: 'Follow a journey', body: 'Pick a goal and we walk you through the right skills in order.', tone: 'from-[#8FD3C4] to-[#C8EBE2]', glow: 'bg-[#8FD3C4]/40', primary: true },
                   { href: '#browse', title: 'Pick skills a la carte', body: 'Search the whole library and open whichever skill you want.', tone: 'from-[#FFD2B0] to-[#B9A6EE]', glow: 'bg-[#FFD2B0]/40' },
                 ].map((o) => (
                   <a
@@ -90,14 +90,20 @@ export default async function LibraryPage() {
                     className={`group relative flex flex-col items-start overflow-hidden rounded-[28px] border ${o.primary ? 'border-cz-accent bg-cz-deep-teal' : 'border-cz-border-strong bg-white'} p-5 shadow-[0_18px_40px_-28px_rgba(31,41,55,0.4)] transition-all duration-500 hover:-translate-y-2 hover:border-cz-accent hover:shadow-[0_32px_60px_-28px_rgba(31,95,91,0.55)] sm:p-7 ${FOCUS}`}
                   >
                     <span aria-hidden className={`absolute -right-10 -top-10 h-32 w-32 rounded-full blur-2xl transition-transform duration-700 group-hover:scale-150 ${o.glow}`} />
-                    <span className={`relative flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br text-white shadow-md transition-transform duration-500 group-hover:-rotate-6 group-hover:scale-110 ${o.tone}`}>
+                    <span className={`relative flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br text-cz-text shadow-md transition-transform duration-500 group-hover:-rotate-6 group-hover:scale-110 ${o.tone}`}>
                       <svg className="h-7 w-7" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24" aria-hidden>
                         <path strokeLinecap="round" strokeLinejoin="round" d={o.href === '#journeys' ? TRUST[2].icon : 'M21 21l-5.2-5.2M10.5 18a7.5 7.5 0 110-15 7.5 7.5 0 010 15z'} />
                       </svg>
                     </span>
                     <span className="relative mt-5 block font-display text-lg font-bold leading-snug text-cz-text sm:text-xl">{o.title}</span>
                     <span className="relative mt-2 block text-sm leading-relaxed text-cz-text-muted sm:text-[15px]">{o.body}</span>
-                    <span className="relative mt-6 inline-flex items-center gap-1.5 font-display text-sm font-semibold ${o.primary ? 'rounded-full bg-cz-accent px-4 py-2 text-white' : 'text-cz-teal'} transition-colors group-hover:text-cz-accent">
+                    <span
+                      className={`relative mt-6 inline-flex items-center gap-1.5 rounded-full px-5 py-2 font-display text-sm font-semibold transition-colors ${
+                        o.primary
+                          ? 'bg-cz-accent text-white group-hover:bg-cz-accent-hover'
+                          : 'border border-cz-border-strong bg-white text-cz-text group-hover:border-cz-accent group-hover:text-cz-accent'
+                      }`}
+                    >
                       Start
                       <svg className="h-4 w-4 transition-transform duration-300 group-hover:translate-y-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
@@ -113,7 +119,7 @@ export default async function LibraryPage() {
           </header>
 
           {/* Trust strip */}
-          <ul className="animate-fade-up delay-300 mx-auto mb-20 flex flex-col items-start gap-4 sm:items-center">
+          <ul className="animate-fade-up delay-300 mx-auto mb-20 max-w-3xl flex flex-col items-start gap-4 sm:items-center">
             {TRUST.map((t) => (
               <li key={t.text} className="flex items-center gap-2 text-sm font-medium text-cz-text">
                 <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-cz-deep-teal text-cz-teal">
@@ -134,12 +140,12 @@ export default async function LibraryPage() {
 
           {/* Creators */}
           {creators.length > 0 && (
-            <Reveal><section aria-label="Creators in the library" className="mb-24 text-center">
+            <Reveal><section aria-label="Creators in the library" className="mx-auto mb-24 max-w-3xl text-center">
               <p className="font-mono text-xs uppercase tracking-widest text-cz-text-muted">Skills in the library come from</p>
               <ul className="mx-auto mt-5 flex flex-wrap justify-center gap-2.5">
                 {creators.map((name) => (
                   <li key={name} className="flex items-center gap-2 rounded-full border border-cz-border-strong bg-white py-1 pl-1 pr-3 text-sm text-cz-text">
-                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-[#8FD3C4] to-[#1F5F5B] font-display text-[11px] font-bold text-white">
+                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-cz-seafoam font-display text-[11px] font-bold text-cz-text">
                       {initialOf(name)}
                     </span>
                     {name}
@@ -149,7 +155,7 @@ export default async function LibraryPage() {
             </section></Reveal>
           )}
 
-          <Reveal><div id="browse" className="mb-10 scroll-mt-28 text-center">
+          <Reveal><div id="browse" className="mx-auto mb-10 max-w-3xl scroll-mt-28 text-center">
             <h2 className="font-display text-2xl font-bold text-cz-text sm:text-3xl">Or browse the whole library</h2>
             <p className="mt-2 text-sm text-cz-text-muted">
               {skills.length} skills sorted by level
@@ -159,7 +165,9 @@ export default async function LibraryPage() {
           </div></Reveal>
 
           {posts.length > 0 ? (
-            <LibraryBrowser posts={posts} />
+            <div className="mx-auto max-w-5xl">
+              <LibraryBrowser posts={posts} />
+            </div>
           ) : (
             <div className="py-20 text-center">
               <p className="font-display text-lg text-cz-text">The library is loading its latest skills.</p>

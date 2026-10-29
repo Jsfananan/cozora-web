@@ -251,7 +251,7 @@ export default function CreatorGuidePage() {
           --cg-muted: #4A5963;
           --cg-pink: #A8512C;
           --cg-gold: #5B47A8;
-          --cg-mint: #23776F;
+          --cg-mint: #1E6A63;
           background: var(--cg-bg);
           color: var(--cg-text);
           font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -378,7 +378,7 @@ export default function CreatorGuidePage() {
           margin-bottom: 0 !important;
         }
         .cg-sub-label { font-weight: 700; font-size: 0.95rem; color: #1F2328; margin-bottom: 0.2rem; }
-        .cg-sub-sublabel { font-size: 0.82rem; color: #6E7781; margin-bottom: 0.75rem; }
+        .cg-sub-sublabel { font-size: 0.82rem; color: #5A646C; margin-bottom: 0.75rem; }
         .cg-sub-pill {
           display: flex;
           align-items: center;
@@ -404,7 +404,7 @@ export default function CreatorGuidePage() {
         .cg-post-p { font-family: 'Georgia', serif; font-size: 0.95rem; color: #1F2328; margin-bottom: 1rem; }
         .cg-post-cta {
           display: inline-block;
-          background: #EA580C;
+          background: #C2410C;
           color: #FFFFFF;
           font-weight: 600;
           font-size: 0.95rem;

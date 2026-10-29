@@ -61,14 +61,15 @@ const ICON_PATHS: Record<JourneyIcon, string> = {
 };
 
 // Gradients from the four brand colors (teal, fuchsia, amber, mint) plus one warm peach.
+// Light gradients only: the glyphs on them are Ink (#22303A), which clears 3:1 on every stop.
 const ICON_GRADIENT: Record<JourneyIcon, string> = {
   sparkles: 'from-[#FFD2B0] to-[#B9A6EE]',
-  pen: 'from-[#8FD3C4] to-[#1F5F5B]',
-  chat: 'from-[#FFB48A] to-[#FFB48A]',
-  play: 'from-[#FFB48A] to-[#1F5F5B]',
-  swatch: 'from-[#B9A6EE] to-[#FFB48A]',
-  bulb: 'from-[#B9A6EE] to-[#1F5F5B]',
-  code: 'from-[#1F5F5B] to-[#8FD3C4]',
+  pen: 'from-[#8FD3C4] to-[#C8EBE2]',
+  chat: 'from-[#FFB48A] to-[#FFD2B0]',
+  play: 'from-[#B9A6EE] to-[#FFB48A]',
+  swatch: 'from-[#FFD2B0] to-[#8FD3C4]',
+  bulb: 'from-[#B9A6EE] to-[#D9CCF7]',
+  code: 'from-[#8FD3C4] to-[#B9A6EE]',
 };
 
 function Icon({ name, className = '' }: { name: JourneyIcon; className?: string }) {
@@ -158,7 +159,7 @@ function StepPreview({ step, reduced }: { step: JourneyStep; reduced: boolean })
           <AccessBadge step={step} />
           {step.creator && (
             <span className="flex items-center gap-2 text-sm text-cz-text-muted">
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-[#8FD3C4] to-[#1F5F5B] font-display text-[11px] font-bold text-white">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-cz-seafoam font-display text-[11px] font-bold text-cz-text">
                 {initialOf(step.creator)}
               </span>
               Built by {step.creator}
@@ -171,14 +172,14 @@ function StepPreview({ step, reduced }: { step: JourneyStep; reduced: boolean })
 }
 
 /* ---------- Badge ---------- */
-function Medal({ icon, size = 'lg', reduced = false }: { icon: JourneyIcon; size?: 'sm' | 'lg'; reduced?: boolean }) {
-  const dim = size === 'lg' ? 'h-28 w-28' : 'h-7 w-7';
+function Medal({ icon, size = 'lg', reduced = false }: { icon: JourneyIcon; size?: 'sm' | 'md' | 'lg'; reduced?: boolean }) {
+  const dim = size === 'lg' ? 'h-28 w-28' : size === 'md' ? 'h-14 w-14' : 'h-7 w-7';
   return (
     <span className={`relative inline-block flex-none ${dim} ${size === 'lg' && !reduced ? 'cz-jny-badge' : ''}`}>
       <span
-        className={`absolute inset-0 flex items-center justify-center overflow-hidden rounded-full bg-gradient-to-br text-white ring-white ${size === 'lg' ? 'ring-4 shadow-[0_18px_40px_-14px_rgba(31,95,91,0.7)]' : 'ring-2'} ${ICON_GRADIENT[icon]}`}
+        className={`absolute inset-0 flex items-center justify-center overflow-hidden rounded-full bg-gradient-to-br text-cz-text ring-white ${size === 'lg' ? 'ring-4 shadow-[0_18px_40px_-14px_rgba(31,95,91,0.7)]' : 'ring-2'} ${ICON_GRADIENT[icon]}`}
       >
-        <Icon name={icon} className={size === 'lg' ? 'h-12 w-12' : 'h-3.5 w-3.5'} />
+        <Icon name={icon} className={size === 'lg' ? 'h-12 w-12' : size === 'md' ? 'h-6 w-6' : 'h-3.5 w-3.5'} />
         <span aria-hidden className="cz-jny-glint absolute inset-y-0 left-0 w-1/3 bg-white/35" />
       </span>
     </span>
@@ -360,6 +361,8 @@ export default function JourneyShowcase({ journeys }: { journeys: ResolvedJourne
 
   // The step card opens inline under its step; bring it into view after a tap.
   function revealStage() {
+    // On wide screens the step card sits in its own column, so there's nothing to scroll to.
+    if (window.matchMedia('(min-width: 1024px)').matches) return;
     window.requestAnimationFrame(() => stageRef.current?.scrollIntoView({ block: 'start', behavior: reduced ? 'auto' : 'smooth' }));
   }
 
@@ -417,6 +420,57 @@ export default function JourneyShowcase({ journeys }: { journeys: ResolvedJourne
     window.requestAnimationFrame(() => sectionRef.current?.scrollIntoView({ block: 'start', behavior: reduced ? 'auto' : 'smooth' }));
   }
 
+  const stageCard = (
+    <>
+      {cheer && (
+        <p className={`mb-4 inline-flex flex-wrap items-center gap-2 rounded-full bg-cz-deep-teal px-4 py-2 text-sm font-medium text-cz-teal ${reduced ? '' : 'cz-jny-pop'}`}>
+          <Check className="h-4 w-4" />
+          {cheer.done} done.{cheer.next && <> Next up: {cheer.next}.</>}
+        </p>
+      )}
+      <div className="flex flex-col gap-6 rounded-3xl border border-cz-border-strong bg-white/85 p-5 backdrop-blur-sm sm:p-7 lg:grid lg:grid-cols-2 lg:gap-x-10 lg:gap-y-6 lg:p-9">
+        <div className="lg:col-start-1 lg:row-start-1">
+          <p className="font-mono text-xs uppercase tracking-widest text-[#A8512C]">
+            Step {active + 1} of {n}
+            {isDone && <span className="ml-2 text-cz-teal">· done</span>}
+          </p>
+          <h3 className="mt-2 font-display text-2xl font-bold leading-tight text-cz-text lg:text-3xl">{displayTitle(step.title)}</h3>
+          {step.creator && <p className="mt-1 text-base text-cz-text-muted">by {step.creator}</p>}
+        </div>
+
+        <div className="lg:col-start-2 lg:row-span-2 lg:row-start-1">
+          <StepPreview step={step} reduced={reduced} />
+        </div>
+
+        <div className="lg:col-start-1 lg:row-start-2 lg:self-end">
+          <div className="flex flex-wrap items-center gap-3">
+            <a
+              href={step.url}
+              target={isFree(step) ? undefined : '_blank'}
+              rel={isFree(step) ? undefined : 'noopener noreferrer'}
+              className={`inline-flex min-h-[52px] items-center gap-2 rounded-full bg-cz-accent px-7 font-display text-base font-semibold text-white shadow-lg shadow-cz-accent/25 transition-all hover:-translate-y-0.5 hover:bg-cz-accent-hover ${FOCUS}`}
+            >
+              {active === firstOpen && done.length > 0 ? `Continue at step ${active + 1}` : `Open step ${active + 1}`}
+              <Arrow className="h-5 w-5" />
+            </a>
+            <button
+              type="button"
+              onClick={markDone}
+              aria-pressed={isDone}
+              className={`inline-flex min-h-[48px] items-center gap-1.5 rounded-full border px-5 text-sm font-semibold transition-colors ${FOCUS} ${
+                isDone ? 'border-cz-teal bg-cz-deep-teal text-cz-teal' : 'border-cz-border-strong bg-white text-cz-text hover:border-cz-teal'
+              }`}
+            >
+              <Check className="h-3.5 w-3.5" />
+              {isDone ? 'Done' : "I've done this"}
+            </button>
+          </div>
+          {!isFree(step) && <p className="mt-3 text-sm text-cz-text-muted">Premium skill on Substack. Members open it in full.</p>}
+        </div>
+      </div>
+    </>
+  );
+
   const pathClass = reduced ? '' : seen ? 'cz-jny-intro' : 'cz-jny-pre';
 
   return (
@@ -424,7 +478,7 @@ export default function JourneyShowcase({ journeys }: { journeys: ResolvedJourne
       ref={sectionRef}
       id="journeys"
       aria-label="Learning journeys"
-      className="relative mb-16 scroll-mt-28 overflow-hidden rounded-[28px] border border-[#E8E0D2] bg-gradient-to-br from-[#F4EFFA] via-[#FBF8F3] to-[#E3F4EF] p-5 shadow-[0_30px_80px_-40px_rgba(31,95,91,0.45)] sm:p-12"
+      className="relative mb-16 scroll-mt-28 overflow-hidden rounded-[28px] border border-[#E8E0D2] bg-gradient-to-br from-[#F4EFFA] via-[#FBF8F3] to-[#E3F4EF] p-5 shadow-[0_30px_80px_-40px_rgba(31,95,91,0.45)] sm:p-12 lg:p-14"
     >
       <div aria-hidden className="cz-jny-drift pointer-events-none absolute -left-24 -top-24 h-72 w-72 rounded-full bg-[#FFD2B0]/50 blur-3xl" />
       <div aria-hidden className="cz-jny-drift-slow pointer-events-none absolute -bottom-28 -right-16 h-80 w-80 rounded-full bg-[#8FD3C4]/30 blur-3xl" />
@@ -474,7 +528,7 @@ export default function JourneyShowcase({ journeys }: { journeys: ResolvedJourne
           className={
             compact
               ? 'flex min-w-0 flex-1 snap-x gap-2 overflow-x-auto px-1 py-1 [scrollbar-width:none] lg:flex-wrap lg:overflow-visible'
-              : 'mt-8 grid grid-cols-2 gap-4'
+              : 'mt-8 grid grid-cols-2 gap-4 lg:grid-cols-4'
           }
           role="tablist"
           aria-label="Choose a journey"
@@ -499,7 +553,7 @@ export default function JourneyShowcase({ journeys }: { journeys: ResolvedJourne
                     selected ? 'border-cz-accent bg-cz-accent text-white shadow-md shadow-cz-accent/25' : 'border-cz-border-strong bg-white/80 text-cz-text hover:bg-white'
                   }`}
                 >
-                  <span className={`flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br text-white ${ICON_GRADIENT[j.icon]}`}>
+                  <span className={`flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br text-cz-text ${ICON_GRADIENT[j.icon]}`}>
                     <Icon name={j.icon} className="h-4 w-4" />
                   </span>
                   <span className="whitespace-nowrap font-display text-sm font-semibold lg:text-[13px]">{j.intent}</span>
@@ -531,7 +585,7 @@ export default function JourneyShowcase({ journeys }: { journeys: ResolvedJourne
                   </span>
                 )}
                 <span
-                  className={`flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br text-white shadow-sm transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-110 ${ICON_GRADIENT[j.icon]} ${selected ? 'cz-sc-float' : ''}`}
+                  className={`flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br text-cz-text shadow-sm transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-110 ${ICON_GRADIENT[j.icon]} ${selected ? 'cz-sc-float' : ''}`}
                 >
                   <Icon name={j.icon} className="h-5 w-5" />
                 </span>
@@ -558,18 +612,18 @@ export default function JourneyShowcase({ journeys }: { journeys: ResolvedJourne
         {/* Journey summary */}
         <div
           key={`sum-${journey.id}`}
-          className={`cz-lib-in flex flex-col gap-8 ${compact ? 'mt-8' : 'mt-12'}`}
+          className={`cz-lib-in flex flex-col gap-8 lg:grid lg:grid-cols-[minmax(0,1fr)_340px] lg:items-center lg:gap-14 ${compact ? 'mt-8' : 'mt-12'}`}
           role="tabpanel"
           aria-label={journey.intent}
         >
-          <div className="relative mx-auto aspect-[16/10] w-full max-w-[340px] overflow-hidden rounded-3xl border border-[#E8E0D2] bg-white/70 shadow-[0_20px_50px_-30px_rgba(31,95,91,0.55)]">
+          <div className="relative mx-auto aspect-[16/10] w-full max-w-[340px] overflow-hidden rounded-3xl lg:order-2 border border-[#E8E0D2] bg-white/70 shadow-[0_20px_50px_-30px_rgba(31,95,91,0.55)]">
             <div aria-hidden className={`absolute -right-10 -top-10 h-40 w-40 rounded-full bg-gradient-to-br opacity-25 blur-2xl ${ICON_GRADIENT[journey.icon]}`} />
             <div className="relative h-full w-full p-2">
               <JourneyScene icon={journey.icon} />
             </div>
           </div>
           <div>
-            <p className="font-display text-2xl font-semibold leading-snug text-cz-text">{journey.tagline}</p>
+            <p className="font-display text-2xl font-semibold leading-snug text-cz-text lg:text-3xl">{journey.tagline}</p>
             <p className="mt-3 font-mono text-[13px] text-cz-text-muted">
               For {journey.audience} · {plural(n, 'step', 'steps')}
               {journey.creatorCount > 0 && <> · {plural(journey.creatorCount, 'creator', 'creators')}</>}
@@ -605,7 +659,10 @@ export default function JourneyShowcase({ journeys }: { journeys: ResolvedJourne
           </div>
         </div>
 
-        {/* Path: one vertical line; the open step expands in place */}
+        {/* Course layout: step list on the left, the open step on the right (wide screens).
+            On narrow screens it's one vertical path and the open step expands in place. */}
+        <div className="mt-14 lg:grid lg:grid-cols-[340px_minmax(0,1fr)] lg:items-start lg:gap-12">
+        <div>
         <ol key={`path-${journey.id}`} className={`mt-14 flex flex-col gap-5 ${pathClass}`}>
           {journey.steps.map((s, i) => {
             const isActive = i === active && !finale;
@@ -660,57 +717,31 @@ export default function JourneyShowcase({ journeys }: { journeys: ResolvedJourne
                 </button>
 
                 {isActive && (
-                  <div ref={stageRef} key={`${journey.id}-${active}`} className="cz-lib-in ml-11 mt-4 sm:ml-[3.75rem] scroll-mt-36">
-                    {cheer && (
-                      <p className={`mb-4 inline-flex flex-wrap items-center gap-2 rounded-full bg-cz-deep-teal px-4 py-2 text-sm font-medium text-cz-teal ${reduced ? '' : 'cz-jny-pop'}`}>
-                        <Check className="h-4 w-4" />
-                        {cheer.done} done.{cheer.next && <> Next up: {cheer.next}.</>}
-                      </p>
-                    )}
-                    <div className="flex flex-col gap-6 rounded-3xl border border-cz-border-strong bg-white/85 p-5 backdrop-blur-sm sm:p-7">
-                      <div>
-                        <p className="font-mono text-xs uppercase tracking-widest text-[#A8512C]">
-                          Step {active + 1} of {n}
-                          {isDone && <span className="ml-2 text-cz-teal">· done</span>}
-                        </p>
-                        <h3 className="mt-2 font-display text-2xl font-bold leading-tight text-cz-text">{displayTitle(step.title)}</h3>
-                        {step.creator && <p className="mt-1 text-base text-cz-text-muted">by {step.creator}</p>}
-                      </div>
-
-                      <StepPreview step={step} reduced={reduced} />
-
-                      <div>
-                        <div className="flex flex-wrap items-center gap-3">
-                          <a
-                            href={step.url}
-                            target={isFree(step) ? undefined : '_blank'}
-                            rel={isFree(step) ? undefined : 'noopener noreferrer'}
-                            className={`inline-flex min-h-[52px] items-center gap-2 rounded-full bg-cz-accent px-7 font-display text-base font-semibold text-white shadow-lg shadow-cz-accent/25 transition-all hover:-translate-y-0.5 hover:bg-cz-accent-hover ${FOCUS}`}
-                          >
-                            {active === firstOpen && done.length > 0 ? `Continue at step ${active + 1}` : `Open step ${active + 1}`}
-                            <Arrow className="h-5 w-5" />
-                          </a>
-                          <button
-                            type="button"
-                            onClick={markDone}
-                            aria-pressed={isDone}
-                            className={`inline-flex min-h-[48px] items-center gap-1.5 rounded-full border px-5 text-sm font-semibold transition-colors ${FOCUS} ${
-                              isDone ? 'border-cz-teal bg-cz-deep-teal text-cz-teal' : 'border-cz-border-strong bg-white text-cz-text hover:border-cz-teal'
-                            }`}
-                          >
-                            <Check className="h-3.5 w-3.5" />
-                            {isDone ? 'Done' : "I've done this"}
-                          </button>
-                        </div>
-                        {!isFree(step) && <p className="mt-3 text-sm text-cz-text-muted">Premium skill on Substack. Members open it in full.</p>}
-                      </div>
-                    </div>
+                  <div ref={stageRef} key={`${journey.id}-${active}`} className="cz-lib-in ml-11 mt-4 scroll-mt-36 sm:ml-[3.75rem] lg:hidden">
+                    {stageCard}
                   </div>
                 )}
               </li>
             );
           })}
         </ol>
+
+        <div className="mt-8 flex items-center gap-4 rounded-3xl border border-cz-border bg-white/70 p-5">
+          <span className={done.length === n ? '' : 'opacity-40 grayscale'}>
+            <Medal icon={journey.icon} size="md" reduced />
+          </span>
+          <p className="text-sm leading-relaxed text-cz-text-muted">
+            {done.length === n ? (
+              <span className="font-semibold text-cz-text">Badge earned: {journey.title}</span>
+            ) : (
+              <>Finish all {n} steps to earn the <span className="font-semibold text-cz-text">{journey.title}</span> badge.</>
+            )}
+          </p>
+        </div>
+        </div>
+
+        <aside className="hidden lg:sticky lg:top-32 lg:block">{!finale && <div key={`${journey.id}-${active}`} className="cz-lib-in">{stageCard}</div>}</aside>
+        </div>
 
         {finale && (
           <div ref={stageRef} className="mt-10 scroll-mt-28">
