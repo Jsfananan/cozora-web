@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import type { CSSProperties, KeyboardEvent } from 'react';
 import type { JourneyIcon, JourneyStep, ResolvedJourney } from '@/lib/journeys';
 import JourneyScene from './JourneyScene';
+import { initialOf } from '@/lib/initial';
 
 const STORAGE_KEY = 'cz-journeys-v2';
 
@@ -45,7 +46,7 @@ function plural(n: number, one: string, many: string) {
   return `${n} ${n === 1 ? one : many}`;
 }
 
-const FOCUS = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cz-accent focus-visible:ring-offset-2 focus-visible:ring-offset-[#FFFDF8]';
+const FOCUS = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cz-accent focus-visible:ring-offset-2 focus-visible:ring-offset-[#FBF8F3]';
 
 const ICON_PATHS: Record<JourneyIcon, string> = {
   sparkles:
@@ -55,15 +56,19 @@ const ICON_PATHS: Record<JourneyIcon, string> = {
   play: 'M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z',
   swatch:
     'M4.098 19.902a3.75 3.75 0 005.304 0l6.401-6.402M6.75 21A3.75 3.75 0 013 17.25V4.125C3 3.504 3.504 3 4.125 3h5.25c.621 0 1.125.504 1.125 1.125v4.072M6.75 21a3.75 3.75 0 003.75-3.75V8.197M6.75 21h13.125c.621 0 1.125-.504 1.125-1.125v-5.25c0-.621-.504-1.125-1.125-1.125h-4.072M10.5 8.197l2.88-2.88c.438-.439 1.15-.439 1.59 0l3.712 3.713c.44.44.44 1.152 0 1.59l-2.879 2.88M6.75 17.25h.008v.008H6.75v-.008z',
+  bulb: 'M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18',
+  code: 'M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5',
 };
 
 // Gradients from the four brand colors (teal, fuchsia, amber, mint) plus one warm peach.
 const ICON_GRADIENT: Record<JourneyIcon, string> = {
-  sparkles: 'from-[#F6C26B] to-[#C79219]',
-  pen: 'from-[#7ED3C0] to-[#1D5C5E]',
-  chat: 'from-[#F08A6B] to-[#D63BA3]',
-  play: 'from-[#D63BA3] to-[#1D5C5E]',
-  swatch: 'from-[#C79219] to-[#F08A6B]',
+  sparkles: 'from-[#FFD2B0] to-[#B9A6EE]',
+  pen: 'from-[#8FD3C4] to-[#1F5F5B]',
+  chat: 'from-[#FFB48A] to-[#FFB48A]',
+  play: 'from-[#FFB48A] to-[#1F5F5B]',
+  swatch: 'from-[#B9A6EE] to-[#FFB48A]',
+  bulb: 'from-[#B9A6EE] to-[#1F5F5B]',
+  code: 'from-[#1F5F5B] to-[#8FD3C4]',
 };
 
 function Icon({ name, className = '' }: { name: JourneyIcon; className?: string }) {
@@ -94,7 +99,7 @@ function AccessBadge({ step }: { step: JourneyStep }) {
   return isFree(step) ? (
     <span className="inline-flex items-center rounded-full bg-cz-deep-teal px-2.5 py-1 font-mono text-[11px] font-medium text-cz-teal">Free guide</span>
   ) : (
-    <span className="inline-flex items-center rounded-full bg-cz-coral/10 px-2.5 py-1 font-mono text-[11px] font-medium text-[#B02E86]">Premium skill</span>
+    <span className="inline-flex items-center rounded-full bg-cz-coral/10 px-2.5 py-1 font-mono text-[11px] font-medium text-[#A8512C]">Premium skill</span>
   );
 }
 
@@ -124,16 +129,16 @@ function StepPreview({ step, reduced }: { step: JourneyStep; reduced: boolean })
 
   return (
     <div className="overflow-hidden rounded-2xl border border-cz-border-strong bg-white shadow-[0_18px_40px_-24px_rgba(31,41,55,0.35)]">
-      <div className="flex items-center gap-2 border-b border-cz-border bg-[#FFF8EC] px-4 py-2.5">
-        <span className="h-2.5 w-2.5 rounded-full bg-[#F08A6B]" />
-        <span className="h-2.5 w-2.5 rounded-full bg-[#F6C26B]" />
-        <span className="h-2.5 w-2.5 rounded-full bg-[#7ED3C0]" />
+      <div className="flex items-center gap-2 border-b border-cz-border bg-[#F6F1E8] px-4 py-2.5">
+        <span className="h-2.5 w-2.5 rounded-full bg-[#FFB48A]" />
+        <span className="h-2.5 w-2.5 rounded-full bg-[#FFD2B0]" />
+        <span className="h-2.5 w-2.5 rounded-full bg-[#8FD3C4]" />
         <span className="ml-2 truncate font-mono text-xs text-cz-text-muted">{displayTitle(step.title)}</span>
       </div>
       <div className="p-5 sm:p-6">
         {hasOutcome ? (
           <>
-            <p className="font-mono text-xs uppercase tracking-widest text-[#B02E86]">What you&apos;ll get</p>
+            <p className="font-mono text-xs uppercase tracking-widest text-[#A8512C]">What you&apos;ll get</p>
             {/* Screen readers get the whole line at once; the typing effect is visual only. */}
             <p className="sr-only">{text}</p>
             <p aria-hidden className="mt-2 min-h-[3.5rem] font-display text-lg font-semibold leading-snug text-cz-text">
@@ -153,8 +158,8 @@ function StepPreview({ step, reduced }: { step: JourneyStep; reduced: boolean })
           <AccessBadge step={step} />
           {step.creator && (
             <span className="flex items-center gap-2 text-sm text-cz-text-muted">
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-[#7ED3C0] to-[#1D5C5E] font-display text-[11px] font-bold text-white">
-                {step.creator.charAt(0).toUpperCase()}
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-[#8FD3C4] to-[#1F5F5B] font-display text-[11px] font-bold text-white">
+                {initialOf(step.creator)}
               </span>
               Built by {step.creator}
             </span>
@@ -171,7 +176,7 @@ function Medal({ icon, size = 'lg', reduced = false }: { icon: JourneyIcon; size
   return (
     <span className={`relative inline-block flex-none ${dim} ${size === 'lg' && !reduced ? 'cz-jny-badge' : ''}`}>
       <span
-        className={`absolute inset-0 flex items-center justify-center overflow-hidden rounded-full bg-gradient-to-br text-white ring-white ${size === 'lg' ? 'ring-4 shadow-[0_18px_40px_-14px_rgba(199,146,25,0.7)]' : 'ring-2'} ${ICON_GRADIENT[icon]}`}
+        className={`absolute inset-0 flex items-center justify-center overflow-hidden rounded-full bg-gradient-to-br text-white ring-white ${size === 'lg' ? 'ring-4 shadow-[0_18px_40px_-14px_rgba(31,95,91,0.7)]' : 'ring-2'} ${ICON_GRADIENT[icon]}`}
       >
         <Icon name={icon} className={size === 'lg' ? 'h-12 w-12' : 'h-3.5 w-3.5'} />
         <span aria-hidden className="cz-jny-glint absolute inset-y-0 left-0 w-1/3 bg-white/35" />
@@ -181,7 +186,7 @@ function Medal({ icon, size = 'lg', reduced = false }: { icon: JourneyIcon; size
 }
 
 /* ---------- Finale ---------- */
-const CONFETTI_COLORS = ['#D63BA3', '#C79219', '#7ED3C0', '#F08A6B', '#1D5C5E', '#F6C26B'];
+const CONFETTI_COLORS = ['#FFB48A', '#B9A6EE', '#8FD3C4', '#FFB48A', '#1F5F5B', '#FFD2B0'];
 
 function Finale({
   journey,
@@ -197,7 +202,7 @@ function Finale({
   onRestart: () => void;
 }) {
   return (
-    <div className="relative overflow-hidden rounded-3xl border border-cz-border-strong bg-white px-6 py-16 text-center shadow-[0_24px_60px_-32px_rgba(199,146,25,0.5)]">
+    <div className="relative overflow-hidden rounded-3xl border border-cz-border-strong bg-white px-6 py-16 text-center shadow-[0_24px_60px_-32px_rgba(31,95,91,0.5)]">
       {!reduced && (
         <div aria-hidden className="pointer-events-none absolute left-1/2 top-24">
           {Array.from({ length: 22 }).map((_, i) => {
@@ -224,7 +229,7 @@ function Finale({
       <div className="flex justify-center">
         <Medal icon={journey.icon} reduced={reduced} />
       </div>
-      <p className="mt-6 font-mono text-xs uppercase tracking-widest text-[#B02E86]">Badge earned</p>
+      <p className="mt-6 font-mono text-xs uppercase tracking-widest text-[#A8512C]">Badge earned</p>
       <h3 className="mt-2 font-display text-2xl font-bold text-cz-text sm:text-3xl">{journey.title}</h3>
       <p className="mx-auto mt-3 max-w-sm text-cz-text-muted">You finished all {journey.steps.length} steps. Nice work.</p>
       <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
@@ -305,6 +310,23 @@ export default function JourneyShowcase({ journeys }: { journeys: ResolvedJourne
       window.clearTimeout(t);
     };
   }, []);
+
+  // A link like /library#journey-think-learn opens that journey (the home page goal chips use it).
+  // Re-checked on hashchange so clicking a goal while already on /library still works.
+  useEffect(() => {
+    const apply = () => {
+      const m = window.location.hash.match(/^#journey-(.+)$/);
+      if (!m) return;
+      const i = journeys.findIndex((j) => j.id === m[1]);
+      if (i === -1) return;
+      setSel(i);
+      setCompact(true);
+      window.requestAnimationFrame(() => sectionRef.current?.scrollIntoView({ block: 'start' }));
+    };
+    apply();
+    window.addEventListener('hashchange', apply);
+    return () => window.removeEventListener('hashchange', apply);
+  }, [journeys]);
 
   // Land returning visitors on the first step they haven't finished.
   useEffect(() => {
@@ -402,14 +424,14 @@ export default function JourneyShowcase({ journeys }: { journeys: ResolvedJourne
       ref={sectionRef}
       id="journeys"
       aria-label="Learning journeys"
-      className="relative mb-16 scroll-mt-28 overflow-hidden rounded-[28px] border border-[#F0E2C8] bg-gradient-to-br from-[#FFF1DC] via-[#FFFDF8] to-[#E6F6F0] p-5 shadow-[0_30px_80px_-40px_rgba(199,146,25,0.45)] sm:p-12"
+      className="relative mb-16 scroll-mt-28 overflow-hidden rounded-[28px] border border-[#E8E0D2] bg-gradient-to-br from-[#F4EFFA] via-[#FBF8F3] to-[#E3F4EF] p-5 shadow-[0_30px_80px_-40px_rgba(31,95,91,0.45)] sm:p-12"
     >
-      <div aria-hidden className="cz-jny-drift pointer-events-none absolute -left-24 -top-24 h-72 w-72 rounded-full bg-[#FFD3A8]/50 blur-3xl" />
-      <div aria-hidden className="cz-jny-drift-slow pointer-events-none absolute -bottom-28 -right-16 h-80 w-80 rounded-full bg-[#7ED3C0]/30 blur-3xl" />
+      <div aria-hidden className="cz-jny-drift pointer-events-none absolute -left-24 -top-24 h-72 w-72 rounded-full bg-[#FFD2B0]/50 blur-3xl" />
+      <div aria-hidden className="cz-jny-drift-slow pointer-events-none absolute -bottom-28 -right-16 h-80 w-80 rounded-full bg-[#8FD3C4]/30 blur-3xl" />
 
       <div className="relative">
         {journeys.some((j) => j.draft) && (
-          <p className="mb-4 rounded-lg border border-dashed border-cz-coral/50 bg-cz-coral/10 px-3 py-2 font-mono text-xs text-[#B02E86]">
+          <p className="mb-4 rounded-lg border border-dashed border-cz-coral/50 bg-cz-coral/10 px-3 py-2 font-mono text-xs text-[#A8512C]">
             Draft preview. Draft journeys are hidden on cozora.org until set to live in src/lib/journeys.ts.
           </p>
         )}
@@ -524,7 +546,7 @@ export default function JourneyShowcase({ journeys }: { journeys: ResolvedJourne
                 )}
                 {jd > 0 && (
                   <span className="absolute inset-x-4 bottom-2 h-1 overflow-hidden rounded-full bg-cz-border">
-                    <span className="block h-full rounded-full bg-gradient-to-r from-[#7ED3C0] to-cz-accent" style={{ width: `${(jd / j.steps.length) * 100}%` }} />
+                    <span className="block h-full rounded-full bg-gradient-to-r from-[#8FD3C4] to-cz-accent" style={{ width: `${(jd / j.steps.length) * 100}%` }} />
                   </span>
                 )}
               </button>
@@ -540,7 +562,7 @@ export default function JourneyShowcase({ journeys }: { journeys: ResolvedJourne
           role="tabpanel"
           aria-label={journey.intent}
         >
-          <div className="relative mx-auto aspect-[16/10] w-full max-w-[340px] overflow-hidden rounded-3xl border border-[#F0E2C8] bg-white/70 shadow-[0_20px_50px_-30px_rgba(199,146,25,0.55)]">
+          <div className="relative mx-auto aspect-[16/10] w-full max-w-[340px] overflow-hidden rounded-3xl border border-[#E8E0D2] bg-white/70 shadow-[0_20px_50px_-30px_rgba(31,95,91,0.55)]">
             <div aria-hidden className={`absolute -right-10 -top-10 h-40 w-40 rounded-full bg-gradient-to-br opacity-25 blur-2xl ${ICON_GRADIENT[journey.icon]}`} />
             <div className="relative h-full w-full p-2">
               <JourneyScene icon={journey.icon} />
@@ -573,9 +595,9 @@ export default function JourneyShowcase({ journeys }: { journeys: ResolvedJourne
                   </button>
                 )}
               </div>
-              <div className="mt-2 h-2 overflow-hidden rounded-full bg-[#EADBBE]">
+              <div className="mt-2 h-2 overflow-hidden rounded-full bg-[#E8E0D2]">
                 <div
-                  className="h-full rounded-full bg-gradient-to-r from-[#7ED3C0] via-cz-teal to-cz-accent transition-[width] duration-1000 ease-out"
+                  className="h-full rounded-full bg-gradient-to-r from-[#8FD3C4] via-cz-teal to-cz-accent transition-[width] duration-1000 ease-out"
                   style={{ width: `${(done.length / Math.max(n, 1)) * 100}%` }}
                 />
               </div>
@@ -597,9 +619,9 @@ export default function JourneyShowcase({ journeys }: { journeys: ResolvedJourne
               <li key={s.slug} className="relative" style={{ '--i': i } as CSSProperties}>
                 {i < n - 1 && (
                   <div aria-hidden className="cz-jny-track absolute left-[27.5px] top-[30px] h-[calc(100%+1.25rem)] w-[3px]">
-                    <span className="absolute left-0 top-0 block h-full w-full rounded-full bg-[#D8C39A]" />
+                    <span className="absolute left-0 top-0 block h-full w-full rounded-full bg-[#D9CFBC]" />
                     <span
-                      className={`absolute left-0 top-0 block h-full w-full origin-top rounded-full bg-gradient-to-b from-[#7ED3C0] to-cz-teal transition-transform duration-700 ${
+                      className={`absolute left-0 top-0 block h-full w-full origin-top rounded-full bg-gradient-to-b from-[#8FD3C4] to-cz-teal transition-transform duration-700 ${
                         stepDone ? 'scale-y-100' : 'scale-y-0'
                       }`}
                     />
@@ -628,7 +650,7 @@ export default function JourneyShowcase({ journeys }: { journeys: ResolvedJourne
                   <span className="cz-jny-label min-w-0">
                     <span
                       className={`block font-display text-base font-semibold leading-snug transition-colors ${
-                        isActive ? 'text-[#B02E86]' : stepDone ? 'text-cz-teal' : 'text-cz-text'
+                        isActive ? 'text-[#A8512C]' : stepDone ? 'text-cz-teal' : 'text-cz-text'
                       }`}
                     >
                       {displayTitle(s.title)}
@@ -647,7 +669,7 @@ export default function JourneyShowcase({ journeys }: { journeys: ResolvedJourne
                     )}
                     <div className="flex flex-col gap-6 rounded-3xl border border-cz-border-strong bg-white/85 p-5 backdrop-blur-sm sm:p-7">
                       <div>
-                        <p className="font-mono text-xs uppercase tracking-widest text-[#B02E86]">
+                        <p className="font-mono text-xs uppercase tracking-widest text-[#A8512C]">
                           Step {active + 1} of {n}
                           {isDone && <span className="ml-2 text-cz-teal">· done</span>}
                         </p>

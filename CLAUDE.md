@@ -20,25 +20,28 @@ Joel pulled the bundles from sale. **Do not rebuild any of it.**
 - **Repo:** TBD (Jsfananan/cozora-web)
 
 ## Design System
-Ported from the Kajabi redesign (`~/Documents/Claude/cozora-kajabi-redesign/`). Dark premium aesthetic.
+**Dawn palette, brand refresh 2026-10-29** (board: claude.ai/artifact/WD7ZsgoJGTpc4HiK5dDpct). The whole site is light. Token NAMES (`cz-*`) are unchanged so components re-theme without class edits; only the values in `src/app/globals.css` changed. `.cz-light` is now only a class hook.
 
 | Token | Value | Usage |
 |-------|-------|-------|
-| `cz-bg` | `#0e1a1b` | Main background |
-| `cz-bg-card` | `#132224` | Card backgrounds |
-| `cz-accent` | `#C79219` | Gold CTAs, primary buttons |
-| `cz-coral` | `#D63BA3` | Section labels, highlights |
-| `cz-teal` | `#7ED3C0` | Accent, checkmarks, hover states |
-| `cz-deep-teal` | `#1D5C5E` | Featured card bg, secondary buttons |
-| `font-display` | Sora | Headings |
-| `font-body` | Outfit | Body text |
-| `font-mono` | IBM Plex Mono | Labels, tags |
+| `cz-bg` | `#FBF8F3` Paper | Page background |
+| `cz-bg-card` | `#FFFFFF` | Cards |
+| `cz-surface` / `cz-deep-teal` | `#E3F4EF` Mist | Surfaces, pill fills |
+| `cz-accent` | `#1F5F5B` Lagoon | Buttons, links (white text on it) |
+| `cz-text` | `#22303A` Ink | Text |
+| `cz-teal` | `#23776F` | Text-safe Seafoam shade (links, labels) |
+| `cz-coral` | `#A8512C` | Text-safe Peach shade (labels). Never use raw peach for text |
+| `cz-seafoam` / `cz-lilac` / `cz-peach` | `#8FD3C4` / `#B9A6EE` / `#FFB48A` | FILLS only (badges, number chips, glows) |
+| `font-display` | Bricolage Grotesque | Headings |
+| `font-body`, `font-mono` | Inter | Body and small labels (mono token now points at Inter) |
+
+Logo: stepping stones, in `public/brand/` (`cozora-logo.png` wordmark, `cozora-icon.png`, avatars). Favicon and apple icon are `src/app/icon.png` and `apple-icon.png`. Source files: `~/Desktop/Cozora logos/`.
 
 ## Architecture
 
 ### Pages
-- `/` — Landing page (Hero, SkillSets, Pricing, Creators, About, Faq, Footer). Single offer: the $19/mo Substack membership.
-- `/library` — Cozora Library: warm light theme (`.cz-light`), hero, animated **Learning Journeys** (`JourneyShowcase.tsx` + per-journey motion graphics in `JourneyScene.tsx`, data in `src/lib/journeys.ts`), creators strip, then the searchable browser. Banner on this page reads "Not a Cozora member? Sign up here" (Navbar `banner` prop). See "Library notes" below.
+- `/` — Landing page, single narrow column: Hero (headline constant `HEADLINE` in `Hero.tsx`, What's a skill, What you get, Pick a goal chips that deep-link to `/library#journey-<id>`), HowItWorks (recent drops), Pricing, Creators, About (two founders), Faq, Footer. Single offer: the Substack membership. Hero skill count and goal chips are live from the Substack archive.
+- `/library` — Cozora Library: warm light theme (`.cz-light`), hero, animated **Learning Journeys** (seven journeys from the brand-refresh board; vertical path, open step expands inline, completion badge, next-up nudge; progress is per-browser localStorage) (`JourneyShowcase.tsx` + per-journey motion graphics in `JourneyScene.tsx`, data in `src/lib/journeys.ts`), creators strip, then the searchable browser. Banner on this page reads "Not a Cozora member? Sign up here" (Navbar `banner` prop). See "Library notes" below.
 - `/dashboard` — Buyer dashboard (video player + PDF downloads) for past Skill Sets buyers
 - `/access` — Recover access by purchase email
 - `/auth/login` — Login page

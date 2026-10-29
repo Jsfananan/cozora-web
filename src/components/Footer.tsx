@@ -1,14 +1,13 @@
 export default function Footer() {
   return (
-    <footer className="bg-cz-bg-card border-t border-cz-border py-16 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
+    <footer className="bg-cz-bg-card border-t border-cz-border py-16 px-5 sm:px-6">
+      <div className="max-w-5xl mx-auto">
         <div className="grid md:grid-cols-4 gap-12 mb-12">
           <div>
-            <h3 className="text-2xl font-display font-bold text-cz-text mb-2">
-              cozora
-            </h3>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/brand/cozora-logo.png" alt="Cozora" className="mb-3 h-8 w-auto" />
             <p className="text-cz-text-muted text-sm leading-relaxed">
-              Stay ahead in AI &mdash; learn from the experts who are building it
+              Stay ahead in AI. Learn from the experts who are building it.
             </p>
           </div>
 
@@ -18,8 +17,8 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2">
               <li>
-                <a href="/#skill-sets" className="text-cz-text-muted hover:text-cz-text transition-colors text-sm">
-                  Weekly Skills
+                <a href="/#how-it-works" className="text-cz-text-muted hover:text-cz-text transition-colors text-sm">
+                  How it works
                 </a>
               </li>
               <li>

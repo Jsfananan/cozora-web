@@ -5,13 +5,13 @@ import type { JourneyIcon } from '@/lib/journeys';
 // globals.css), so it costs no JS and freezes on its final frame under
 // prefers-reduced-motion. Decorative only: aria-hidden.
 
-const TEAL = '#1D5C5E';
-const MINT = '#7ED3C0';
-const FUCHSIA = '#D63BA3';
-const AMBER = '#C79219';
-const PEACH = '#F08A6B';
-const SUN = '#F6C26B';
-const LINE = '#E8DCC6';
+const TEAL = '#1F5F5B';
+const MINT = '#8FD3C4';
+const FUCHSIA = '#FFB48A';
+const AMBER = '#B9A6EE';
+const PEACH = '#FFB48A';
+const SUN = '#FFD2B0';
+const LINE = '#E8E0D2';
 
 function d(ms: number): CSSProperties {
   return { animationDelay: `${ms}ms` };
@@ -22,7 +22,7 @@ function InstallScene() {
   return (
     <>
       <rect x="40" y="30" width="240" height="150" rx="16" fill="#fff" stroke={LINE} strokeWidth="2" />
-      <rect x="40" y="30" width="240" height="26" rx="16" fill="#FFF3E2" />
+      <rect x="40" y="30" width="240" height="26" rx="16" fill="#E3F4EF" />
       <circle cx="58" cy="43" r="4" fill={PEACH} />
       <circle cx="72" cy="43" r="4" fill={SUN} />
       <circle cx="86" cy="43" r="4" fill={MINT} />
@@ -189,7 +189,58 @@ function BrandScene() {
   );
 }
 
+/* Think and learn: an idea bulb lights up, rays twinkle around it. */
+function ThinkScene() {
+  return (
+    <>
+      <circle cx="160" cy="92" r="54" fill="#fff" stroke={LINE} strokeWidth="2" />
+      <g className="cz-sc cz-sc-pop">
+        <circle cx="160" cy="88" r="30" fill={SUN} />
+        <rect x="146" y="116" width="28" height="12" rx="5" fill={TEAL} />
+        <rect x="150" y="130" width="20" height="8" rx="4" fill={MINT} />
+      </g>
+      {[
+        [66, 52, 0],
+        [252, 60, 400],
+        [74, 150, 800],
+        [250, 150, 1100],
+        [160, 22, 600],
+      ].map(([x, y, delay]) => (
+        <path
+          key={`${x}-${y}`}
+          className="cz-sc cz-sc-twinkle"
+          style={d(delay)}
+          d={`M${x} ${y - 8}L${x + 2} ${y - 2}L${x + 8} ${y}L${x + 2} ${y + 2}L${x} ${y + 8}L${x - 2} ${y + 2}L${x - 8} ${y}L${x - 2} ${y - 2}Z`}
+          fill={PEACH}
+        />
+      ))}
+    </>
+  );
+}
+
+/* Build with AI: a window fills with lines of a plan, then a check pops. */
+function BuildScene() {
+  return (
+    <>
+      <rect x="40" y="30" width="240" height="150" rx="16" fill="#fff" stroke={LINE} strokeWidth="2" />
+      <rect x="40" y="30" width="240" height="26" rx="16" fill="#E3F4EF" />
+      <circle cx="58" cy="43" r="4" fill={PEACH} />
+      <circle cx="72" cy="43" r="4" fill={SUN} />
+      <circle cx="86" cy="43" r="4" fill={MINT} />
+      <path className="cz-sc cz-sc-l1" pathLength="100" d="M62 78h110" stroke={TEAL} strokeWidth="6" strokeLinecap="round" fill="none" />
+      <path className="cz-sc cz-sc-l2" pathLength="100" d="M62 100h150" stroke={MINT} strokeWidth="6" strokeLinecap="round" fill="none" />
+      <path className="cz-sc cz-sc-l3" pathLength="100" d="M62 122h90" stroke={PEACH} strokeWidth="6" strokeLinecap="round" fill="none" />
+      <g className="cz-sc cz-sc-pop">
+        <circle cx="246" cy="132" r="16" fill={TEAL} />
+        <path d="M238 132l6 6 11-12" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+      </g>
+    </>
+  );
+}
+
 const SCENES: Record<JourneyIcon, () => React.JSX.Element> = {
+  bulb: ThinkScene,
+  code: BuildScene,
   sparkles: InstallScene,
   pen: WriteScene,
   chat: TalkScene,

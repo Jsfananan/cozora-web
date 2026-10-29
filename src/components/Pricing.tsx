@@ -1,8 +1,8 @@
 const communityFeatures = [
-  'New Claude skills every week — yours to run that night',
+  'New Claude skills every week, yours to run that night',
   'The ready-to-run prompt, the why behind it, and a walkthrough when it helps',
-  'A fully searchable library — find the skill you need in seconds',
-  'The creator community — 40+ of the top Substack AI creators',
+  'A fully searchable library, so you find the skill you need in seconds',
+  'The creator community: 50+ of the top Substack AI creators',
   'New creators added regularly across writing, code, video & strategy',
 ];
 
@@ -10,7 +10,7 @@ export default function Pricing() {
   return (
     <section
       id="pricing"
-      className="py-20 px-4 sm:px-6 lg:px-8 relative"
+      className="py-24 px-5 sm:px-6 relative"
     >
       <div className="max-w-3xl mx-auto">
         <div className="mb-12 text-center animate-fade-up">
@@ -18,22 +18,22 @@ export default function Pricing() {
             Join the Creator Community
           </h2>
           <p className="text-lg text-cz-text-muted max-w-xl mx-auto">
-            40+ of the top Substack AI creators, and new Claude skills every week you can run the night they drop.
+            50+ of the top Substack AI creators, and new Claude skills every week you can run the night they drop.
           </p>
         </div>
 
         <div className="animate-fade-up delay-200">
           <div className="relative">
-            <div className="absolute -inset-1 bg-gradient-to-br from-cz-teal/30 to-cz-accent/25 rounded-2xl blur-xl opacity-100" />
-            <div className="relative bg-gradient-to-br from-[#1D5C5E]/30 to-cz-bg-card border-2 border-cz-teal/70 rounded-2xl p-8 sm:p-10">
-              <p className="text-xs font-mono text-cz-coral uppercase tracking-wider mb-2">
+            <div className="absolute -inset-1 bg-gradient-to-br from-cz-seafoam/40 to-cz-lilac/30 rounded-3xl blur-xl" />
+            <div className="relative bg-gradient-to-br from-cz-deep-teal to-white border border-cz-border-strong rounded-3xl p-8 sm:p-10">
+              <p className="text-xs font-semibold text-cz-coral uppercase tracking-widest mb-2">
                 Membership
               </p>
               <h3 className="text-2xl font-display font-bold text-cz-text mb-6">
                 The Creator Community
               </h3>
 
-              <div className="grid sm:grid-cols-2 gap-8 items-start">
+              <div className="flex flex-col gap-8">
                 <ul className="space-y-3">
                   {communityFeatures.map((feature) => (
                     <li key={feature} className="flex gap-3">
@@ -53,7 +53,7 @@ export default function Pricing() {
                   ))}
                 </ul>
 
-                <div className="sm:border-l sm:border-cz-border sm:pl-8">
+                <div className="border-t border-cz-border pt-8">
                   <div className="mb-1 flex items-baseline gap-2">
                     <span className="text-5xl font-bold text-cz-accent">$99</span>
                     <span className="text-cz-text-muted">/year</span>
@@ -66,7 +66,7 @@ export default function Pricing() {
                     href="https://cozora.substack.com/subscribe"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block w-full px-6 py-4 bg-cz-accent hover:bg-cz-accent-hover text-cz-bg rounded-lg transition-colors text-center font-semibold text-lg"
+                    className="block w-full px-6 py-4 bg-cz-accent hover:bg-cz-accent-hover text-white rounded-full transition-colors text-center font-semibold text-lg"
                   >
                     Join for $99/year
                   </a>
@@ -75,7 +75,7 @@ export default function Pricing() {
                     href="https://cozora.substack.com/subscribe"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block w-full mt-3 px-6 py-3 border border-cz-border hover:border-cz-accent text-cz-text hover:text-cz-accent rounded-lg transition-colors text-center font-medium"
+                    className="block w-full mt-3 px-6 py-2 text-cz-text-muted hover:text-cz-accent underline underline-offset-4 transition-colors text-center font-medium"
                   >
                     Or $19/month
                   </a>
@@ -95,7 +95,7 @@ export default function Pricing() {
                       />
                     </svg>
                     <span className="text-sm font-semibold">
-                      Cancel anytime &mdash; no contract, no lock-in
+                      Cancel anytime. No contract, no lock-in.
                     </span>
                   </div>
                 </div>
@@ -105,7 +105,7 @@ export default function Pricing() {
         </div>
 
         <p className="mt-8 text-center text-sm text-cz-text-dim">
-          Creator interviews are free for everyone —{' '}
+          Creator interviews are free for everyone.{' '}
           <a
             href="https://cozora.substack.com/subscribe"
             target="_blank"

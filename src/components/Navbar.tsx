@@ -67,25 +67,23 @@ export default function Navbar({ banner = DEFAULT_BANNER }: { banner?: BannerCon
           bannerDismissed ? 'top-0' : 'top-[41px]'
         } ${
           isScrolled || isMobileMenuOpen
-            ? 'bg-cz-bg/85 backdrop-blur-xl border-b border-cz-border lg:left-4 lg:right-4 lg:mt-3 lg:w-auto lg:rounded-full lg:border lg:shadow-[0_12px_40px_-12px_rgba(0,0,0,0.35)]'
+            ? 'bg-cz-bg/85 backdrop-blur-xl border-b border-cz-border lg:left-4 lg:right-4 lg:mt-3 lg:w-auto lg:rounded-full lg:border lg:shadow-[0_12px_40px_-16px_rgba(34,48,58,0.3)]'
             : 'bg-transparent'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <a
-              href="/"
-              className="text-2xl font-display font-bold text-cz-text"
-            >
-              cozora
+            <a href="/" aria-label="Cozora home" className="flex items-center">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/brand/cozora-logo.png" alt="Cozora" className="h-7 w-auto sm:h-8" />
             </a>
 
             <div className="hidden lg:flex items-center gap-8">
               <a
-                href="/#skill-sets"
+                href="/#how-it-works"
                 className="text-cz-text-muted hover:text-cz-text transition-colors"
               >
-                Weekly Skills
+                How it works
               </a>
               <a
                 href="/#pricing"
@@ -123,7 +121,7 @@ export default function Navbar({ banner = DEFAULT_BANNER }: { banner?: BannerCon
                 href="https://cozora.substack.com/subscribe"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-5 py-2 bg-cz-accent hover:bg-cz-accent-hover text-cz-bg font-semibold rounded-lg transition-colors text-sm"
+                className="px-5 py-2 bg-cz-accent hover:bg-cz-accent-hover text-white font-semibold rounded-full transition-colors text-sm"
               >
                 Join
               </a>
@@ -162,11 +160,11 @@ export default function Navbar({ banner = DEFAULT_BANNER }: { banner?: BannerCon
           {isMobileMenuOpen && (
             <div className="lg:hidden pb-4 space-y-3">
               <a
-                href="/#skill-sets"
+                href="/#how-it-works"
                 className="block text-cz-text-muted hover:text-cz-text transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Weekly Skills
+                How it works
               </a>
               <a
                 href="/#pricing"
@@ -209,7 +207,7 @@ export default function Navbar({ banner = DEFAULT_BANNER }: { banner?: BannerCon
                 href="https://cozora.substack.com/subscribe"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block w-full text-center px-5 py-2.5 bg-cz-accent hover:bg-cz-accent-hover text-cz-bg font-semibold rounded-lg transition-colors text-sm mt-2"
+                className="block w-full text-center px-5 py-2.5 bg-cz-accent hover:bg-cz-accent-hover text-white font-semibold rounded-full transition-colors text-sm mt-2"
               >
                 Join
               </a>

@@ -298,7 +298,7 @@ export default function LibraryBrowser({ posts }: { posts: SkillPost[] }) {
               className={`rounded-full border px-4 py-2 font-mono text-sm transition-all duration-300 hover:-translate-y-0.5 ${topic === t.key ? 'border-cz-border-strong bg-cz-deep-teal text-cz-teal' : 'border-cz-border bg-cz-bg-card text-cz-text-muted hover:text-cz-text'}`}
             >
               {t.label}
-              <span className={`ml-2 ${topic === t.key ? 'text-cz-teal/60' : 'text-cz-text-dim'}`}>{count}</span>
+              <span className={`ml-2 ${topic === t.key ? 'text-cz-teal' : 'text-cz-text-dim'}`}>{count}</span>
             </button>
           );
         })}

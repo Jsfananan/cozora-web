@@ -22,27 +22,27 @@ function MiniMap() {
       <svg viewBox="0 0 276 84" className="absolute inset-0 h-full w-full overflow-visible">
         <defs>
           <linearGradient id="cz-wel-path-grad" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#7ED3C0" />
-            <stop offset="60%" stopColor="#1D5C5E" />
-            <stop offset="100%" stopColor="#D63BA3" />
+            <stop offset="0%" stopColor="#8FD3C4" />
+            <stop offset="60%" stopColor="#1F5F5B" />
+            <stop offset="100%" stopColor="#FFB48A" />
           </linearGradient>
         </defs>
-        <path d={MAP_PATH} fill="none" stroke="#E8DCC6" strokeWidth="4" strokeLinecap="round" strokeDasharray="2 9" />
+        <path d={MAP_PATH} fill="none" stroke="#E8E0D2" strokeWidth="4" strokeLinecap="round" strokeDasharray="2 9" />
         <path className="cz-wel-path" d={MAP_PATH} pathLength={100} fill="none" stroke="url(#cz-wel-path-grad)" strokeWidth="4" strokeLinecap="round" />
         {STOPS.map((s, i) => (
           <g key={i} className="cz-wel-node" style={{ animationDelay: `${s.delay}ms` }}>
-            <circle cx={s.x} cy={s.y} r="12" fill="#fff" stroke="#1D5C5E" strokeWidth="3" />
-            <text x={s.x} y={s.y + 4.5} textAnchor="middle" fontSize="12" fontWeight="700" fill="#1D5C5E" fontFamily="Sora, sans-serif">
+            <circle cx={s.x} cy={s.y} r="12" fill="#fff" stroke="#1F5F5B" strokeWidth="3" />
+            <text x={s.x} y={s.y + 4.5} textAnchor="middle" fontSize="12" fontWeight="700" fill="#1F5F5B" fontFamily="Bricolage Grotesque, sans-serif">
               {i + 1}
             </text>
           </g>
         ))}
         <g className="cz-wel-node cz-wel-goal" style={{ animationDelay: '1700ms' }}>
-          <circle cx="252" cy="26" r="15" fill="#D63BA3" />
+          <circle cx="252" cy="26" r="15" fill="#FFB48A" />
           <path d="M252 16l2.9 6.1 6.6.8-4.9 4.5 1.3 6.6-5.9-3.3-5.9 3.3 1.3-6.6-4.9-4.5 6.6-.8z" fill="#fff" />
         </g>
       </svg>
-      <span className="cz-wel-traveler absolute left-0 top-0 h-3.5 w-3.5 rounded-full bg-[#F6C26B] shadow-[0_0_0_4px_rgba(246,194,107,0.35)]" />
+      <span className="cz-wel-traveler absolute left-0 top-0 h-3.5 w-3.5 rounded-full bg-[#FFD2B0] shadow-[0_0_0_4px_rgba(246,194,107,0.35)]" />
     </div>
   );
 }
@@ -109,9 +109,9 @@ export default function WelcomePop() {
         className="cz-wel-backdrop absolute inset-0 cursor-default bg-[#1F2937]/35 backdrop-blur-[3px]"
       />
 
-      <div className="cz-wel-pop relative w-full max-w-md overflow-hidden rounded-[28px] border border-[#F0E2C8] bg-gradient-to-br from-[#FFF1DC] via-[#FFFDF8] to-[#E6F6F0] px-7 pb-8 pt-10 text-center shadow-[0_40px_90px_-30px_rgba(31,41,55,0.55)] sm:px-10">
-        <div aria-hidden className="cz-jny-drift pointer-events-none absolute -left-16 -top-16 h-48 w-48 rounded-full bg-[#FFD3A8]/60 blur-3xl" />
-        <div aria-hidden className="cz-jny-drift-slow pointer-events-none absolute -bottom-20 -right-12 h-56 w-56 rounded-full bg-[#7ED3C0]/40 blur-3xl" />
+      <div className="cz-wel-pop relative w-full max-w-md overflow-hidden rounded-[28px] border border-[#E8E0D2] bg-gradient-to-br from-[#F4EFFA] via-[#FBF8F3] to-[#E3F4EF] px-7 pb-8 pt-10 text-center shadow-[0_40px_90px_-30px_rgba(31,41,55,0.55)] sm:px-10">
+        <div aria-hidden className="cz-jny-drift pointer-events-none absolute -left-16 -top-16 h-48 w-48 rounded-full bg-[#FFD2B0]/60 blur-3xl" />
+        <div aria-hidden className="cz-jny-drift-slow pointer-events-none absolute -bottom-20 -right-12 h-56 w-56 rounded-full bg-[#8FD3C4]/40 blur-3xl" />
 
         <button
           type="button"
@@ -130,9 +130,9 @@ export default function WelcomePop() {
             <svg viewBox="0 0 80 80" className="cz-wel-ring absolute inset-0 h-full w-full">
               <defs>
                 <linearGradient id="cz-wel-grad" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0%" stopColor="#7ED3C0" />
-                  <stop offset="50%" stopColor="#1D5C5E" />
-                  <stop offset="100%" stopColor="#D63BA3" />
+                  <stop offset="0%" stopColor="#8FD3C4" />
+                  <stop offset="50%" stopColor="#1F5F5B" />
+                  <stop offset="100%" stopColor="#FFB48A" />
                 </linearGradient>
               </defs>
               <circle cx="40" cy="40" r="30" fill="none" stroke="url(#cz-wel-grad)" strokeWidth="10" />
@@ -150,7 +150,7 @@ export default function WelcomePop() {
                 className="cz-sc cz-sc-twinkle absolute h-4 w-4"
                 style={{ left: s.x, top: s.y, animationDelay: `${s.d}ms` }}
               >
-                <path d="M8 0l2 6 6 2-6 2-2 6-2-6-6-2 6-2z" fill={i % 2 ? '#F6C26B' : '#D63BA3'} />
+                <path d="M8 0l2 6 6 2-6 2-2 6-2-6-6-2 6-2z" fill={i % 2 ? '#FFD2B0' : '#FFB48A'} />
               </svg>
             ))}
           </div>
@@ -174,7 +174,7 @@ export default function WelcomePop() {
               ref={primaryRef}
               type="button"
               onClick={() => close(true)}
-              className="inline-flex min-h-[52px] w-full items-center justify-center gap-2 rounded-full bg-cz-accent px-7 font-display text-base font-semibold text-white shadow-lg shadow-cz-accent/25 transition-all hover:-translate-y-0.5 hover:bg-cz-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cz-accent focus-visible:ring-offset-2 focus-visible:ring-offset-[#FFFDF8] sm:w-auto"
+              className="inline-flex min-h-[52px] w-full items-center justify-center gap-2 rounded-full bg-cz-accent px-7 font-display text-base font-semibold text-white shadow-lg shadow-cz-accent/25 transition-all hover:-translate-y-0.5 hover:bg-cz-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cz-accent focus-visible:ring-offset-2 focus-visible:ring-offset-[#FBF8F3] sm:w-auto"
             >
               Start my journey
               <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>

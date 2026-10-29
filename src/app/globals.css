@@ -4,39 +4,47 @@
 /* ===== COZORA DESIGN SYSTEM ===== */
 
 @theme {
-  /* Backgrounds */
-  --color-cz-bg: #0e1a1b;
-  --color-cz-bg-card: #132224;
-  --color-cz-bg-card-hover: #1a2e30;
+  /* DAWN PALETTE (brand refresh 2026-10-29). Paper, Mist, Seafoam, Lilac, Peach, Lagoon, Ink.
+     The cz-* token names are unchanged so every component re-themes without class edits.
+     Text-safe shades: Seafoam (#8FD3C4) and Peach (#FFB48A) are fills; their darker partners
+     cz-teal and cz-coral carry text on Paper at 4.5:1 or better. */
 
-  /* Elevated surfaces (library cards — higher contrast vs page bg) */
-  --color-cz-bg-elevated: #1a2f31;
-  --color-cz-bg-elevated-hover: #223c3e;
+  /* Backgrounds */
+  --color-cz-bg: #FBF8F3; /* Paper */
+  --color-cz-bg-card: #FFFFFF;
+  --color-cz-bg-card-hover: #F6F1E8;
+
+  /* Elevated surfaces (library cards) */
+  --color-cz-bg-elevated: #FFFFFF;
+  --color-cz-bg-elevated-hover: #FBF8F3;
 
   /* Surfaces */
-  --color-cz-surface: #1D5C5E;
+  --color-cz-surface: #E3F4EF; /* Mist */
 
   /* Borders */
-  --color-cz-border: rgba(29, 92, 94, 0.27);
-  --color-cz-border-strong: rgba(29, 92, 94, 0.53);
+  --color-cz-border: #E8E0D2;
+  --color-cz-border-strong: #D9CFBC;
 
   /* Text */
-  --color-cz-text: #EDF2F0;
-  --color-cz-text-muted: #AEC4D6;
-  --color-cz-text-dim: #555555;
+  --color-cz-text: #22303A; /* Ink */
+  --color-cz-text-muted: #4A5963;
+  --color-cz-text-dim: #5F6B74;
 
   /* Accents */
-  --color-cz-accent: #C79219;
-  --color-cz-accent-hover: #daa52e;
-  --color-cz-coral: #D63BA3;
-  --color-cz-teal: #7ED3C0;
-  --color-cz-deep-teal: #1D5C5E;
-  --color-cz-deep-teal-hover: #247070;
+  --color-cz-accent: #1F5F5B; /* Lagoon: buttons, links */
+  --color-cz-accent-hover: #174B48;
+  --color-cz-coral: #A8512C; /* Peach family, text-safe */
+  --color-cz-teal: #23776F; /* Seafoam family, text-safe */
+  --color-cz-deep-teal: #E3F4EF; /* Mist, used as a pill/surface fill */
+  --color-cz-deep-teal-hover: #D3EEE6;
+  --color-cz-peach: #FFB48A;
+  --color-cz-lilac: #B9A6EE;
+  --color-cz-seafoam: #8FD3C4;
 
   /* Fonts */
-  --font-display: 'Sora', sans-serif;
-  --font-body: 'Outfit', sans-serif;
-  --font-mono: 'IBM Plex Mono', monospace;
+  --font-display: 'Bricolage Grotesque', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'Inter', sans-serif;
 }
 
 /* ===== BASE STYLES ===== */
@@ -52,6 +60,8 @@ body {
   color: var(--color-cz-text);
   font-family: var(--font-body);
 }
+
+h1, h2, h3, h4 { text-wrap: balance; }
 
 /* ===== ANIMATIONS ===== */
 
@@ -88,6 +98,7 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .animate-fade-up { animation: none; opacity: 1; }
   .animate-banner-shimmer,
   .animate-arrow-nudge { animation: none; }
 }
@@ -95,9 +106,9 @@ body {
 /* ===== INSTALL GUIDE — SCENE ANIMATIONS ===== */
 
 @keyframes cz-pulse-ring {
-  0%   { box-shadow: 0 0 0 0 rgba(126, 211, 192, 0.55); }
-  70%  { box-shadow: 0 0 0 12px rgba(126, 211, 192, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(126, 211, 192, 0); }
+  0%   { box-shadow: 0 0 0 0 rgba(143, 211, 196, 0.55); }
+  70%  { box-shadow: 0 0 0 12px rgba(143, 211, 196, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(143, 211, 196, 0); }
 }
 .cz-pulse-ring { animation: cz-pulse-ring 1.8s ease-out infinite; }
 
@@ -179,29 +190,10 @@ body {
   .cz-lib-glow { animation: none; }
 }
 
-/* ===== LIGHT, WARM THEME (library page) =====
-   Re-points the cz-* tokens inside .cz-light so every existing component on the page
-   (navbar, library browser, footer) goes light without touching its classes.
-   Brand hexes from the cozora-brand guide; #2A8C80 and #1D5C5E are legible shades of
-   Jelly Mint / Transformative Teal for text on cream. */
+/* ===== .cz-light =====
+   The whole site is on the Dawn palette now, so this is only a class hook kept for the
+   library page wrapper. */
 .cz-light {
-  --color-cz-bg: #FBF6EC;
-  --color-cz-bg-card: #FFFFFF;
-  --color-cz-bg-card-hover: #FFF8EC;
-  --color-cz-bg-elevated: #FFFFFF;
-  --color-cz-bg-elevated-hover: #FFFBF3;
-  --color-cz-surface: #F4ECDD;
-  --color-cz-border: #EFE4D0;
-  --color-cz-border-strong: #E2D3B8;
-  --color-cz-text: #1F2937;
-  --color-cz-text-muted: #4B5563; /* ≥7:1 on cream, legible at mono sizes */
-  --color-cz-text-dim: #6B7280;
-  --color-cz-accent: #1D5C5E;
-  --color-cz-accent-hover: #247070;
-  --color-cz-coral: #D63BA3;
-  --color-cz-teal: #2A8C80;
-  --color-cz-deep-teal: #E3F4EF;
-  --color-cz-deep-teal-hover: #D3EEE6;
   background-color: var(--color-cz-bg);
   color: var(--color-cz-text);
 }
@@ -255,7 +247,7 @@ body {
   100% { background-position: 200% 0; }
 }
 .cz-jny-shimmer {
-  background: linear-gradient(90deg, #F1E7D6 0%, #FBF3E4 40%, #F1E7D6 80%);
+  background: linear-gradient(90deg, #EEE7DA 0%, #F6F1E8 40%, #EEE7DA 80%);
   background-size: 200% 100%;
   animation: cz-jny-shimmer 2.4s linear infinite;
 }

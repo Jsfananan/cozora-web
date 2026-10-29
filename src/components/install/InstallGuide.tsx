@@ -324,7 +324,7 @@ export default function InstallGuide() {
             Thank you for being part of Cozora
           </h2>
           <p className="mx-auto mt-3 max-w-md leading-relaxed text-cz-text-muted">
-            To our founding members, and to the 40+ creators who show up every week to build in
+            To our founding members, and to the 50+ creators who show up every week to build in
             the open and hand you what actually works — thank you. This is a community that
             learns AI together, out loud.{' '}
             <span className="text-cz-teal">You don’t learn AI alone.</span> We’re glad you’re here.

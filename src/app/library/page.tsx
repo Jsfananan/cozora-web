@@ -7,19 +7,20 @@ import WelcomePop from '@/components/library/WelcomePop';
 import Reveal from '@/components/library/Reveal';
 import { getSkillPosts } from '@/lib/substack';
 import { resolveJourneys } from '@/lib/journeys';
+import { initialOf } from '@/lib/initial';
 
 export const revalidate = 1800; // refresh from Substack every 30 min
 
 const SUBSCRIBE_URL = 'https://cozora.substack.com/subscribe';
 
 const DESCRIPTION =
-  'The AI skill library you can trust. Claude skills from AI creators on Substack, credited by name and put in order as learning journeys, so you always know what to try next.';
+  'Your path through AI skills. Claude skills from AI creators on Substack, credited by name and put in order as learning journeys, so you always know what to try next.';
 
 export const metadata: Metadata = {
-  title: 'Cozora Library: the AI skill library you can trust',
+  title: 'Cozora Library: your path through AI skills',
   description: DESCRIPTION,
   openGraph: {
-    title: 'Cozora Library: the AI skill library you can trust',
+    title: 'Cozora Library: your path through AI skills',
     description: DESCRIPTION,
     url: 'https://cozora.org/library',
     siteName: 'Cozora',
@@ -70,23 +71,23 @@ export default async function LibraryPage() {
               Cozora Library
             </p>
             <h1 className="animate-fade-up delay-100 mt-4 font-display text-4xl font-bold leading-tight text-cz-text sm:text-6xl">
-              The AI skill library{' '}
-              <span className="bg-gradient-to-r from-[#1D5C5E] via-[#2A8C80] to-[#B02E86] bg-clip-text text-transparent">you can trust</span>.
+              Your path through{' '}
+              <span className="bg-gradient-to-r from-[#1F5F5B] via-[#23776F] to-[#A8512C] bg-clip-text text-transparent">AI skills</span>.
             </h1>
             <p className="animate-fade-up delay-200 mx-auto mt-5 max-w-2xl text-lg text-cz-text-muted">
-              We curate the best Claude skills from AI creators on Substack and put them in order, so you always know what to try next.
+              Hand-picked Claude skills from AI creators on Substack, put in order by goal, so you always know what to try next.
             </p>
             <div className="animate-fade-up delay-300 mt-10 text-left">
               <p className="mb-5 text-center font-display text-lg font-semibold text-cz-text">How do you want to start?</p>
               <div className="grid grid-cols-2 gap-3 sm:gap-5">
                 {[
-                  { href: '#journeys', title: 'Follow a journey', body: 'Pick a goal and we walk you through the right skills in order.', tone: 'from-[#7ED3C0] to-[#1D5C5E]', glow: 'bg-[#7ED3C0]/40' },
-                  { href: '#browse', title: 'Pick skills a la carte', body: 'Search the whole library and open whichever skill you want.', tone: 'from-[#F6C26B] to-[#C79219]', glow: 'bg-[#F6C26B]/40' },
+                  { href: '#journeys', title: 'Follow a journey', body: 'Pick a goal and we walk you through the right skills in order.', tone: 'from-[#8FD3C4] to-[#1F5F5B]', glow: 'bg-[#8FD3C4]/40', primary: true },
+                  { href: '#browse', title: 'Pick skills a la carte', body: 'Search the whole library and open whichever skill you want.', tone: 'from-[#FFD2B0] to-[#B9A6EE]', glow: 'bg-[#FFD2B0]/40' },
                 ].map((o) => (
                   <a
                     key={o.href}
                     href={o.href}
-                    className={`group relative flex flex-col items-start overflow-hidden rounded-[28px] border border-cz-border-strong bg-white p-5 shadow-[0_18px_40px_-28px_rgba(31,41,55,0.4)] transition-all duration-500 hover:-translate-y-2 hover:border-cz-accent hover:shadow-[0_32px_60px_-28px_rgba(199,146,25,0.55)] sm:p-7 ${FOCUS}`}
+                    className={`group relative flex flex-col items-start overflow-hidden rounded-[28px] border ${o.primary ? 'border-cz-accent bg-cz-deep-teal' : 'border-cz-border-strong bg-white'} p-5 shadow-[0_18px_40px_-28px_rgba(31,41,55,0.4)] transition-all duration-500 hover:-translate-y-2 hover:border-cz-accent hover:shadow-[0_32px_60px_-28px_rgba(31,95,91,0.55)] sm:p-7 ${FOCUS}`}
                   >
                     <span aria-hidden className={`absolute -right-10 -top-10 h-32 w-32 rounded-full blur-2xl transition-transform duration-700 group-hover:scale-150 ${o.glow}`} />
                     <span className={`relative flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br text-white shadow-md transition-transform duration-500 group-hover:-rotate-6 group-hover:scale-110 ${o.tone}`}>
@@ -96,7 +97,7 @@ export default async function LibraryPage() {
                     </span>
                     <span className="relative mt-5 block font-display text-lg font-bold leading-snug text-cz-text sm:text-xl">{o.title}</span>
                     <span className="relative mt-2 block text-sm leading-relaxed text-cz-text-muted sm:text-[15px]">{o.body}</span>
-                    <span className="relative mt-6 inline-flex items-center gap-1.5 font-display text-sm font-semibold text-cz-teal transition-colors group-hover:text-cz-accent">
+                    <span className="relative mt-6 inline-flex items-center gap-1.5 font-display text-sm font-semibold ${o.primary ? 'rounded-full bg-cz-accent px-4 py-2 text-white' : 'text-cz-teal'} transition-colors group-hover:text-cz-accent">
                       Start
                       <svg className="h-4 w-4 transition-transform duration-300 group-hover:translate-y-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
@@ -138,8 +139,8 @@ export default async function LibraryPage() {
               <ul className="mx-auto mt-5 flex flex-wrap justify-center gap-2.5">
                 {creators.map((name) => (
                   <li key={name} className="flex items-center gap-2 rounded-full border border-cz-border-strong bg-white py-1 pl-1 pr-3 text-sm text-cz-text">
-                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-[#7ED3C0] to-[#1D5C5E] font-display text-[11px] font-bold text-white">
-                      {name.charAt(0).toUpperCase()}
+                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-[#8FD3C4] to-[#1F5F5B] font-display text-[11px] font-bold text-white">
+                      {initialOf(name)}
                     </span>
                     {name}
                   </li>

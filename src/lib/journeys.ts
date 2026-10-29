@@ -14,7 +14,7 @@
 import type { SkillPost } from './substack';
 
 export type JourneyStatus = 'draft' | 'live';
-export type JourneyIcon = 'sparkles' | 'pen' | 'chat' | 'play' | 'swatch';
+export type JourneyIcon = 'sparkles' | 'pen' | 'chat' | 'play' | 'swatch' | 'bulb' | 'code';
 
 export type JourneyStepDef =
   | string // Substack slug
@@ -92,116 +92,142 @@ export const VERIFIED_OUTCOMES: Record<string, string> = {
 
   // Added 2026-10-20 with the Substack journey draft. Written from the post's public preview.
   '21-substack-notes-agent': 'Pull your Notes performance data first, then write 21 Notes in your voice weighted toward what converted.',
+
+  // Added 2026-10-29 for the brand refresh journeys. Each line is from the post's public preview.
+  'fable-learning-skill': 'Ask Claude for a fable instead of a summary, so a hard idea sticks.',
+  'the-red-pen-review-skill': "An outside editor that reads your draft fresh and doesn't soften the feedback.",
+  'trust-deposit-tracker-post': 'Track the small deposits of trust you make with colleagues, so credibility is there when you need it.',
+  'feedforward-avoidance-checker': 'Check your planned feedback for avoidance before you deliver it.',
+  'ai-failure-mode-resilience-simulation': 'Simulate AI failure scenarios before launch and turn each one you can\'t answer into a fix.',
+  'the-universal-vibe-coding-blueprint': 'Have Claude map the data, permissions and product logic before it writes any code.',
+  'build-your-own-mac-app-prompt-chain': 'Build a Mac app from a spec with a chain of nine prompts, no coding on your part.',
+  'article-to-podcast-post': 'Turn an article into a natural multi-voice podcast script, with steps to publish it.',
+  'brand-photo-shoot-stock-image-replacer': 'Generate a set of photorealistic brand images from a brief instead of using stock photos.',
 };
 
-export const DRAFT_OUTCOMES: Record<string, string> = {
-  'ai-failure-mode-resilience-simulation': 'Run a simulation of an AI failure and see how your team would respond.',
-};
+export const DRAFT_OUTCOMES: Record<string, string> = {};
 
+// Order here is the order in the picker. Journey ids are kept stable across edits so
+// members' saved progress (localStorage, keyed by id + slug) survives a change.
+// Brand refresh 2026-10-29: the seven journeys from the "Proposed journeys" board.
+// Recordings (tagged Weekly Expert Workshops / Q&A Library) are not library skills, so the
+// board's "Session:" steps are left out. A journey with fewer than MIN_STEPS steps hides
+// itself, which is why "Build With AI" stays hidden until it has a third skill.
 export const JOURNEYS: JourneyDef[] = [
   {
     id: 'substack-creators',
-    title: 'Write, Grow and Run Your Substack',
+    title: 'Grow Your Substack',
     intent: 'Grow my Substack',
     icon: 'pen',
-    tagline: 'Find what your readers want, write in your voice, fill your Notes, then repurpose each post into video.',
+    tagline: 'Ideas, then Notes, then repurposing. Turn one idea into Notes, see what your readers want, and give each post a second life.',
     audience: 'Substack writers and creators',
     topic: 'writing',
     status: 'live',
     steps: [
-      'audience-problem-miner-skill',
-      'voice-profile-builder-skill',
-      'draft-enhancement-pass',
       'the-21-angle-notes-skill',
+      'audience-problem-miner-skill',
       '21-substack-notes-agent',
       'voice-anchored-social-repurposer',
-      'video-script-writer-skill',
-      'cozora-skills-youtube-content-repurposing',
+      'the-linkedin-carousel-kit',
+      'article-to-podcast-post',
     ],
   },
   {
     id: 'get-started',
-    title: 'Get Started',
-    intent: 'Get started with skills',
+    title: 'Start With AI Skills',
+    intent: "I'm new to AI",
     icon: 'sparkles',
-    tagline: 'Install your first skill, then try four beginner-friendly ones.',
+    tagline: 'Install your first skill, then try two that make Claude more useful from day one.',
     audience: 'anyone new to Claude skills',
     topic: 'systems',
     status: 'live',
     steps: [
       { id: 'install-a-skill', title: 'Install a Claude Skill', url: '/skills-guide', creator: 'Cozora', tier: 'Start Here' },
-      'mind-dump-digest-skill',
       'cozora-skills-the-anti-sycophancy',
-      'the-21-angle-notes-skill',
-      'audience-problem-miner-skill',
+      'fable-learning-skill',
     ],
   },
   {
     id: 'voice-everywhere',
-    title: 'Find Your Voice, Then Use It Everywhere',
-    intent: 'Write in my voice',
-    icon: 'pen',
-    tagline: 'Build a voice profile, tighten your drafts, then turn one piece into social posts and Notes.',
+    title: 'Write Better With AI',
+    intent: 'Write better',
+    icon: 'swatch',
+    tagline: 'Build a voice profile, then edit, tighten and finish your drafts so they still sound like you.',
     audience: 'writers and creators',
     topic: 'writing',
     status: 'live',
     steps: [
       'voice-profile-builder-skill',
+      'the-red-pen-review-skill',
       'draft-enhancement-pass',
       'ending-strength-editor',
       'first-person-pronoun-audit-skill',
-      'voice-anchored-social-repurposer',
-      'the-21-angle-notes-skill',
+    ],
+  },
+  {
+    id: 'think-learn',
+    title: 'Think and Learn With AI',
+    intent: 'Think and learn',
+    icon: 'bulb',
+    tagline: 'Learn in stories, get pushback instead of agreement, and build a habit of reviewing your own ideas.',
+    audience: 'anyone who wants to think more clearly with AI',
+    topic: 'systems',
+    status: 'live',
+    steps: [
+      'fable-learning-skill',
+      'cozora-skills-the-anti-sycophancy',
+      'mind-dump-digest-skill',
+      'nova-weekly-reflection',
     ],
   },
   {
     id: 'hard-moments',
-    title: 'Lead Through the Hard Moments',
-    intent: 'Lead through hard moments',
+    title: 'Lead Your Team With AI',
+    intent: 'Lead my team',
     icon: 'chat',
-    tagline: 'Rehearse the feedback, restructure the message, reframe what went wrong, and build a weekly reflection habit.',
+    tagline: 'Rehearse the feedback, restructure the message, build trust, and test how your team handles an AI failure.',
     audience: 'leaders and managers',
     topic: 'leadership',
     status: 'live',
     steps: [
       'difficult-feedback-opener-rehearsal',
       'focus-message-restructurer-skill',
-      'ai-failure-mode-resilience-simulation',
       'failure-reframing-rewriter-skill',
-      'nova-weekly-reflection',
+      'feedforward-avoidance-checker',
+      'trust-deposit-tracker-post',
+      'ai-failure-mode-resilience-simulation',
     ],
   },
   {
     id: 'ideas-to-video',
-    title: 'Turn Ideas Into Video and Visuals',
-    intent: 'Make video and visuals',
+    title: 'Create Visuals and Video',
+    intent: 'Make visuals and video',
     icon: 'play',
-    tagline: 'Write the script, turn writing into film, assemble a short music video, then repurpose it for YouTube and LinkedIn.',
+    tagline: 'Set your brand, make images and slides that match it, then write the script and turn your writing into film.',
     audience: 'creators and content teams',
     topic: 'video',
     status: 'live',
     steps: [
+      'brand-photo-shoot-stock-image-replacer',
+      'brand-style-guide-skill',
+      'visual-brand-builder-skill',
+      'branded-slide-decks-skill',
       'video-script-writer-skill',
       'turning-your-writing-into-film-a-5c6',
-      'the-30-second-music-video-assembler',
-      'cozora-skills-youtube-content-repurposing',
-      'the-linkedin-carousel-kit',
     ],
   },
   {
-    id: 'brand-system',
-    title: 'Build Your Brand System',
-    intent: 'Build my brand',
-    icon: 'swatch',
-    tagline: 'Mine your audience for their problems, then build a style guide, a visual brand and on-brand LinkedIn carousels.',
-    audience: 'founders and solo operators',
-    topic: 'marketing',
+    id: 'build-with-ai',
+    title: 'Build With AI',
+    intent: 'Build with AI',
+    icon: 'code',
+    tagline: 'Plan before you build, then go from a spec to a working app without writing code yourself.',
+    audience: 'people who want to build with AI, no code needed to start',
+    topic: 'coding',
     status: 'live',
     steps: [
-      'audience-problem-miner-skill',
-      'brand-style-guide-skill',
-      'visual-brand-builder-skill',
-      'the-linkedin-carousel-kit',
+      'the-universal-vibe-coding-blueprint',
+      'build-your-own-mac-app-prompt-chain',
     ],
   },
 ];

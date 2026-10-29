@@ -9,7 +9,6 @@ const row1Creators: Creator[] = [
   { name: 'Max Bernstein', href: 'https://substack.com/@maxbernstein3', role: '66K+ Subscribers', avatar: 'https://substackcdn.com/image/fetch/$s_!1BSr!,w_88,h_88,c_fill,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F8002e13d-d86c-461d-933c-706faaf3b287_1024x1024.png' },
   { name: 'Wyndo', href: 'https://substack.com/@wyndo', role: '22K+ Subscribers', avatar: 'https://substackcdn.com/image/fetch/$s_!zTXR!,w_88,h_88,c_fill,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F2ac42946-717d-4e50-8477-551c5d7a3025_1638x1638.jpeg' },
   { name: 'Ev Chapman', href: 'https://substack.com/@evielync', role: 'AI Systems Builder', avatar: 'https://substackcdn.com/image/fetch/$s_!iFzq!,w_88,h_88,c_fill,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fc5221cc6-1da4-4036-9d58-ece54f8fc588_2800x2800.jpeg' },
-  { name: 'Michael Simmons', href: 'https://substack.com/@michaeldsimmons', role: 'TIME/Forbes/HBR Writer', avatar: 'https://substackcdn.com/image/fetch/$s_!ZmSK!,w_88,h_88,c_fill,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F2a9378a0-025b-4c2a-a030-cfffc60544f9_694x693.png' },
   { name: 'Jonas Braadbaar', href: 'https://substack.com/@denominations', role: 'AI Architect · CTO', avatar: 'https://substackcdn.com/image/fetch/$s_!sOMl!,w_88,h_88,c_fill,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F6456aa5c-471e-463e-aec8-fce85d1c5c9d_1857x1857.jpeg' },
   { name: 'Jenny Ouyang', href: 'https://substack.com/@jennyouyang', role: '8.5K+ Subscribers', avatar: 'https://substackcdn.com/image/fetch/$s_!J11w!,w_88,h_88,c_fill,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fd58af265-d136-4498-a268-5e2ed0ca8835_1015x1015.png' },
   { name: 'Claudia Faith', href: 'https://substack.com/@claudiafaith', role: 'VC-Backed AI Founder', avatar: 'https://substackcdn.com/image/fetch/$s_!4uTb!,w_88,h_88,c_fill,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F4322256a-dd11-48cf-b695-252ec512c776_1024x1024.png' },
@@ -85,7 +84,7 @@ function CreatorChip({ name, href, role, avatar }: Creator) {
         <span className="font-display text-[0.95rem] font-medium text-cz-text-muted tracking-tight transition-colors duration-300 group-hover:text-cz-text">
           {name}
         </span>
-        <span className="font-mono text-[0.7rem] text-cz-teal/70 tracking-tight transition-colors duration-300 group-hover:text-cz-teal">
+        <span className="font-mono text-[0.7rem] text-cz-teal tracking-tight transition-colors duration-300 group-hover:text-cz-teal">
           {role}
         </span>
       </span>
@@ -103,17 +102,17 @@ export default function Creators() {
         }
       `}</style>
 
-      <section className="bg-cz-bg py-20 px-4 sm:px-6 lg:px-8 overflow-hidden" id="cz-creators">
-        <div className="max-w-7xl mx-auto">
-          <div className="mb-12">
-            <p className="text-sm font-mono text-cz-coral mb-4 tracking-wide">
-              OUR CREATOR NETWORK
+      <section className="bg-cz-bg py-24 px-5 sm:px-6 overflow-hidden" id="cz-creators">
+        <div className="max-w-3xl mx-auto">
+          <div className="mb-12 text-center">
+            <p className="text-sm font-semibold uppercase tracking-widest text-cz-coral mb-4">
+              Our creator network
             </p>
             <h2 className="text-4xl sm:text-5xl font-display font-bold text-cz-text mb-4">
-              40+ Expert AI Creators &mdash; and growing
+              A community of 50+ Substack AI creators
             </h2>
-            <p className="text-lg text-cz-text-muted font-body max-w-2xl">
-              We&apos;re constantly bringing in new voices across design, vibe-coding, video, leadership, strategy, and more.
+            <p className="text-lg text-cz-text-muted font-body max-w-xl mx-auto">
+              Some of the creators you&apos;ll learn from. We keep adding new voices across design, vibe-coding, video, leadership, strategy, and more.
             </p>
           </div>
 

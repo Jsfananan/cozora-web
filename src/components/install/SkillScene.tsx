@@ -38,7 +38,7 @@ function Cursor({ x, y, tapping }: { x: number; y: number; tapping: boolean }) {
           <path
             d="M5 3l14 8-6 1.5L11 19 5 3z"
             fill="#EDF2F0"
-            stroke="#0e1a1b"
+            stroke="#22303A"
             strokeWidth="1.4"
             strokeLinejoin="round"
           />
@@ -306,7 +306,7 @@ function UploadScene({
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
               <path
                 d="M12 5v14m-7-7h14"
-                stroke="#7ED3C0"
+                stroke="#8FD3C4"
                 strokeWidth="2"
                 strokeLinecap="round"
               />

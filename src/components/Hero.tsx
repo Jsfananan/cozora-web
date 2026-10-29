@@ -1,74 +1,118 @@
-export default function Hero() {
+import { getSkillPosts } from '@/lib/substack';
+import { resolveJourneys } from '@/lib/journeys';
+
+// Single place for the headline so a slogan change is one edit.
+const HEADLINE = 'Your path through AI skills, from the creators building them.';
+
+const SUBSCRIBE_URL = 'https://cozora.substack.com/subscribe';
+
+export default async function Hero() {
+  let skillCount = 0;
+  let goals: { id: string; label: string }[] = [];
+  try {
+    const posts = await getSkillPosts();
+    // Same rule as the library page: only depth-tagged posts count as skills.
+    skillCount = posts.filter((p) => p.tier).length;
+    goals = resolveJourneys(posts).map((j) => ({ id: j.id, label: j.intent }));
+  } catch {
+    /* page still renders without the live numbers */
+  }
+
+  const gets = [
+    {
+      title: skillCount > 0 ? `${skillCount} ready-made AI skills` : 'Ready-made AI skills',
+      body: 'Copy, install, use. Our install guide walks you through the first one.',
+      tone: 'bg-cz-seafoam',
+    },
+    {
+      title: 'A clear order to follow',
+      body: 'Pick a goal, like writing better or growing your Substack. We tell you what to try first, second and third.',
+      tone: 'bg-cz-lilac',
+    },
+    {
+      title: '2 new skills every week',
+      body: 'From AI creators who built them for their own work, credited by name.',
+      tone: 'bg-cz-peach',
+    },
+  ];
+
   return (
-    <section className="min-h-screen flex items-center pt-28 px-4 sm:px-6 lg:px-8 relative overflow-hidden mx-3 sm:mx-4 mt-16 rounded-[2rem] border border-cz-teal/20 bg-gradient-to-b from-cz-deep-teal/25 to-cz-bg-card/60 shadow-[0_40px_80px_-40px_rgba(0,0,0,0.6)]">
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute top-1/4 left-0 w-96 h-96 bg-cz-teal/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-cz-coral/10 rounded-full blur-3xl" />
+    <section className="relative mx-auto max-w-3xl px-5 pb-8 pt-36 sm:px-6 sm:pt-44">
+      <div aria-hidden className="cz-jny-drift pointer-events-none absolute -left-24 top-24 -z-10 h-72 w-72 rounded-full bg-cz-seafoam/30 blur-3xl" />
+      <div aria-hidden className="cz-jny-drift-slow pointer-events-none absolute -right-24 top-64 -z-10 h-72 w-72 rounded-full bg-cz-lilac/30 blur-3xl" />
+
+      <div className="animate-fade-up text-center">
+        <p className="inline-flex items-center rounded-full bg-cz-deep-teal px-3 py-1 text-xs font-semibold uppercase tracking-widest text-cz-accent">
+          The Cozora skill library
+        </p>
+        <h1 className="mt-6 font-display text-4xl font-bold leading-[1.08] text-cz-text sm:text-6xl">{HEADLINE}</h1>
+        <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-cz-text-muted">
+          Ready-made AI skills you can copy, install and use. Hand-picked and grouped by goal, so you always know what to try next.
+        </p>
+        <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <a
+            href={SUBSCRIBE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-[52px] items-center rounded-full bg-cz-accent px-8 font-display text-base font-semibold text-white shadow-lg shadow-cz-accent/20 transition-all hover:-translate-y-0.5 hover:bg-cz-accent-hover"
+          >
+            Join Cozora
+          </a>
+          <a
+            href="/library"
+            className="inline-flex min-h-[52px] items-center rounded-full border border-cz-border-strong bg-white px-8 font-display text-base font-semibold text-cz-text transition-all hover:-translate-y-0.5 hover:border-cz-accent"
+          >
+            Browse the library
+          </a>
+        </div>
+        <p className="mt-4 text-sm text-cz-text-muted">$19/month or $99/year. Cancel anytime.</p>
       </div>
 
-      <div className="max-w-7xl mx-auto w-full grid md:grid-cols-2 gap-12 items-center">
-        <div className="animate-fade-up">
-          <div className="flex flex-wrap gap-3 mb-8">
-            <div className="px-3 py-2 border border-cz-accent rounded-full text-sm font-mono text-cz-accent">
-              Creator Community
-            </div>
-            <div className="px-3 py-2 border border-cz-teal rounded-full text-sm font-mono text-cz-teal">
-              40+ Creators
-            </div>
-            <div className="px-3 py-2 border border-cz-coral rounded-full text-sm font-mono text-cz-coral">
-              New Skills Every Week
-            </div>
-          </div>
-
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold leading-tight mb-6 text-cz-text">
-            Learn AI with the creators who are{' '}
-            <span className="text-cz-teal italic">building it</span>.
-          </h1>
-
-          <p className="text-lg text-cz-text-muted mb-8 leading-relaxed">
-            Join a community of 40+ of the top Substack AI creators &mdash; and get
-            new Claude skills every week, with the ready-to-run prompt and the
-            thinking behind it. Because you don&apos;t learn AI alone.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4">
-            <a
-              href="https://cozora.substack.com/subscribe"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-8 py-3.5 bg-cz-accent hover:bg-cz-accent-hover text-cz-bg font-semibold rounded-lg transition-colors text-center text-lg"
-            >
-              Join for $19/month
-            </a>
-            <a
-              href="/library"
-              className="px-8 py-3.5 border border-cz-border hover:border-cz-accent bg-transparent text-cz-text hover:text-cz-accent rounded-lg transition-colors text-center text-lg"
-            >
-              See the skills first
-            </a>
-          </div>
-
-          <p className="mt-4 text-sm text-cz-text-muted font-mono">
-            $99/year &mdash; nearly 7 months free &middot; Cancel anytime
-          </p>
-        </div>
-
-        <div className="animate-fade-up delay-200">
-          <div className="relative">
-            <div className="absolute -inset-1 bg-gradient-to-r from-cz-teal/20 to-cz-coral/20 rounded-2xl blur opacity-30" />
-            <div className="relative bg-cz-bg-card border border-cz-border rounded-2xl overflow-hidden aspect-video">
-              <iframe
-                src="https://iframe.mediadelivery.net/embed/624658/b9ad6db2-d9f8-4f3b-9423-0150a241690f?autoplay=false&preload=true"
-                loading="lazy"
-                allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
-                allowFullScreen
-                title="Cozora Introduction"
-                className="absolute inset-0 w-full h-full border-0"
-              />
-            </div>
-          </div>
-        </div>
+      <div className="animate-fade-up delay-200 mt-16 rounded-3xl border border-cz-border bg-cz-deep-teal/70 p-7 sm:p-9">
+        <h2 className="font-display text-xl font-bold text-cz-text">What&apos;s a skill?</h2>
+        <p className="mt-3 leading-relaxed text-cz-text-muted">
+          A saved set of instructions that teaches your AI assistant to do one job well, like writing your Notes or preparing a hard conversation. The skills in our library are made for Claude.
+        </p>
       </div>
+
+      <div className="mt-20">
+        <h2 className="text-center font-display text-3xl font-bold text-cz-text">What you get</h2>
+        <ol className="mt-10 flex flex-col gap-5">
+          {gets.map((g, i) => (
+            <li
+              key={g.title}
+              className="group flex items-start gap-5 rounded-3xl border border-cz-border bg-white p-6 shadow-[0_18px_40px_-30px_rgba(34,48,58,0.35)] transition-all duration-500 hover:-translate-y-1 hover:border-cz-accent/40"
+            >
+              <span className={`flex h-12 w-12 flex-none items-center justify-center rounded-2xl font-display text-lg font-bold text-cz-text transition-transform duration-500 group-hover:-rotate-6 group-hover:scale-110 ${g.tone}`}>
+                {i + 1}
+              </span>
+              <span>
+                <span className="block font-display text-xl font-bold text-cz-text">{g.title}</span>
+                <span className="mt-1 block leading-relaxed text-cz-text-muted">{g.body}</span>
+              </span>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      {goals.length > 0 && (
+        <div className="mt-20 text-center">
+          <h2 className="font-display text-3xl font-bold text-cz-text">Pick a goal</h2>
+          <p className="mx-auto mt-3 max-w-md text-cz-text-muted">We&apos;ll open the right path for it in the library.</p>
+          <ul className="mt-8 flex flex-wrap justify-center gap-3">
+            {goals.map((g) => (
+              <li key={g.id}>
+                <a
+                  href={`/library#journey-${g.id}`}
+                  className="inline-flex min-h-[48px] items-center rounded-full border border-cz-border-strong bg-white px-6 font-display text-[15px] font-semibold text-cz-text transition-all hover:-translate-y-1 hover:border-cz-accent hover:bg-cz-deep-teal"
+                >
+                  {g.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </section>
   );
 }

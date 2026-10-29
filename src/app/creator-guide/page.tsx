@@ -3,7 +3,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
-  title: 'Creator Guide — Cozora',
+  title: 'Creator Guide | Cozora',
   description:
     'Welcome to the Cozora creator cohort. Join the creator WhatsApp and grab your subscriber discount links and creator perks.',
   robots: { index: false, follow: false },
@@ -47,7 +47,7 @@ export default function CreatorGuidePage() {
               <h3>Creator Network Perks</h3>
             </div>
             <p>
-              All 40+ creators in the community give each other <strong>99%–100% off</strong> access
+              All 50+ creators in the community give each other <strong>99%–100% off</strong> access
               to their newsletters and services — over <strong>$3,000 in direct value</strong> just
               from joining the network.
             </p>
@@ -244,14 +244,14 @@ export default function CreatorGuidePage() {
 
       <style>{`
         .creator-guide {
-          --cg-bg: #0D1214;
-          --cg-bg-card: #152022;
-          --cg-border: #2A4A4C;
-          --cg-text: #FFFFFF;
-          --cg-muted: #A8B8BA;
-          --cg-pink: #D63BA3;
-          --cg-gold: #C79219;
-          --cg-mint: #7ED3C0;
+          --cg-bg: #FBF8F3;
+          --cg-bg-card: #FFFFFF;
+          --cg-border: #D9CFBC;
+          --cg-text: #22303A;
+          --cg-muted: #4A5963;
+          --cg-pink: #A8512C;
+          --cg-gold: #5B47A8;
+          --cg-mint: #23776F;
           background: var(--cg-bg);
           color: var(--cg-text);
           font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -275,8 +275,8 @@ export default function CreatorGuidePage() {
         .cg-mission p { font-size: 0.95rem; margin: 0; }
         .cg-mission strong { color: var(--cg-mint); }
         .cg-perk {
-          background: linear-gradient(135deg, rgba(214, 59, 163, 0.15), rgba(199, 146, 25, 0.1));
-          border: 1px solid rgba(214, 59, 163, 0.3);
+          background: linear-gradient(135deg, rgba(255, 180, 138, 0.25), rgba(143, 211, 196, 0.2));
+          border: 1px solid rgba(255, 180, 138, 0.6);
           border-radius: 12px;
           padding: 1.25rem 1.5rem;
           margin-bottom: 1.5rem;
@@ -320,10 +320,10 @@ export default function CreatorGuidePage() {
           width: 100%;
           text-align: center;
         }
-        .cg-btn-primary { background: var(--cg-mint); color: var(--cg-bg); }
-        .cg-btn-primary:hover { background: #6bc4ad; transform: translateY(-1px); }
-        .cg-btn-secondary { background: var(--cg-pink); color: var(--cg-text); }
-        .cg-btn-secondary:hover { background: #c42e91; }
+        .cg-btn-primary { background: var(--cg-mint); color: #FFFFFF; }
+        .cg-btn-primary:hover { background: #1b6159; transform: translateY(-1px); }
+        .cg-btn-secondary { background: var(--cg-pink); color: #FFFFFF; }
+        .cg-btn-secondary:hover { background: #8a4222; }
         .cg-small { display: block; text-align: center; margin-top: 1rem; color: var(--cg-muted); font-size: 0.9rem; }
         .cg-codes-wrap { background: var(--cg-bg); border-radius: 10px; padding: 1.25rem; margin: 1.5rem 0; }
         .cg-codes-title { font-size: 0.95rem; margin-bottom: 1rem; }
@@ -359,7 +359,7 @@ export default function CreatorGuidePage() {
           text-transform: uppercase;
           letter-spacing: 0.05em;
           color: var(--cg-mint);
-          background: rgba(126, 211, 192, 0.1);
+          background: rgba(143, 211, 196, 0.1);
           padding: 0.25rem 0.6rem;
           border-radius: 50px;
           margin-bottom: 0.9rem;
@@ -412,8 +412,8 @@ export default function CreatorGuidePage() {
           border-radius: 6px;
         }
         .cg-tip {
-          background: rgba(126, 211, 192, 0.08);
-          border: 1px solid rgba(126, 211, 192, 0.25);
+          background: rgba(143, 211, 196, 0.08);
+          border: 1px solid rgba(143, 211, 196, 0.25);
           border-radius: 10px;
           padding: 1rem 1.25rem;
           margin-top: 1.5rem;
