@@ -85,7 +85,9 @@ function ScreenshotReveal({ src }: { src: string }) {
   );
 }
 
-export default function InstallGuide() {
+export default function InstallGuide({ embedded = false, onClose }: { embedded?: boolean; onClose?: () => void } = {}) {
+  // Inside the pop-up there's no site navbar above us, so the top padding shrinks.
+  const top = embedded ? 'pt-8' : null;
   const [stage, setStage] = useState<Stage>('surface');
   const [surface, setSurface] = useState<Surface>('web');
   const [delivery, setDelivery] = useState<Delivery>('prompt');
@@ -192,7 +194,7 @@ export default function InstallGuide() {
   /* ---------------------------------------------------------------- */
   if (stage === 'surface') {
     return (
-      <div className="mx-auto max-w-3xl px-5 pb-24 pt-32 sm:pt-36">
+      <div className={`mx-auto max-w-3xl px-5 pb-24 ${top ?? 'pt-32 sm:pt-36'}`}>
         <div className="animate-fade-up text-center">
           <span className="font-mono text-xs uppercase tracking-[0.2em] text-cz-coral">
             Cozora · Skill Setup
@@ -246,7 +248,7 @@ export default function InstallGuide() {
   /* ---------------------------------------------------------------- */
   if (stage === 'delivery') {
     return (
-      <div className="mx-auto max-w-3xl px-5 pb-24 pt-32 sm:pt-36">
+      <div className={`mx-auto max-w-3xl px-5 pb-24 ${top ?? 'pt-32 sm:pt-36'}`}>
         <button
           onClick={() => setStage('surface')}
           className="mb-6 text-sm text-cz-text-muted transition-colors hover:text-cz-text"
@@ -299,7 +301,7 @@ export default function InstallGuide() {
   /* ---------------------------------------------------------------- */
   if (stage === 'done') {
     return (
-      <div className="mx-auto max-w-2xl px-5 pb-28 pt-32 text-center sm:pt-36">
+      <div className={`mx-auto max-w-2xl px-5 pb-28 text-center ${top ?? 'pt-32 sm:pt-36'}`}>
         <div className="animate-fade-up">
           <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-cz-teal/15">
             <div className="cz-check-pop flex h-14 w-14 items-center justify-center rounded-full bg-cz-teal text-3xl text-cz-bg">
@@ -340,12 +342,22 @@ export default function InstallGuide() {
           >
             Browse more skills →
           </a>
-          <a
-            href="/"
-            className="rounded-lg border border-cz-border bg-cz-bg-card px-6 py-3 font-display font-semibold text-cz-text transition-colors hover:bg-cz-bg-card-hover"
-          >
-            Back to Cozora.org
-          </a>
+          {embedded ? (
+            <button
+              type="button"
+              onClick={onClose}
+              className="rounded-lg border border-cz-border bg-cz-bg-card px-6 py-3 font-display font-semibold text-cz-text transition-colors hover:bg-cz-bg-card-hover"
+            >
+              Back to my journey
+            </button>
+          ) : (
+            <a
+              href="/"
+              className="rounded-lg border border-cz-border bg-cz-bg-card px-6 py-3 font-display font-semibold text-cz-text transition-colors hover:bg-cz-bg-card-hover"
+            >
+              Back to Cozora.org
+            </a>
+          )}
         </div>
 
         <button
@@ -366,7 +378,7 @@ export default function InstallGuide() {
   const dMeta = DELIVERY_META[delivery];
 
   return (
-    <div className="mx-auto max-w-5xl px-5 pb-24 pt-28 sm:pt-32">
+    <div className={`mx-auto max-w-5xl px-5 pb-24 ${top ?? 'pt-28 sm:pt-32'}`}>
       {/* progress + context */}
       <div className="mb-8">
         <div className="mb-3 flex items-center justify-between gap-3">

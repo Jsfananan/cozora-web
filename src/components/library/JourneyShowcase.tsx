@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import type { CSSProperties, KeyboardEvent } from 'react';
 import type { JourneyIcon, JourneyStep, ResolvedJourney } from '@/lib/journeys';
 import JourneyScene from './JourneyScene';
+import InstallModal from '../install/InstallModal';
 import { initialOf } from '@/lib/initial';
 
 const STORAGE_KEY = 'cz-journeys-v2';
@@ -264,6 +265,7 @@ export default function JourneyShowcase({ journeys }: { journeys: ResolvedJourne
   const [progress, setProgress] = useState<Progress>({});
   const [loaded, setLoaded] = useState(false);
   const [finale, setFinale] = useState(false);
+  const [installOpen, setInstallOpen] = useState(false);
   const [cheer, setCheer] = useState<{ done: string; next: string | null } | null>(null);
   // After someone picks a journey, the big goal cards fold into a compact strip so the
   // journey map gets the screen. "All goals" brings the cards back.
@@ -448,6 +450,13 @@ export default function JourneyShowcase({ journeys }: { journeys: ResolvedJourne
               href={step.url}
               target={isFree(step) ? undefined : '_blank'}
               rel={isFree(step) ? undefined : 'noopener noreferrer'}
+              onClick={(e) => {
+                // The install guide opens in a pop-up so people stay on this page.
+                if (step.url === '/skills-guide' && !e.metaKey && !e.ctrlKey) {
+                  e.preventDefault();
+                  setInstallOpen(true);
+                }
+              }}
               className={`inline-flex min-h-[52px] items-center gap-2 rounded-full bg-cz-accent px-7 font-display text-base font-semibold text-white shadow-lg shadow-cz-accent/25 transition-all hover:-translate-y-0.5 hover:bg-cz-accent-hover ${FOCUS}`}
             >
               {active === firstOpen && done.length > 0 ? `Continue at step ${active + 1}` : `Open step ${active + 1}`}
@@ -762,13 +771,18 @@ export default function JourneyShowcase({ journeys }: { journeys: ResolvedJourne
         {journey.steps[0]?.url !== '/skills-guide' && (
           <p className="mt-5 text-sm text-cz-text-muted">
             New to Claude skills?{' '}
-            <a href="/skills-guide" className={`font-medium text-cz-teal underline underline-offset-2 hover:text-cz-accent ${FOCUS}`}>
+            <button
+              type="button"
+              onClick={() => setInstallOpen(true)}
+              className={`font-medium text-cz-teal underline underline-offset-2 hover:text-cz-accent ${FOCUS}`}
+            >
               Here&apos;s how to install one
-            </a>
+            </button>
             .
           </p>
         )}
       </div>
+      {installOpen && <InstallModal onClose={() => setInstallOpen(false)} />}
     </section>
   );
 }
