@@ -115,6 +115,21 @@ export const DRAFT_OUTCOMES: Record<string, string> = {};
 // itself, which is why "Build With AI" stays hidden until it has a third skill.
 export const JOURNEYS: JourneyDef[] = [
   {
+    id: 'get-started',
+    title: 'Start With AI Skills',
+    intent: "I'm new to AI",
+    icon: 'sparkles',
+    tagline: 'Install your first skill, then try two that make Claude more useful from day one.',
+    audience: 'anyone new to AI skills',
+    topic: 'systems',
+    status: 'live',
+    steps: [
+      { id: 'install-a-skill', title: 'Install a Claude Skill', url: '/skills-guide', creator: 'Cozora', tier: 'Start Here' },
+      'cozora-skills-the-anti-sycophancy',
+      'fable-learning-skill',
+    ],
+  },
+  {
     id: 'substack-creators',
     title: 'Grow Your Substack',
     intent: 'Grow my Substack',
@@ -129,22 +144,6 @@ export const JOURNEYS: JourneyDef[] = [
       '21-substack-notes-agent',
       'voice-anchored-social-repurposer',
       'the-linkedin-carousel-kit',
-      'article-to-podcast-post',
-    ],
-  },
-  {
-    id: 'get-started',
-    title: 'Start With AI Skills',
-    intent: "I'm new to AI",
-    icon: 'sparkles',
-    tagline: 'Install your first skill, then try two that make Claude more useful from day one.',
-    audience: 'anyone new to Claude skills',
-    topic: 'systems',
-    status: 'live',
-    steps: [
-      { id: 'install-a-skill', title: 'Install a Claude Skill', url: '/skills-guide', creator: 'Cozora', tier: 'Start Here' },
-      'cozora-skills-the-anti-sycophancy',
-      'fable-learning-skill',
     ],
   },
   {
@@ -200,10 +199,10 @@ export const JOURNEYS: JourneyDef[] = [
   },
   {
     id: 'ideas-to-video',
-    title: 'Create Visuals and Video',
-    intent: 'Make visuals and video',
+    title: 'Create Visuals, Video and Audio',
+    intent: 'Make visuals, video, audio',
     icon: 'play',
-    tagline: 'Set your brand, make images and slides that match it, then write the script and turn your writing into film.',
+    tagline: 'Set your brand, make images and slides that match it, write the script, then turn your writing into audio.',
     audience: 'creators and content teams',
     topic: 'video',
     status: 'live',
@@ -213,7 +212,7 @@ export const JOURNEYS: JourneyDef[] = [
       'visual-brand-builder-skill',
       'branded-slide-decks-skill',
       'video-script-writer-skill',
-      'turning-your-writing-into-film-a-5c6',
+      'article-to-podcast-post',
     ],
   },
   {

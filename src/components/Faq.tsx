@@ -5,7 +5,7 @@ import { useState } from 'react';
 const faqs = [
   {
     q: 'What do I get with a membership?',
-    a: "The creator community, new Claude skills every week, and the full Skill Library, fully searchable so you can find the skill you need in seconds. Creator interviews stay free for everyone, member or not.",
+    a: "The creator community, new AI skills every week, and the full Skill Library, fully searchable so you can find the skill you need in seconds. Creator interviews stay free for everyone, member or not.",
   },
   {
     q: 'What exactly is a \u201cskill\u201d?',

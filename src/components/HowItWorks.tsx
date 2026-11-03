@@ -12,7 +12,7 @@ export default async function HowItWorks() {
     <section id="how-it-works" className="mx-auto max-w-3xl scroll-mt-28 px-5 py-24 sm:px-6">
       <div className="text-center">
         <p className="text-sm font-semibold uppercase tracking-widest text-cz-coral">How it works</p>
-        <h2 className="mt-3 font-display text-4xl font-bold text-cz-text sm:text-5xl">New Claude skills every week.</h2>
+        <h2 className="mt-3 font-display text-4xl font-bold text-cz-text sm:text-5xl">New AI skills every week.</h2>
         <p className="mx-auto mt-4 max-w-xl text-lg text-cz-text-muted">
           Our creators share the skills they actually use, often ones they&apos;ve refined over months. Ready to run that night.
         </p>

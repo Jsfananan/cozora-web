@@ -6,6 +6,7 @@ import type { JourneyIcon, JourneyStep, ResolvedJourney } from '@/lib/journeys';
 import JourneyScene from './JourneyScene';
 import InstallModal from '../install/InstallModal';
 import { initialOf } from '@/lib/initial';
+import { downloadBadge } from '@/lib/badgeImage';
 
 const STORAGE_KEY = 'cz-journeys-v2';
 
@@ -235,6 +236,13 @@ function Finale({
       <h3 className="mt-2 font-display text-2xl font-bold text-cz-text sm:text-3xl">{journey.title}</h3>
       <p className="mx-auto mt-3 max-w-sm text-cz-text-muted">You finished all {journey.steps.length} steps. Nice work.</p>
       <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
+        <button
+          type="button"
+          onClick={() => downloadBadge({ title: journey.title, icon: journey.icon, steps: journey.steps.length })}
+          className={`inline-flex min-h-[48px] items-center gap-2 rounded-full border border-cz-accent bg-white px-5 font-display text-sm font-semibold text-cz-accent transition-colors hover:bg-cz-deep-teal ${FOCUS}`}
+        >
+          Download your badge
+        </button>
         {next && (
           <button
             type="button"
@@ -741,7 +749,16 @@ export default function JourneyShowcase({ journeys }: { journeys: ResolvedJourne
           </span>
           <p className="text-sm leading-relaxed text-cz-text-muted">
             {done.length === n ? (
-              <span className="font-semibold text-cz-text">Badge earned: {journey.title}</span>
+              <>
+                <span className="font-semibold text-cz-text">Badge earned: {journey.title}</span>{' '}
+                <button
+                  type="button"
+                  onClick={() => downloadBadge({ title: journey.title, icon: journey.icon, steps: journey.steps.length })}
+                  className={`font-semibold text-cz-teal underline underline-offset-2 ${FOCUS}`}
+                >
+                  Download it
+                </button>
+              </>
             ) : (
               <>Finish all {n} steps to earn the <span className="font-semibold text-cz-text">{journey.title}</span> badge.</>
             )}
@@ -770,7 +787,7 @@ export default function JourneyShowcase({ journeys }: { journeys: ResolvedJourne
 
         {journey.steps[0]?.url !== '/skills-guide' && (
           <p className="mt-5 text-sm text-cz-text-muted">
-            New to Claude skills?{' '}
+            New to AI skills?{' '}
             <button
               type="button"
               onClick={() => setInstallOpen(true)}

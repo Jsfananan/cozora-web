@@ -14,7 +14,7 @@ export const revalidate = 1800; // refresh from Substack every 30 min
 const SUBSCRIBE_URL = 'https://cozora.substack.com/subscribe';
 
 const DESCRIPTION =
-  'Your path through AI skills. Claude skills from AI creators on Substack, credited by name and put in order as learning journeys, so you always know what to try next.';
+  'Your path through AI skills. Skills from AI creators on Substack, credited by name and put in order as learning journeys, so you always know what to try next.';
 
 export const metadata: Metadata = {
   title: 'Cozora Library: your path through AI skills',
@@ -75,7 +75,7 @@ export default async function LibraryPage() {
               <span className="bg-gradient-to-r from-[#1F5F5B] via-[#23776F] to-[#A8512C] bg-clip-text text-transparent">AI skills</span>.
             </h1>
             <p className="animate-fade-up delay-200 mx-auto mt-5 max-w-2xl text-lg text-cz-text-muted">
-              Hand-picked Claude skills from AI creators on Substack, put in order by goal, so you always know what to try next.
+              Hand-picked AI skills from AI creators on Substack, put in order by goal, so you always know what to try next.
             </p>
             <div className="animate-fade-up delay-300 mt-10 text-left">
               <p className="mb-5 text-center font-display text-lg font-semibold text-cz-text">How do you want to start?</p>

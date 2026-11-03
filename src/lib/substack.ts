@@ -81,6 +81,16 @@ const EXCLUDE_TAGS = new Set<string>(
   ['Weekly Expert Workshops', 'Cozora AI Summit (March 27)', 'Q&A Library'].map((t) => t.toLowerCase()),
 );
 
+// Live-session recordings that are tagged as skills (or duplicated under a skill tag) on
+// Substack. They are videos with a guest, not skills, so keep them out by slug until the
+// tags are fixed there. Joel, 2026-11-03.
+const EXCLUDE_SLUGS = new Set<string>([
+  'wonder-tools-ai-tools-that-actually-4ea',
+  'turning-your-writing-into-film-a-5c6',
+  'becoming-unpromptable-how-to-stay-f11',
+  'mission-aligned-ai-marketing-how',
+]);
+
 export const TIERS = ['Start Here', 'Apply AI', 'Go Deep'] as const;
 export type Tier = (typeof TIERS)[number];
 
@@ -273,6 +283,7 @@ export async function getSkillPosts(): Promise<SkillPost[]> {
 
   const sorted = raw
     .filter((p) => p.audience === 'only_paid')
+    .filter((p) => !EXCLUDE_SLUGS.has(p.slug ?? ''))
     .filter((p) => {
       const names = (p.postTags ?? []).map((t) => (t.name ?? '').toLowerCase());
       return !names.some((n) => EXCLUDE_TAGS.has(n));
