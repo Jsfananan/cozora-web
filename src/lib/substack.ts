@@ -245,26 +245,30 @@ function titleKey(title: string): string {
  * Revalidated every 30 min so newly published skills appear automatically.
  */
 async function fetchArchive(): Promise<RawPost[]> {
-  const limit = 50;
+  // ⚠ Substack changed this endpoint by 2026-11-06: `offset` is now rejected (400), `limit`
+  // above 25 is rejected (400), and the response is `{ posts, nextCursor }` instead of a
+  // bare array. A 400 here used to end the loop silently with zero posts, which emptied
+  // every journey and the whole library. Page by cursor until it runs out or hits the cap.
+  // Pages can still come back short (limit=25 returns 12), so only the cursor ends the loop.
+  // A bare-array response is still accepted in case the old shape comes back.
   const byId = new Map<number, RawPost>();
-  // ⚠ Substack's archive endpoint can return a SHORT page that is not the last page
-  // (verified 2026-10-19: offset 0 returns 23 posts, offset 23 returns 50 more). So a
-  // short page must not end the loop and the offset must advance by what came back, not
-  // by `limit`. Only an empty page, or the cap, ends it. De-dupe by id for safety.
-  let offset = 0;
-  while (offset < 300) {
-    const res = await fetch(
-      `${PUBLICATION}/api/v1/archive?sort=new&offset=${offset}&limit=${limit}`,
-      {
-        headers: { 'User-Agent': 'Mozilla/5.0 (CozoraLibrary)' },
-        next: { revalidate: 1800 },
-      } as RequestInit,
-    );
-    if (!res.ok) break;
-    const batch = (await res.json()) as RawPost[];
-    if (!Array.isArray(batch) || batch.length === 0) break;
+  let cursor: string | null = null;
+  for (let page = 0; page < 40 && byId.size < 300; page++) {
+    const qs = `sort=new&limit=25${cursor ? `&cursor=${encodeURIComponent(cursor)}` : ''}`;
+    const res = await fetch(`${PUBLICATION}/api/v1/archive?${qs}`, {
+      headers: { 'User-Agent': 'Mozilla/5.0 (CozoraLibrary)' },
+      next: { revalidate: 1800 },
+    } as RequestInit);
+    if (!res.ok) {
+      console.error(`[substack] archive fetch failed: ${res.status} ${await res.text().catch(() => '')}`);
+      break;
+    }
+    const body = (await res.json()) as RawPost[] | { posts?: RawPost[]; nextCursor?: string | null };
+    const batch = Array.isArray(body) ? body : (body.posts ?? []);
+    if (batch.length === 0) break;
     for (const p of batch) byId.set(p.id, p);
-    offset += batch.length;
+    cursor = Array.isArray(body) ? null : (body.nextCursor ?? null);
+    if (!cursor) break;
   }
   return [...byId.values()];
 }
